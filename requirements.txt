@@ -1,4 +1,4 @@
-clint==0.3.1
+-e git+git@github.com:flenter/clint.git#egg=clint
 requests==1.1.0
 oauth2==1.5.211
 argparse==1.2.1

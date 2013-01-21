@@ -1,4 +1,3 @@
-#/usr/bin/env python
+#!/usr/bin/env python
 
 from werckercli import base
-
