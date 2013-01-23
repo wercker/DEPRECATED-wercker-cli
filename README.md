@@ -2,9 +2,12 @@ wercker-bruticus
 ================
 
 Has the following commands:
-* create 
-* status
-* deploy [list|target]
+* create: Add a new project to Wercker
+* list: List all deploy targets
+* deploy: Deploy to a specific target
+* status: Gets the most recent build status of an application
+* clear-settings: Removes the login token for wercker from this computer
+* help: Displays this text and exits
 
 
 TODO
