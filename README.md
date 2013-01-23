@@ -1,5 +1,6 @@
-wercker-bruticus
-================
+# wercker-bruticus #
+
+wercker-cli for easy commandline access to wercker.
 
 Has the following commands:
 * create: Add a new project to Wercker
@@ -10,6 +11,5 @@ Has the following commands:
 * help: Displays this text and exits
 
 
-TODO
-----
+## TODO ##
 Add support for python 2.6 via argparse in requirements.txt?

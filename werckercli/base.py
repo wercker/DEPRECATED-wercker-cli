@@ -9,6 +9,7 @@ from clint.textui import puts, colored
 from clint.textui import prompt
 
 from client import Client
+from dulwich.repo import Repo
 puts()
 
 puts(23*"-")
@@ -112,6 +113,23 @@ def get_access_token():
 
     return token
 
+
+def getGitRoot(path):
+    """Find the nearest parent with a .git folder"""
+
+    if path == os.path.curdir:
+        path = os.path.realpath(path)
+
+    if os.path.isdir(path):
+        if os.path.isdir(os.path.join(path, '.git')):
+            return path
+        else:
+            parent = os.path.realpath(os.path.join(path, os.path.pardir))
+            if parent == path:
+                return None
+            return getGitRoot(parent)
+
+
 base_command = args.base_command
 
 if base_command == None:
@@ -125,7 +143,7 @@ if base_command.lower() == 'create':
     if not token:
         puts(colored.red("Fatal: could not log in"))
 
-    pass
+
 elif base_command.lower() == 'clear-settings':
 
     puts("About to clear the wercker settings for the current user on this machine")
