@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Setup file for wercker-bruticus
 # Copyright (C) 20013 Wercker <pleasemailus@wercker.com>
 
