@@ -8,20 +8,8 @@ from clint.textui import prompt
 
 from client import Client
 
-def get_global_wercker_path():
-    return os.path.join(os.environ['HOME'], '.wercker')
 
-
-def get_global_wercker_filename():
-    return os.path.join(get_global_wercker_path(), 'credentials')
-
-
-def check_or_create_path(path):
-    if not os.path.isdir(path):
-        os.makedirs(path)
-
-    return True
-
+from paths import get_global_wercker_path, get_global_wercker_filename, check_or_create_path
 
 def do_login(retry_count=2):
     username = raw_input("username: ")
@@ -68,18 +56,4 @@ def get_access_token():
     return token
 
 
-def getGitRoot(path):
-    """Find the nearest parent with a .git folder"""
-
-    if path == os.path.curdir:
-        path = os.path.realpath(path)
-
-    if os.path.isdir(path):
-        if os.path.isdir(os.path.join(path, '.git')):
-            return path
-        else:
-            parent = os.path.realpath(os.path.join(path, os.path.pardir))
-            if parent == path:
-                return None
-            return getGitRoot(parent)
 
