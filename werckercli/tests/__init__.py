@@ -54,9 +54,11 @@ class DataSetTestCase(TestCase):
     folder = ''
 
     def setUp(self):
+        super(DataSetTestCase, self).setUp()
         self.folder = duplicate_repo_folder(self.repo_name)
 
     def tearDown(self):
+        super(DataSetTestCase, self).tearDown()
         remove_repo_folder(self.folder)
 
     def get_git_folder(self):
@@ -66,6 +68,7 @@ class DataSetTestCase(TestCase):
 def self_test_suite():
     names = [
         'git',
+        'paths',
     ]
 
     module_names = ['werckercli.tests.test_' + name for name in names]

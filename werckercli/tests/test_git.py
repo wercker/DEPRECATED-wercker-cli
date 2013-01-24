@@ -2,9 +2,12 @@
 # from werckercli.base import do_login
 # from werckercli.paths import find_folder_containing_folder_name
 import os
+import shutil
+import tempfile
 
 from werckercli.tests import (
-    DataSetTestCase
+    # DataSetTestCase,
+    TestCase
 )
 
 # from utils import (
@@ -15,28 +18,8 @@ from werckercli.tests import (
 # )
 
 from werckercli.paths import (
-    find_git_root
+    # find_git_root,
+    get_global_wercker_path
 )
 
 
-class GitFindRepoTest(DataSetTestCase):
-    repo_name = 'empty'
-
-    def test_current_root(self):
-        result = find_git_root(self.folder, self.get_git_folder())
-        self.assertFalse(result is None)
-
-    def test_from_subfolder(self):
-        # self.assertTrue(False)
-        new_folder = os.path.join(
-            self.folder,
-            "multiple",
-            "subfolders",
-            "and",
-            "it",
-            "still"
-        )
-
-        result = find_git_root(new_folder, self.get_git_folder())
-
-        self.assertFalse(result is None)

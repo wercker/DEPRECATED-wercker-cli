@@ -1,8 +1,10 @@
 import os
 
+WERCKER_FOLDER_NAME = '.wercker'
+
 
 def get_global_wercker_path():
-    return os.path.join(os.environ['HOME'], '.wercker')
+    return os.path.join(os.environ['HOME'], WERCKER_FOLDER_NAME)
 
 
 def get_global_wercker_filename():
