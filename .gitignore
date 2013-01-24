@@ -1,5 +1,6 @@
 *.py[cod]
 venv
+old.*
 # C extensions
 *.so
 
