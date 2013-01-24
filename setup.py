@@ -3,10 +3,10 @@
 # Copyright (C) 20013 Wercker <pleasemailus@wercker.com>
 
 try:
-    from setuptools import setup, Extension
+    from setuptools import setup
     has_setuptools = True
 except ImportError:
-    from distutils.core import setup, Extension
+    from distutils.core import setup
     has_setuptools = False
 from distutils.core import Distribution
 
@@ -31,7 +31,7 @@ setup(name='wercker-bruticus',
       Simple command line interface for the wercker website.
       """,
       packages=['werckercli', 'werckercli.tests'],
-      scripts=['bin/wercker',],
+      scripts=['bin/wercker', ],
       distclass=Distribution,
       **setup_kwargs
       )

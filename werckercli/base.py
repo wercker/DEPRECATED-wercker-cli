@@ -1,15 +1,16 @@
 import os
-# import shutil
-
 from getpass import getpass
 
 from clint.textui import puts, colored
-from clint.textui import prompt
 
-from client import Client
+from .client import Client
 
+from .paths import (
+    get_global_wercker_path,
+    get_global_wercker_filename,
+    check_or_create_path
+)
 
-from paths import get_global_wercker_path, get_global_wercker_filename, check_or_create_path
 
 def do_login(retry_count=2):
     username = raw_input("username: ")
@@ -18,7 +19,7 @@ def do_login(retry_count=2):
     client = Client()
     status, content = client.request_oauth_token(username, password)
 
-    if status == 200 and content.get('success', False) == True:
+    if status == 200 and content.get('success', False):
         return content['result']['token']
 
     elif retry_count > 0:
@@ -54,6 +55,3 @@ def get_access_token():
         fh.close()
 
     return token
-
-
-

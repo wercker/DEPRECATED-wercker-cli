@@ -16,10 +16,6 @@ def check_or_create_path(path):
     return True
 
 
-def find_git_root(path, folder_name=".git"):
-	"""Find the nearest parent with <folder_name> folder, for locating the git root folder"""
-	return find_folder_containing_folder_name(path, folder_name)
-
 def find_folder_containing_folder_name(path, folder_name):
     """Find the nearest parent with a <folder_name> folder"""
 
@@ -33,4 +29,12 @@ def find_folder_containing_folder_name(path, folder_name):
             parent = os.path.realpath(os.path.join(path, os.path.pardir))
             if parent == path:
                 return None
-            return getGitRoot(parent, folder_name)
+            return find_folder_containing_folder_name(parent, folder_name)
+
+
+def find_git_root(path, folder_name=".git"):
+    """
+        Find the nearest parent with <folder_name> folder, handy for
+        locating the ".git" root folder
+    """
+    return find_folder_containing_folder_name(path, folder_name)
