@@ -14,6 +14,14 @@ else:
     from unittest2 import TestCase as _TestCase
 
 
+from .utils import (
+    # open_repo,
+    # tear_down_repo,
+    duplicate_repo_folder,
+    remove_repo_folder
+)
+
+
 class TestCase(_TestCase):
 
     def makeSafeEnv(self):
@@ -38,6 +46,21 @@ class TestCase(_TestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.makeSafeEnv()
+
+
+class DataSetTestCase(TestCase):
+    repo_name = 'empty'
+
+    folder = ''
+
+    def setUp(self):
+        self.folder = duplicate_repo_folder(self.repo_name)
+
+    def tearDown(self):
+        remove_repo_folder(self.folder)
+
+    def get_git_folder(self):
+        return self.repo_name + '.git'
 
 
 def self_test_suite():
