@@ -1,0 +1,14 @@
+{
+    "customSteps" : {
+        "install_test_dependencies": [
+            "pip install coverage",
+            "pip install httpretty",
+            "pip install mock"
+        ],
+        "unittest": [
+            "coverage run  --omit=*/venv/lib/*,*/venv/src/*,*/tests/* -m unittest discover  -v",
+            "coverage report -m"
+        ],
+
+    }
+}
