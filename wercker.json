@@ -8,7 +8,6 @@
         "unittest": [
             "coverage run  --omit=*/venv/lib/*,*/venv/src/*,*/tests/* -m unittest discover  -v",
             "coverage report -m"
-        ],
-
+        ]
     }
 }
