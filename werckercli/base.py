@@ -27,7 +27,7 @@ def do_login(retry_count=2):
         puts(
             colored.yellow("warning: ") +
             "login/password incorrect, please try again.")
-        do_login(retry_count - 1)
+        return do_login(retry_count - 1)
 
 
 def get_access_token():

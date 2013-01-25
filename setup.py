@@ -12,7 +12,7 @@ from distutils.core import Distribution
 
 werckercli_version_string = '0.0.1'
 
-tests_require = ['coverage',]
+tests_require = ['httpretty', ]
 setup_kwargs = {}
 
 if has_setuptools:

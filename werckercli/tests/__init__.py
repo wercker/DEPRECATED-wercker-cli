@@ -7,6 +7,8 @@ import os
 import shutil
 import tempfile
 
+from httpretty import HTTPretty
+
 if sys.version_info >= (2, 7):
     # If Python itself provides an exception, use that
     import unittest
@@ -83,10 +85,44 @@ class DataSetTestCase(TempHomeSettingsCase):
         return self.repo_name + '.git'
 
 
+class BasicClientCase(TempHomeSettingsCase):
+    wercker_url = "http://localhost:3000"
+    valid_token = '50ffd4a6b4e145006c0000031359019219496'
+
+    def setUp(self):
+        super(BasicClientCase, self).setUp()
+
+        os.environ['wercker_url'] = self.wercker_url
+        HTTPretty.reset()
+        HTTPretty.enable()
+
+    def tearDown(self):
+        super(BasicClientCase, self).tearDown()
+        HTTPretty.disable()
+        HTTPretty.reset()
+
+    def register_api_call(self, path, responses):
+
+        response_objects = []
+
+        for response in responses:
+            response_objects.append(
+                HTTPretty.Response(**response)
+            )
+
+        HTTPretty.register_uri(
+            HTTPretty.POST,
+            self.wercker_url + '/api/1.0/' + path,
+            responses=response_objects
+        )
+
+
 def self_test_suite():
     names = [
         'git',
         'paths',
+        'client',
+        'base',
     ]
 
     module_names = ['werckercli.tests.test_' + name for name in names]

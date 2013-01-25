@@ -2,10 +2,18 @@ import os
 import json
 import requests
 
+PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
+
 
 class Client():
-    wercker_url = os.environ.get("wercker_url", "http://localhost:3000")
+    wercker_url = os.environ.get("wercker_url", "http://app.wercker.com/")
     api_version = '1.0'
+
+    def __init__(self):
+        self.wercker_url = os.environ.get(
+            "wercker_url",
+            "http://app.wercker.com/"
+        )
 
     def do_post(self, path, data):
         """Make the request to the server."""
@@ -25,7 +33,7 @@ class Client():
         """Request oauth token"""
 
         return self.do_post(
-            'oauth/basicauthaccesstoken',
+            PATH_BASIC_ACCESS_TOKEN,
             {
                 'username': username,
                 'password': password,
