@@ -12,12 +12,14 @@ from distutils.core import Distribution
 
 werckercli_version_string = '0.0.1'
 
+tests_require = ['coverage',]
 setup_kwargs = {}
 
 if has_setuptools:
     setup_kwargs['test_suite'] = 'werckercli.tests.test_suite'
+    setup_kwargs['test_suite'] = 'werckercli.tests.test_suite'
 
-
+# print has_setuptools
 setup(name='wercker-bruticus',
       description='wercker command line interface',
       keywords='cli, command line',
@@ -32,6 +34,8 @@ setup(name='wercker-bruticus',
       """,
       packages=['werckercli', 'werckercli.tests'],
       scripts=['bin/wercker', ],
+      tests_require=tests_require,
+      extras_require={'test': tests_require},
       distclass=Distribution,
       **setup_kwargs
       )

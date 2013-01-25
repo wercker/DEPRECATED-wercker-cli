@@ -4,6 +4,8 @@
 
 import sys
 import os
+import shutil
+import tempfile
 
 if sys.version_info >= (2, 7):
     # If Python itself provides an exception, use that
@@ -14,7 +16,7 @@ else:
     from unittest2 import TestCase as _TestCase
 
 
-from .utils import (
+from utils import (
     # open_repo,
     # tear_down_repo,
     duplicate_repo_folder,
@@ -48,7 +50,23 @@ class TestCase(_TestCase):
         self.makeSafeEnv()
 
 
-class DataSetTestCase(TestCase):
+class TempHomeSettingsCase(TestCase):
+
+    def setUp(self):
+        super(TempHomeSettingsCase, self).setUp()
+
+        self.__home_folder = tempfile.mkdtemp()
+        os.environ['HOME'] = self.__home_folder
+
+    def tearDown(self):
+        super(TempHomeSettingsCase, self).tearDown()
+        shutil.rmtree(self.__home_folder)
+
+    def get_home_folder(self):
+        return self.__home_folder
+
+
+class DataSetTestCase(TempHomeSettingsCase):
     repo_name = 'empty'
 
     folder = ''

@@ -1,6 +1,7 @@
 import os
 
 WERCKER_FOLDER_NAME = '.wercker'
+WERCKER_CREDENTIALS_FILE = 'credentials'
 
 
 def get_global_wercker_path():
@@ -8,7 +9,7 @@ def get_global_wercker_path():
 
 
 def get_global_wercker_filename():
-    return os.path.join(get_global_wercker_path(), 'credentials')
+    return os.path.join(get_global_wercker_path(), WERCKER_CREDENTIALS_FILE)
 
 
 def check_or_create_path(path):
