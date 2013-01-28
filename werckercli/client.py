@@ -4,15 +4,17 @@ import requests
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 
+DEFAULT_WERCKER_URL = "https://app.wercker.com"
+
 
 class Client():
-    wercker_url = os.environ.get("wercker_url", "https://app.wercker.com")
+    wercker_url = os.environ.get("wercker_url", DEFAULT_WERCKER_URL )
     api_version = '1.0'
 
     def __init__(self):
         self.wercker_url = os.environ.get(
             "wercker_url",
-            "https://app.wercker.com/"
+            DEFAULT_WERCKER_URL
         )
 
     def do_post(self, path, data):
