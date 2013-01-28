@@ -6,8 +6,8 @@
             "pip install mock"
         ],
         "unittest": [
-            "coverage run  --omit=/home/ubuntu/.virtualenv/python*,*/tests/* -m unittest discover  -v",
-            "coverage report -m"
+            "coverage run  --source=. -m unittest discover  -v",
+            "coverage report -m --omit=*/tests/*"
         ]
     }
 }
