@@ -12,7 +12,7 @@ class Client():
     def __init__(self):
         self.wercker_url = os.environ.get(
             "wercker_url",
-            "http://app.wercker.com/"
+            "https://app.wercker.com/"
         )
 
     def do_post(self, path, data):
