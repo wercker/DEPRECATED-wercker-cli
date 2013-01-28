@@ -32,7 +32,7 @@ setup(name='wercker-bruticus',
       long_description="""
       Simple command line interface for the wercker website.
       """,
-      packages=['werckercli', 'werckercli.tests'],
+      packages=['werckercli', 'werckercli.tests', 'werckercli.commands'],
       scripts=['bin/wercker', ],
       tests_require=tests_require,
       extras_require={'test': tests_require},
