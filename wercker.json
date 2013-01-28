@@ -7,7 +7,7 @@
         ],
         "unittest": [
             "coverage run  --source=. -m unittest discover  -v",
-            "coverage report -m --omit=*/tests/*"
+            "coverage report -m --omit=*/tests/*,setup*"
         ]
     }
 }
