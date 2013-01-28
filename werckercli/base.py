@@ -42,6 +42,8 @@ def get_access_token():
     if os.path.isfile(credentials):
         fh = open(credentials, 'r')
         token = fh.readlines()
+
+        token = token[0]
         fh.close()
 
     if not token:
