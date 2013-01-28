@@ -12,8 +12,8 @@ def clear_settings():
         for the current user on this machine"
     )
 
-    # sure = prompt.yn("Are you sure you want to do this?", default="n")
-    sure = True
+    sure = prompt.yn("Are you sure you want to do this?", default="n")
+    # sure = True
 
     print sure
     if sure:
