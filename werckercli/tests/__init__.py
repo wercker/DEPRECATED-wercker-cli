@@ -22,7 +22,8 @@ from utils import (
     # open_repo,
     # tear_down_repo,
     duplicate_repo_folder,
-    remove_repo_folder
+    remove_repo_folder,
+    copy_test_data
 )
 
 
@@ -54,11 +55,19 @@ class TestCase(_TestCase):
 
 class TempHomeSettingsCase(TestCase):
 
+    template_name = ""
+
     def setUp(self):
         super(TempHomeSettingsCase, self).setUp()
 
         self.__home_folder = tempfile.mkdtemp()
         os.environ['HOME'] = self.__home_folder
+
+        if self.template_name:
+            copy_test_data(
+                self.template_name,
+                self.__home_folder
+            )
 
     def tearDown(self):
         super(TempHomeSettingsCase, self).tearDown()
@@ -115,6 +124,7 @@ class BasicClientCase(TempHomeSettingsCase):
             self.wercker_url + '/api/1.0/' + path,
             responses=response_objects
         )
+
 
 
 def self_test_suite():

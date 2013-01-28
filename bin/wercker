@@ -3,10 +3,12 @@
 from werckercli.cli import (
     get_parser,
     handle_commands,
-    print_intro
+    get_intro
 )
 
-print_intro()
+from clint.textui import puts
+
+puts(get_intro())
 parser = get_parser()
 args = parser.parse_args()
 handle_commands(parser, args)

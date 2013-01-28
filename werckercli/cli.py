@@ -10,14 +10,16 @@ from clint.textui import prompt
 from werckercli.base import get_access_token
 from werckercli.paths import get_global_wercker_path
 
+from werckercli.commands.clearsettings import clear_settings as command_clear_settings
+from werckercli.commands.create import create as command_create
 
-def print_intro():
-    puts()
 
-    puts(23*"-")
-    puts(colored.white('welcome to ') + colored.green('wercker-cli'))
-    puts(23*"-")
-    puts()
+def get_intro():
+    intro = 23*"-"
+    intro += colored.white('welcome to ') + colored.green('wercker-cli')
+    intro += 23*"-"
+
+    return intro
 
 
 def get_parser():
@@ -75,27 +77,7 @@ def handle_commands(parser, args):
     if base_command.lower() == 'help':
         parser.print_help()
     if base_command.lower() == 'create':
-        token = get_access_token()
-
-        if not token:
-            puts(colored.red("Fatal: could not log in"))
+        command_create()
 
     elif base_command.lower() == 'clear-settings':
-
-        puts(
-            "About to clear the wercker settings \
-            for the current user on this machine"
-        )
-
-        sure = prompt.yn("Are you sure you want to do this?", default="n")
-
-        if sure:
-            home = get_global_wercker_path()
-
-            if os.path.isdir(home):
-                shutil.rmtree(get_global_wercker_path())
-                puts(colored.green("wercker settings removed succesfully."))
-            else:
-                puts(colored.yellow("no settings found."))
-        else:
-            puts(colored.yellow("No settings removed"))
+        command_clear_settings()

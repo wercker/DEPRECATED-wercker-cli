@@ -1,19 +1,9 @@
-# from werckercli.base import do_login
-# from werckercli.paths import find_folder_containing_folder_name
 import os
-
 
 from werckercli.tests import (
     DataSetTestCase,
     TempHomeSettingsCase,
 )
-
-# from utils import (
-    # open_repo,
-    # tear_down_repo,
-    # duplicate_repo_folder,
-    # remove_repo_folder
-# )
 
 from werckercli.paths import (
     find_git_root,

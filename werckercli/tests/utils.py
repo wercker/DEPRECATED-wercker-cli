@@ -24,15 +24,25 @@ def duplicate_repo_folder(name):
 
     temp_dir = tempfile.mkdtemp()
     repo_dir = os.path.join(
-        os.path.dirname(__file__),
-        'data',
         'repos',
         name
     )
     temp_repo_dir = os.path.join(temp_dir, name)
-    shutil.copytree(repo_dir, temp_repo_dir, symlinks=True)
 
-    return os.path.join(temp_dir, name)
+    copy_test_data(repo_dir, temp_repo_dir)
+
+    return temp_repo_dir
+
+
+def copy_test_data(subfolder, destination):
+    source_dir = os.path.join(
+        os.path.dirname(__file__),
+        'data',
+        subfolder
+    )
+
+    # temp_repo_dir = os.path.join(temp_dir, name)
+    shutil.copytree(source_dir, destination, symlinks=True)
 
 
 def remove_repo_folder(temp_dir):

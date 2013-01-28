@@ -6,7 +6,7 @@ PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 
 
 class Client():
-    wercker_url = os.environ.get("wercker_url", "http://app.wercker.com/")
+    wercker_url = os.environ.get("wercker_url", "https://app.wercker.com/")
     api_version = '1.0'
 
     def __init__(self):
