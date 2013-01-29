@@ -1,23 +1,20 @@
-import os
-import shutil
-
 import argparse
 import textwrap
 
-from clint.textui import puts, colored
-from clint.textui import prompt
+from clint.textui import colored
 
-from werckercli.base import get_access_token
-from werckercli.paths import get_global_wercker_path
-
-from werckercli.commands.clearsettings import clear_settings as command_clear_settings
+from werckercli.commands.clearsettings import clear_settings\
+    as command_clear_settings
 from werckercli.commands.create import create as command_create
 
 
 def get_intro():
     intro = 23*"-"
+    intro += "\n"
     intro += colored.white('welcome to ') + colored.green('wercker-cli')
+    intro += "\n"
     intro += 23*"-"
+    intro += "\n"
 
     return intro
 

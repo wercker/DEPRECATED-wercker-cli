@@ -133,6 +133,9 @@ def self_test_suite():
         'paths',
         'client',
         'base',
+        'prompt',
+        'cli',
+        'decorators'
     ]
 
     module_names = ['werckercli.tests.test_' + name for name in names]
