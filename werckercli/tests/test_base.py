@@ -19,6 +19,7 @@ class DoLoginTests(BasicClientCase):
 
     @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
+    @mock.patch('clint.textui.puts', mock.Mock())
     def test_do_Login(self):
         self.register_api_call(
             PATH_BASIC_ACCESS_TOKEN,
@@ -63,6 +64,7 @@ class DoLoginTests(BasicClientCase):
 
     @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
+    @mock.patch('clint.textui.puts', mock.Mock())
     def test_do_login_retry_test(self):
         self.register_api_call(
             PATH_BASIC_ACCESS_TOKEN,
