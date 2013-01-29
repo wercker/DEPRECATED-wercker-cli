@@ -126,7 +126,6 @@ class BasicClientCase(TempHomeSettingsCase):
         )
 
 
-
 def self_test_suite():
     names = [
         'git',
