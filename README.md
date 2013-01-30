@@ -2,14 +2,16 @@
 
 wercker-cli for easy commandline access to wercker.
 
-Has the following commands:
-* create: Add a new project to Wercker
-* list: List all deploy targets
-* deploy: Deploy to a specific target
-* status: Gets the most recent build status of an application
-* clear-settings: Removes the login token for wercker from this computer
-* help: Displays this text and exits
+Usage:
+    wercker status
+    wercker create
+    wercker login
+    wercker logout
+    wercker deploy list
+    wercker deploy <name>
+    wercker (-h | --help)
+    wercker --version
 
+<!-- ## TODO ## -->
 
-## TODO ##
-Add support for python 2.6 via argparse in requirements.txt?
+[![Wercker status](https://app.wercker.com/status/288ecdaa2a4eac34f8d20fac66ce4492/m)](https://app.wercker.com/project/bykey/288ecdaa2a4eac34f8d20fac66ce4492)
