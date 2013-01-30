@@ -52,7 +52,16 @@ class GetRemoteOptionsTests(DataSetTestCase):
     repo_name = "multiple-remotes"
 
     def test_get_remotes(self):
-        folder = os.path.join(self.folder, self.get_git_folder())
+
+
+        print self.folder
+        for r, d, f in os.walk(self.folder):
+            print r, d, f
+        folder = os.path.join(
+            self.folder,
+            self.repo_name,
+            self.get_git_folder()
+        )
         options = get_remote_options(folder)
 
         self.assertEqual(len(options), 2)

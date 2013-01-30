@@ -2,14 +2,14 @@ import os
 import shutil
 import tempfile
 
-from dulwich.repo import Repo
+# from dulwich.repo import Repo
 
 
-def open_repo(name):
-    """Open a copy of a repo in a temporary directory."""
+# def open_repo(name):
+#     """Open a copy of a repo in a temporary directory."""
 
-    temp_repo_dir = duplicate_repo_folder(name)
-    return Repo(temp_repo_dir)
+#     temp_repo_dir = duplicate_repo_folder(name)
+#     return Repo(temp_repo_dir)
 
 
 def tear_down_repo(repo):
@@ -31,7 +31,7 @@ def duplicate_repo_folder(name):
 
     copy_test_data(repo_dir, temp_repo_dir)
 
-    return temp_repo_dir
+    return temp_dir
 
 
 def copy_test_data(subfolder, destination):

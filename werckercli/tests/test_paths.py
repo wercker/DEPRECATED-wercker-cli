@@ -19,13 +19,21 @@ class GitFindRepoTests(DataSetTestCase):
     repo_name = 'subfolders'
 
     def test_find_git_root_in_same_folder(self):
-        result = find_git_root(self.folder, self.get_git_folder())
+        result = find_git_root(
+            os.path.join(
+                self.folder,
+                self.repo_name
+            ),
+            self.get_git_folder()
+        )
         self.assertFalse(result is None)
 
     def test_find_git_root_from_subfolder(self):
         # self.assertTrue(False)
         new_folder = os.path.join(
             self.folder,
+            self.repo_name,
+            # self.get_git_folder(),
             "multiple",
             "subfolders",
             "and",
@@ -33,6 +41,7 @@ class GitFindRepoTests(DataSetTestCase):
             "still"
         )
 
+        print new_folder, self.get_git_folder()
         result = find_git_root(new_folder, self.get_git_folder())
 
         self.assertFalse(result is None)

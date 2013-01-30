@@ -1,6 +1,5 @@
 import re
 
-from operator import itemgetter
 from collections import namedtuple
 from dulwich.repo import Repo
 
@@ -11,6 +10,9 @@ PREFERRED_PATTERNS = [
 
 def get_remote_options(repo_path, prio_remote="origin"):
 
+    # from subprocess import call
+    # sts = call("ls", " -la " + repo_path, shell=True)
+    # print sts
     repo = Repo(repo_path)
     conf = repo.get_config()
     options = []
