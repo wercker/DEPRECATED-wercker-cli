@@ -1,7 +1,21 @@
 #!/usr/bin/env python
+"""wercker-cli
+
+Usage:
+    wercker status
+    wercker create
+    wercker login
+    wercker logout
+    wercker deploy list
+    wercker deploy <name>
+    wercker (-h | --help)
+    wercker --version
+    """
+
+import docopt
 
 from werckercli.cli import (
-    get_parser,
+    # get_parser,
     handle_commands,
     get_intro
 )
@@ -9,6 +23,5 @@ from werckercli.cli import (
 from clint.textui import puts
 
 puts(get_intro())
-parser = get_parser()
-args = parser.parse_args()
-handle_commands(parser, args)
+args = docopt.docopt(__doc__)
+handle_commands(args)
