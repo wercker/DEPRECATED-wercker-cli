@@ -1,3 +1,5 @@
+import mock
+
 from werckercli.tests import (
     TestCase
 )
@@ -14,12 +16,12 @@ class PrintIntroTtests(TestCase):
         self.assertTrue(result.find('wercker') != -1)
 
 
-# class GetParserTests(TestCase):
+class HanldeCommandsTest(TestCase):
 
-#     def test_returns_parser(self):
+    @mock.patch('werckercli.commands.create.create', mock.Mock())
+    @mock.patch('werckercli.commands.clearsettings.clear_settings', mock.Mock())
+    def test_implemented_base_commands(self):
+        my_cli = reload(cli)
+        my_cli.handle_commands({'create': True, 'logout': False})
 
-#         from argparse import ArgumentParser
-
-#         result = cli.get_parser()
-
-#         self.assertTrue(type(result) == ArgumentParser)
+        my_cli.handle_commands({'create': False, 'logout': True})

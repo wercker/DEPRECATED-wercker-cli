@@ -41,7 +41,6 @@ class GitFindRepoTests(DataSetTestCase):
             "still"
         )
 
-        print new_folder, self.get_git_folder()
         result = find_git_root(new_folder, self.get_git_folder())
 
         self.assertFalse(result is None)

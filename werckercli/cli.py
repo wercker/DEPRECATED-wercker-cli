@@ -21,5 +21,5 @@ def handle_commands(args):
     if args['create']:
         command_create()
 
-    elif args['clear-settings']:
+    elif args['logout']:
         command_clear_settings()

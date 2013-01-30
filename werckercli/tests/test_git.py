@@ -53,11 +53,6 @@ class GetRemoteOptionsTests(DataSetTestCase):
 
     def test_get_remotes(self):
 
-        print self.folder
-
-        for r, d, f in os.walk(self.folder):
-            print r, d, f
-
         folder = os.path.join(
             self.folder,
             self.repo_name,
