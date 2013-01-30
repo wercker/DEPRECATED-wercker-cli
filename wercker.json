@@ -1,6 +1,6 @@
 {
     "customSteps" : {
-        "pep8": "pep8 ."
+        "pep8": "pep8 .",
         "install_test_dependencies": [
             "pip install coverage",
             "pip install httpretty",
