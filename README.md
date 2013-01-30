@@ -2,15 +2,16 @@
 
 wercker-cli for easy commandline access to wercker.
 
-Usage:
-    wercker status
-    wercker create
-    wercker login
-    wercker logout
-    wercker deploy list
-    wercker deploy <name>
-    wercker (-h | --help)
-    wercker --version
+    Usage:
+        wercker status
+        wercker create
+        wercker login
+        wercker logout
+        wercker deploy list
+        wercker deploy <name>
+        wercker (-h | --help)
+        wercker --version
+
 
 <!-- ## TODO ## -->
 
