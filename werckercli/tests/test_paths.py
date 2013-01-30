@@ -16,7 +16,7 @@ from werckercli.paths import (
 
 
 class GitFindRepoTests(DataSetTestCase):
-    repo_name = 'empty'
+    repo_name = 'subfolders'
 
     def test_find_git_root_in_same_folder(self):
         result = find_git_root(self.folder, self.get_git_folder())
@@ -47,6 +47,14 @@ class GitFindRepoTests(DataSetTestCase):
         self.assertTrue(result)
 
         os.chdir(current_dir)
+
+    def test_no_matching_parent(self):
+        result = find_git_root(
+            self.get_home_folder(),
+            folder_name="this_folder_must_not_exist."
+        )
+
+        self.assertFalse(result)
 
 
 class WerckerSettingsPathTests(TempHomeSettingsCase):
