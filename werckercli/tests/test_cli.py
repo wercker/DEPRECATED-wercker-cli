@@ -14,12 +14,12 @@ class PrintIntroTtests(TestCase):
         self.assertTrue(result.find('wercker') != -1)
 
 
-class GetParserTests(TestCase):
+# class GetParserTests(TestCase):
 
-    def test_returns_parser(self):
+#     def test_returns_parser(self):
 
-        from argparse import ArgumentParser
+#         from argparse import ArgumentParser
 
-        result = cli.get_parser()
+#         result = cli.get_parser()
 
-        self.assertTrue(type(result) == ArgumentParser)
+#         self.assertTrue(type(result) == ArgumentParser)
