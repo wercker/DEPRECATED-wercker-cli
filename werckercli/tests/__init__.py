@@ -85,6 +85,10 @@ class DataSetTestCase(TempHomeSettingsCase):
         super(DataSetTestCase, self).setUp()
         self.folder = duplicate_repo_folder(self.repo_name)
 
+    def tearDown(self):
+        super(DataSetTestCase, self).tearDown()
+        shutil.rmtree(self.folder)
+
     def get_git_folder(self, absolute=False):
 
         folder = self.repo_name
