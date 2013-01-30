@@ -19,7 +19,10 @@ class PrintIntroTtests(TestCase):
 class HanldeCommandsTest(TestCase):
 
     @mock.patch('werckercli.commands.create.create', mock.Mock())
-    @mock.patch('werckercli.commands.clearsettings.clear_settings', mock.Mock())
+    @mock.patch(
+        'werckercli.commands.clearsettings.clear_settings',
+        mock.Mock()
+    )
     def test_implemented_base_commands(self):
         my_cli = reload(cli)
         my_cli.handle_commands({'create': True, 'logout': False})

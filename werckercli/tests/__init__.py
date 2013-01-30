@@ -26,6 +26,7 @@ from utils import (
 
 VALID_TOKEN = '50ffd4a6b4e145006c0000031359019219496'
 
+
 class TestCase(_TestCase):
 
     def makeSafeEnv(self):
