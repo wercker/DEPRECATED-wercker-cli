@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+	ignorecase = true
+[remote "origin"]
+	url = git@bitbucket.org:postmodern/ronin.git
+	fetch = +refs/heads/master:refs/remotes/origin/master
