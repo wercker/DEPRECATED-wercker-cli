@@ -52,11 +52,11 @@ def remove_repo_folder(temp_dir):
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
-    print dst
     if not os.path.exists(dst):
         os.makedirs(dst)
+        print "veryfing dir: ", dst, os.path.isdir(dst)
     for item in os.listdir(src):
-        print item
+        # print item
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
@@ -66,3 +66,4 @@ def copytree(src, dst, symlinks=False, ignore=None):
                 os.stat(src).st_mtime - \
                     os.stat(dst).st_mtime > 1:
                 shutil.copy2(s, d)
+                print "verifying file: ", d, os.path.isfile(d)
