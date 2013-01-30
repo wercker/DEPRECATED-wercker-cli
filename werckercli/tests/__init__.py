@@ -19,13 +19,12 @@ else:
 
 
 from utils import (
-    # open_repo,
-    # tear_down_repo,
     duplicate_repo_folder,
     remove_repo_folder,
     copy_test_data
 )
 
+VALID_TOKEN = '50ffd4a6b4e145006c0000031359019219496'
 
 class TestCase(_TestCase):
 
@@ -86,17 +85,15 @@ class DataSetTestCase(TempHomeSettingsCase):
         super(DataSetTestCase, self).setUp()
         self.folder = duplicate_repo_folder(self.repo_name)
 
-    def tearDown(self):
-        super(DataSetTestCase, self).tearDown()
-        remove_repo_folder(self.folder)
+    def get_git_folder(self, absolute=False):
 
-    def get_git_folder(self):
-        return self.repo_name + '.git'
+        folder = self.repo_name
+        return folder + ".git"
 
 
 class BasicClientCase(TempHomeSettingsCase):
     wercker_url = "http://localhost:3000"
-    valid_token = '50ffd4a6b4e145006c0000031359019219496'
+    valid_token = VALID_TOKEN
 
     def setUp(self):
         super(BasicClientCase, self).setUp()

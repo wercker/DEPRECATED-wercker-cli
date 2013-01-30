@@ -6,6 +6,7 @@ import mock
 
 from werckercli.tests import (
     BasicClientCase,
+    VALID_TOKEN,
 )
 
 from werckercli.client import (
@@ -153,11 +154,12 @@ class GetAccessTokenTests(BasicClientCase):
             ]
         )
 
-    @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
-    @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
+    @mock.patch('werckercli.base.do_login',
+                mock.Mock(return_value=VALID_TOKEN))
     def test_new_login(self):
 
-        my_base = reload(base)
+        # my_base = reload(base)
+        my_base = base
         result = my_base.get_access_token()
         self.assertEqual(result, self.valid_token)
 

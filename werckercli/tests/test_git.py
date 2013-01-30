@@ -1,25 +1,58 @@
-
-# from werckercli.base import do_login
-# from werckercli.paths import find_folder_containing_folder_name
 import os
-import shutil
-import tempfile
 
 from werckercli.tests import (
-    # DataSetTestCase,
+    DataSetTestCase,
     TestCase
 )
 
-# from utils import (
-    # open_repo,
-    # tear_down_repo,
-    # duplicate_repo_folder,
-    # remove_repo_folder
-# )
-
-from werckercli.paths import (
-    # find_git_root,
-    get_global_wercker_path
+from werckercli.git import (
+    get_priority,
+    get_remote_options,
 )
 
 
+class GetPriorityTests(TestCase):
+    BITBUCKET_URL = "git@bitbucket.org:postmodern/ronin.git"
+    GITHUB_URL = "git@github.com:wercker/wercker-bruticus"
+    HG_SSH_URL = "ssh://hg@bitbucket.org/pypy/pypy"
+    HG_HTTPS_URL = "https://bitbucket.org/pypy/pypy"
+
+    def test_priority_two(self):
+
+        result = get_priority(self.BITBUCKET_URL, "origin")
+        self.assertEqual(result, 2)
+
+        result = get_priority(self.GITHUB_URL, "origin")
+        self.assertEqual(result, 2)
+
+    def test_priority_one(self):
+        result = get_priority(self.BITBUCKET_URL, "some_upstream")
+        self.assertEqual(result, 1)
+
+        result = get_priority(self.GITHUB_URL, "some_upstream")
+        self.assertEqual(result, 1)
+
+        result = get_priority(
+            self.GITHUB_URL,
+            "origin",
+            prio_remote="not_origin"
+        )
+
+        self.assertEqual(result, 1)
+
+    def test_priority_zero(self):
+        result = get_priority(self.HG_SSH_URL, "origin")
+        self.assertEqual(result, 0)
+
+        result = get_priority(self.HG_HTTPS_URL, "origin")
+        self.assertEqual(result, 0)
+
+
+class GetRemoteOptionsTests(DataSetTestCase):
+    repo_name = "multiple-remotes"
+
+    def test_get_remotes(self):
+        folder = os.path.join(self.folder, self.get_git_folder())
+        options = get_remote_options(folder)
+
+        self.assertEqual(len(options), 2)

@@ -30,6 +30,7 @@ def find_folder_containing_folder_name(path, folder_name):
             return path
         else:
             parent = os.path.realpath(os.path.join(path, os.path.pardir))
+            print path, parent
             if parent == path:
                 return None
             return find_folder_containing_folder_name(parent, folder_name)
