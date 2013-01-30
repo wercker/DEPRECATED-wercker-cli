@@ -4,19 +4,17 @@ import tempfile
 
 # from dulwich.repo import Repo
 
-
 # def open_repo(name):
 #     """Open a copy of a repo in a temporary directory."""
 
 #     temp_repo_dir = duplicate_repo_folder(name)
 #     return Repo(temp_repo_dir)
 
+# def tear_down_repo(repo):
+#     """Tear down a test repository."""
 
-def tear_down_repo(repo):
-    """Tear down a test repository."""
-
-    temp_dir = os.path.dirname(repo.path.rstrip(os.sep))
-    remove_repo_folder(temp_dir)
+#     temp_dir = os.path.dirname(repo.path.rstrip(os.sep))
+#     remove_repo_folder(temp_dir)
 
 
 def duplicate_repo_folder(name):
@@ -54,9 +52,7 @@ def remove_repo_folder(temp_dir):
 def copytree(src, dst, symlinks=False, ignore=None):
     if not os.path.exists(dst):
         os.makedirs(dst)
-        print "veryfing dir: ", dst, os.path.isdir(dst)
     for item in os.listdir(src):
-        # print item
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
@@ -66,4 +62,3 @@ def copytree(src, dst, symlinks=False, ignore=None):
                 os.stat(src).st_mtime - \
                     os.stat(dst).st_mtime > 1:
                 shutil.copy2(s, d)
-                print "verifying file: ", d, os.path.isfile(d)
