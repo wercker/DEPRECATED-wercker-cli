@@ -94,15 +94,6 @@ def create(valid_token=None):
                 if url:
                     print url
                     break
-            # elif len(options)
-            # elif choice == str(default_choice):
-            #     url = options[selected]
-            # if selected == str(index):
-            #     url = enter_url()
-            # else:
-            #     print selected
-            #     url = options[selected]
-
 
 
 def enter_url():
