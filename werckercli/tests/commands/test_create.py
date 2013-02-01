@@ -21,7 +21,7 @@ class CreateTests(TestCase):
 
         my_create = reload(create)
         result = my_create.create()
-        self.assertEqual(result, "git@github.com:wercker/wercker-bruticus")
+        self.assertEqual(result, "git@github.com:wercker/wercker-bruticus.git")
 
         # print result
 
