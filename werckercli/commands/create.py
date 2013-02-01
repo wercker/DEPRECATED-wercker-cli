@@ -1,19 +1,17 @@
-import os
-
 from clint.textui import puts, colored, indent
 
 from werckercli.decorators import login_required
-from werckercli.git import get_remote_options, get_priority
-from werckercli import prompt
+from werckercli.git import get_remote_options
+from werckercli.cli import enter_url
 
 
 @login_required
-def create(valid_token=None):
+def create(path='.', valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     puts("Searching for git remote information... ")
-    options = get_remote_options(os.curdir)
+    options = get_remote_options(path)
 
     count = len(options)
 
@@ -94,27 +92,3 @@ def create(valid_token=None):
                 if url:
                     return url
                     break
-
-
-def enter_url():
-    while True:
-
-        url = raw_input("Enter a repository url:")
-
-        if url != "":
-            if get_priority(url, "custom") == 0:
-                puts(
-                    colored.yellow("Warning:") +
-                    " This is not a valid ssh url for github/bitbucket."
-                )
-
-                sure = prompt.yn(
-                    "Are you sure you want to use this url?",
-                    default="n"
-                )
-                if not sure:
-                    url = ""
-                else:
-                    return url
-            else:
-                return url

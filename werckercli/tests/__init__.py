@@ -20,7 +20,6 @@ else:
 
 from utils import (
     duplicate_repo_folder,
-    remove_repo_folder,
     copy_test_data
 )
 
