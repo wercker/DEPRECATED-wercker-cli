@@ -89,6 +89,14 @@ class DataSetTestCase(TempHomeSettingsCase):
         super(DataSetTestCase, self).tearDown()
         shutil.rmtree(self.folder)
 
+    def get_git_path(self):
+        # return self.folder
+        return os.path.join(
+            self.folder,
+            self.repo_name,
+            self.get_git_folder()
+        )
+
     def get_git_folder(self, absolute=False):
 
         folder = self.repo_name
