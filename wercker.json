@@ -1,11 +1,12 @@
 {
     "customSteps" : {
-        "pep8": "pep8 .",
         "install_test_dependencies": [
             "pip install coverage",
             "pip install httpretty",
-            "pip install mock"
+            "pip install mock",
+            "pip install pep8"
         ],
+        "pep8": "pep8 .",
         "unittest": [
             "coverage run  --timid --source=. -m unittest discover -v",
             "coverage report -m --omit=*/tests/*,setup*"
