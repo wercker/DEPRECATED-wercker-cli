@@ -3,7 +3,8 @@ import os
 from clint.textui import puts, colored, indent
 
 from werckercli.decorators import login_required
-from werckercli.git import get_remote_options
+from werckercli.git import get_remote_options, get_priority
+from werckercli import prompt
 
 
 @login_required
@@ -27,6 +28,7 @@ def create(valid_token=None):
             "Please choose one of the following options: ")
 
         index = 1
+        enter_custom_choice = 1
         default_choice = 1
 
         with indent(indent=1):
@@ -43,6 +45,8 @@ def create(valid_token=None):
                     puts(to_print)
                 index += 1
 
+            enter_custom_choice = len(options) + 1
+
             puts('(%d) enter a new location' % index)
 
         def option_to_str(i):
@@ -56,18 +60,70 @@ def create(valid_token=None):
             range(1, index + 1)
         )
 
-
         while True:
+
+            url = None
+
             choice = raw_input(
-                "choice: (%s)" % (
+                "choice (%s): " % (
                     ",".join(choices),
                 )
             )
 
             selected = None
-            if choice in choices:
+
+            if choice == "":
+                selected = default_choice
+            elif choice in choices:
                 selected = choice
                 try:
-                    int()
-            if choice == str(default_choice):
+                    selected = int(choice)
+                except ValueError:
+                    selected = None
+            elif choice == str(default_choice):
+                selected = default_choice
+            elif choice == str(enter_custom_choice):
+                selected = enter_custom_choice
 
+            if selected:
+                if selected == enter_custom_choice:
+                    url = enter_url()
+                else:
+                    url = options[selected-1].url
+
+                if url:
+                    print url
+                    break
+            # elif len(options)
+            # elif choice == str(default_choice):
+            #     url = options[selected]
+            # if selected == str(index):
+            #     url = enter_url()
+            # else:
+            #     print selected
+            #     url = options[selected]
+
+
+
+def enter_url():
+    while True:
+
+        url = raw_input("Enter a repository url:")
+
+        if url != "":
+            if get_priority(url, "custom") == 0:
+                puts(
+                    colored.yellow("Warning:") +
+                    " This is not a valid ssh url for github/bitbucket."
+                )
+
+                sure = prompt.yn(
+                    "Are you sure you want to use this url?",
+                    default="n"
+                )
+                if not sure:
+                    url = ""
+                else:
+                    return url
+            else:
+                return url
