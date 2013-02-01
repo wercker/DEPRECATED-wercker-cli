@@ -21,25 +21,21 @@ def get_remote_options(repo_path, prio_remote="origin"):
 
     for key in conf.keys():
         if 'remote' in key:
-            option = None
-            try:
-                url = conf.get(key, 'url')
-                remote = key[1]
-            except KeyError:
-                pass
-            else:
-                option = RemoteOption(
+
+            url = conf.get(key, 'url')
+            remote = key[1]
+
+            option = RemoteOption(
+                url,
+                remote,
+                get_priority(
                     url,
                     remote,
-                    get_priority(
-                        url,
-                        remote,
-                        prio_remote=prio_remote
-                    )
+                    prio_remote=prio_remote
                 )
+            )
 
-            if option:
-                options.append(option)
+            options.append(option)
 
     options = sorted(options, key=lambda i: i.priority, reverse=True)
     return options

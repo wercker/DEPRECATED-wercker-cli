@@ -20,18 +20,20 @@ def do_login(retry_count=2):
     status, content = client.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
+        puts("Login successful.")
         return content['result']['token']
 
     elif retry_count > 0:
 
         puts(
             colored.yellow("warning: ") +
-            "login/password incorrect, please try again.")
+            "login/password incorrect, please try again.\n")
         return do_login(retry_count - 1)
 
 
 def get_access_token():
 
+    puts("Looking for login token...")
     token = None
 
     home = get_global_wercker_path()
@@ -47,6 +49,8 @@ def get_access_token():
         fh.close()
 
     if not token:
+        puts(colored.yellow("Token not found\n"))
+        puts("Attempting to log in...")
         token = do_login()
 
         if not token:
@@ -55,5 +59,6 @@ def get_access_token():
 
         fh.write(token)
         fh.close()
+        puts("Token saved. \n")
 
     return token

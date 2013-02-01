@@ -23,7 +23,7 @@ for the current user on this machine"""
             puts(colored.green("wercker settings removed succesfully."))
             return True
         else:
-            puts(colored.yellow("No settings were found."))
+            puts(colored.yellow("cancelled."))
     else:
         puts(colored.yellow("no settings found."))
 
