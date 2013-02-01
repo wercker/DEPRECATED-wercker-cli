@@ -92,7 +92,7 @@ def create(valid_token=None):
                     url = options[selected-1].url
 
                 if url:
-                    print url
+                    return url
                     break
 
 
