@@ -33,6 +33,7 @@ def enter_url(loop=True):
         url = raw_input("Enter a repository url:")
 
         if url != "":
+            print get_priority(url, "custom")
             if get_priority(url, "custom") == 0:
                 puts(
                     colored.yellow("Warning:") +

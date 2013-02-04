@@ -47,3 +47,29 @@ class EnterUrlTests(TestCase):
         result = my_cli.enter_url()
 
         self.assertEqual(result, VALID_GIT_SSH_KEY)
+
+    @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
+    @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=True))
+    @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0)    )
+    @mock.patch(
+        '__builtin__.raw_input',
+        mock.Mock(return_value="INVALID_GIT_SSH_KEY")
+    )
+    def test_force_unknown_location(self):
+        my_cli = reload(cli)
+        result = my_cli.enter_url(loop=False)
+
+        self.assertEqual(result, "INVALID_GIT_SSH_KEY")
+
+    @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
+    @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=False))
+    @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0)    )
+    @mock.patch(
+        '__builtin__.raw_input',
+        mock.Mock(return_value="INVALID_GIT_SSH_KEY")
+    )
+    def test_invalid_location_no_loop(self):
+        my_cli = reload(cli)
+        result = my_cli.enter_url(loop=False)
+
+        self.assertEqual(result, None)
