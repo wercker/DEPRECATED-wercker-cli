@@ -3,6 +3,8 @@ import json
 import requests
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
+PATH_GET_TEMPLATES = 'project/gettemplates'
+PATH_CREATE_PROJECT = 'project/create'
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
 
@@ -40,4 +42,24 @@ class Client():
                 'username': username,
                 'password': password,
                 'oauthscope': scope
+            })
+
+    def get_templates(self, project, platform, token):
+        return self.do_post(
+            PATH_GET_TEMPLATES,
+            {
+                'projectName': project,
+                'platform': platform,
+                'token': token
+            })
+
+    def create_project(self, git_url, user, project, source_control, token):
+        return self.do_post(
+            PATH_CREATE_PROJECT,
+            {
+                'gitUrl': git_url,
+                'userName': user,
+                'projectName': project,
+                'sourceControl': source_control,
+                'token': token
             })

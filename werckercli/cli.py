@@ -1,3 +1,5 @@
+import os
+
 from clint.textui import colored, puts, indent
 
 from werckercli.git import get_priority
@@ -107,10 +109,12 @@ def pick_url(options):
             selected = default_choice
         elif choice in choices:
             selected = choice
+
             try:
                 selected = int(choice)
             except ValueError:
                 selected = None
+
         elif choice == str(default_choice):
             selected = default_choice
         elif choice == str(enter_custom_choice):
@@ -124,3 +128,12 @@ def pick_url(options):
 
             if url:
                 return url
+
+
+def pick_project_name(url):
+
+    project = os.path.basename(url).split(".")[0]
+
+    puts("Detecting project name...")
+
+    return prompt.get_value_with_default("Enter project name", project)

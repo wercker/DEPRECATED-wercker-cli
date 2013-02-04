@@ -49,3 +49,13 @@ def yn(prompt, default='y', batch=False):
         # then return True, False otherwise
         elif match('n(?:o)?', input, I):
             return False
+
+
+def get_value_with_default(prompt, default):
+
+    value = raw_input(prompt + "enter=%s: " % default).strip()
+
+    if value == "":
+        return default
+    else:
+        return value
