@@ -43,7 +43,7 @@ def create(path='.', valid_token=None):
 
     client = Client()
 
-    templates = client.create_project(
+    status, response = client.create_project(
         url,
         user,
         project,
@@ -51,4 +51,7 @@ def create(path='.', valid_token=None):
         valid_token
     )
 
-    print templates
+    if response['success']:
+        print "Project has been created"
+    # print templates
+

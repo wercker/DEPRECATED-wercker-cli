@@ -136,4 +136,4 @@ def pick_project_name(url):
 
     puts("Detecting project name...")
 
-    return prompt.get_value_with_default("Enter project name", project)
+    return prompt.get_value_with_default("Enter project name: ", project)

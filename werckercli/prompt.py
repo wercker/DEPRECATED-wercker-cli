@@ -53,7 +53,7 @@ def yn(prompt, default='y', batch=False):
 
 def get_value_with_default(prompt, default):
 
-    value = raw_input(prompt + "enter=%s: " % default).strip()
+    value = raw_input(prompt + "(enter=%s): " % default).strip()
 
     if value == "":
         return default
