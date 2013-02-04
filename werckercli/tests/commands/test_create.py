@@ -10,78 +10,78 @@ from werckercli.tests import (
 from werckercli.commands import create
 
 
-def test_decorator(f):
-    def new_f(*args, **kwargs):
-        return f(valid_token=VALID_TOKEN, *args, **kwargs)
+# def test_decorator(f):
+#     def new_f(*args, **kwargs):
+#         return f(valid_token=VALID_TOKEN, *args, **kwargs)
 
-    return new_f
+#     return new_f
 
 
-class CreateRemotesTests(DataSetTestCase):
+# class CreateRemotesTests(DataSetTestCase):
 
-    repo_name = "github-ssh"
+#     repo_name = "github-ssh"
 
-    @mock.patch("werckercli.decorators.login_required", test_decorator)
-    @mock.patch("__builtin__.raw_input", mock.Mock(return_value=""))
-    @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
-    @mock.patch("clint.textui.puts", mock.Mock())
-    def test_create_default(self):
+#     @mock.patch("werckercli.decorators.login_required", test_decorator)
+#     @mock.patch("__builtin__.raw_input", mock.Mock(return_value=""))
+#     @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
+#     @mock.patch("clint.textui.puts", mock.Mock())
+#     def test_create_default(self):
 
-        my_create = reload(create)
-        result = my_create.create(
-            path=os.path.join(
-                self.folder,
-                self.repo_name,
-                self.get_git_folder()
-            )
-        )
-        self.assertEqual(
-            result,
-            "git@github.com:wercker/wercker-bruticus.git"
-        )
+#         my_create = reload(create)
+#         result = my_create.create(
+#             path=os.path.join(
+#                 self.folder,
+#                 self.repo_name,
+#                 self.get_git_folder()
+#             )
+#         )
+#         self.assertEqual(
+#             result,
+#             "git@github.com:wercker/wercker-bruticus.git"
+#         )
 
-    @mock.patch("werckercli.decorators.login_required", test_decorator)
-    @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))
-    @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
-    @mock.patch("clint.textui.puts", mock.Mock())
-    def test_create_1(self):
+#     @mock.patch("werckercli.decorators.login_required", test_decorator)
+#     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))
+#     @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
+#     @mock.patch("clint.textui.puts", mock.Mock())
+#     def test_create_1(self):
 
-        my_create = reload(create)
-        result = my_create.create(
-            path=os.path.join(
-                self.folder,
-                self.repo_name,
-                self.get_git_folder()
-            )
-        )
-        self.assertEqual(
-            result,
-            "git@github.com:wercker/wercker-bruticus.git"
-        )
+#         my_create = reload(create)
+#         result = my_create.create(
+#             path=os.path.join(
+#                 self.folder,
+#                 self.repo_name,
+#                 self.get_git_folder()
+#             )
+#         )
+#         self.assertEqual(
+#             result,
+#             "git@github.com:wercker/wercker-bruticus.git"
+#         )
 
-    @mock.patch("werckercli.decorators.login_required", test_decorator)
-    @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
-    @mock.patch(
-        "werckercli.cli.enter_url",
-        mock.Mock(
-            return_value="VALID_URL"
-        )
-    )
-    @mock.patch("clint.textui.puts", mock.Mock())
-    def test_create_2(self):
+#     @mock.patch("werckercli.decorators.login_required", test_decorator)
+#     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
+#     @mock.patch(
+#         "werckercli.cli.enter_url",
+#         mock.Mock(
+#             return_value="VALID_URL"
+#         )
+#     )
+#     @mock.patch("clint.textui.puts", mock.Mock())
+#     def test_create_2(self):
 
-        my_create = reload(create)
-        result = my_create.create(
-            path=os.path.join(
-                self.folder,
-                self.repo_name,
-                self.get_git_folder()
-            )
-        )
-        self.assertEqual(
-            result,
-            "VALID_URL"
-        )
+#         my_create = reload(create)
+#         result = my_create.create(
+#             path=os.path.join(
+#                 self.folder,
+#                 self.repo_name,
+#                 self.get_git_folder()
+#             )
+#         )
+#         self.assertEqual(
+#             result,
+#             "VALID_URL"
+#         )
         # print result
 
         # self.assertRaises(ValueError, unprotected_create)

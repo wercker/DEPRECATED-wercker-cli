@@ -7,6 +7,8 @@ PREFERRED_PATTERNS = [
     '(git@)*(bitbucket.org|github.com):(.*)'
 ]
 
+RemoteOption = namedtuple('RemoteOption', 'url remote priority')
+
 
 def get_remote_options(repo_path, prio_remote="origin"):
 
@@ -16,8 +18,6 @@ def get_remote_options(repo_path, prio_remote="origin"):
     repo = Repo(repo_path)
     conf = repo.get_config()
     options = []
-
-    RemoteOption = namedtuple('RemoteOption', 'url remote priority')
 
     for key in conf.keys():
         if 'remote' in key:

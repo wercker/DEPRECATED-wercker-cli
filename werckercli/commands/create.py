@@ -1,8 +1,8 @@
-from clint.textui import puts, colored, indent
+from clint.textui import puts, colored
 
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
-from werckercli.cli import enter_url
+from werckercli.cli import pick_url
 
 
 @login_required
@@ -11,7 +11,7 @@ def create(path='.', valid_token=None):
         raise ValueError("A valid token is required!")
 
     puts("Searching for git remote information... ")
-    options = get_remote_options(path)
+    options = get_remote_options(path, )
 
     count = len(options)
 
@@ -22,73 +22,7 @@ def create(path='.', valid_token=None):
             "Found %s repository location(s)...\n"
             % colored.white(str(count))
         )
-        puts(
-            "Please choose one of the following options: ")
 
-        index = 1
-        enter_custom_choice = 1
-        default_choice = 1
+        url = pick_url()
 
-        with indent(indent=1):
-            for option in options:
-                if(option.priority < 1):
-                    puts('(%d) %s ' % (index, colored.red(option.url)))
-                    if(default_choice == index):
-                        default_choice += 1
-                else:
-                    to_print = '(%d) %s ' % (index, option.url)
-
-                    if(index == default_choice):
-                        to_print = colored.green(to_print)
-                    puts(to_print)
-                index += 1
-
-            enter_custom_choice = len(options) + 1
-
-            puts('(%d) enter a new location' % index)
-
-        def option_to_str(i):
-            if not i == default_choice:
-                return str(i)
-            else:
-                return str(i) + "=default"
-
-        choices = map(
-            option_to_str,
-            range(1, index + 1)
-        )
-
-        while True:
-
-            url = None
-
-            choice = raw_input(
-                "choice (%s): " % (
-                    ",".join(choices),
-                )
-            )
-
-            selected = None
-
-            if choice == "":
-                selected = default_choice
-            elif choice in choices:
-                selected = choice
-                try:
-                    selected = int(choice)
-                except ValueError:
-                    selected = None
-            elif choice == str(default_choice):
-                selected = default_choice
-            elif choice == str(enter_custom_choice):
-                selected = enter_custom_choice
-
-            if selected:
-                if selected == enter_custom_choice:
-                    url = enter_url()
-                else:
-                    url = options[selected-1].url
-
-                if url:
-                    return url
-                    break
+        return url
