@@ -11,14 +11,15 @@ DEFAULT_WERCKER_URL = "https://app.wercker.com"
 
 
 class Client():
-    wercker_url = os.environ.get("wercker_url", DEFAULT_WERCKER_URL)
+    wercker_url = os.environ.get("wercker_url")
     api_version = '1.0'
 
     def __init__(self):
         self.wercker_url = os.environ.get(
             "wercker_url",
-            DEFAULT_WERCKER_URL
         )
+        if self.wercker_url == "":
+            self.wercker_url = DEFAULT_WERCKER_URL
 
     def do_post(self, path, data):
         """Make the request to the server."""
