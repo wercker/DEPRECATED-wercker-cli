@@ -28,7 +28,6 @@ def handle_commands(args):
         command_create()
     elif args['login']:
         command_login()
-
     elif args['logout']:
         command_clear_settings()
 

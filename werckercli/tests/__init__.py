@@ -140,7 +140,7 @@ def self_test_suite():
         'git',
         'paths',
         'client',
-        'base',
+        'authentication',
         'prompt',
         'cli',
         'decorators'

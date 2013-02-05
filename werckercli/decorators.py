@@ -1,4 +1,4 @@
-from werckercli.base import get_access_token
+from werckercli.authentication import get_access_token
 
 
 def login_required(f):

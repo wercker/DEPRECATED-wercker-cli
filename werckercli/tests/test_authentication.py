@@ -13,7 +13,7 @@ from werckercli.client import (
     PATH_BASIC_ACCESS_TOKEN
 )
 
-from werckercli import base
+from werckercli import authentication
 
 
 class DoLoginTests(BasicClientCase):
@@ -54,12 +54,12 @@ class DoLoginTests(BasicClientCase):
             ]
         )
 
-        my_base = reload(base)
-        result = my_base.do_login()
+        my_authentication = reload(authentication)
+        result = my_authentication.do_login()
 
         self.assertEqual(result, self.valid_token)
 
-        result = my_base.do_login()
+        result = my_authentication.do_login()
 
         self.assertEqual(result, self.valid_token + "1")
 
@@ -111,8 +111,8 @@ class DoLoginTests(BasicClientCase):
                 },
             ]
         )
-        my_base = reload(base)
-        result = my_base.do_login()
+        my_authentication = reload(authentication)
+        result = my_authentication.do_login()
         self.assertEqual(result, self.valid_token)
         self.assertEqual(len(HTTPretty.latest_requests), 3)
 
@@ -154,13 +154,13 @@ class GetAccessTokenTests(BasicClientCase):
             ]
         )
 
-    @mock.patch('werckercli.base.do_login',
+    @mock.patch('werckercli.authentication.do_login',
                 mock.Mock(return_value=VALID_TOKEN))
     def test_new_login(self):
 
-        # my_base = reload(base)
-        my_base = base
-        result = my_base.get_access_token()
+        # my_authentication = reload(authentication)
+        my_authentication = authentication
+        result = my_authentication.get_access_token()
         self.assertEqual(result, self.valid_token)
 
     @mock.patch('getpass.getpass', mock.Mock(return_value='test'))

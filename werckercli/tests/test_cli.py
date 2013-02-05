@@ -36,9 +36,21 @@ class HanldeCommandsTests(TestCase):
     )
     def test_implemented_base_commands(self):
         my_cli = reload(cli)
-        my_cli.handle_commands({'create': True, 'logout': False})
+        my_cli.handle_commands(
+            {
+                'create': True,
+                'logout': False,
+                'login': False
+            }
+        )
 
-        my_cli.handle_commands({'create': False, 'logout': True})
+        my_cli.handle_commands(
+            {
+                'create': False,
+                'logout': True,
+                'login': False
+            }
+        )
 
 
 VALID_GIT_SSH_KEY = "git@github.com:wercker/wercker-bruticus.git"

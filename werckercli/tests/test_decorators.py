@@ -1,14 +1,19 @@
-
+import mock
 from werckercli.decorators import login_required
 
 from werckercli.tests import (
     BasicClientCase,
+    VALID_TOKEN,
 )
 
 
 class LoginRequiredTests(BasicClientCase):
     template_name = "home-with-token"
 
+    @mock.patch(
+        'werckercli.authentication.get_access_token',
+        mock.Mock(return_value=VALID_TOKEN)
+    )
     def test_valid_token(self):
 
         @login_required
@@ -17,6 +22,10 @@ class LoginRequiredTests(BasicClientCase):
 
         nothing()
 
+    @mock.patch(
+        'werckercli.authentication.get_access_token',
+        mock.Mock(return_value=VALID_TOKEN)
+    )
     def test_return_value(self):
 
         @login_required
@@ -28,6 +37,10 @@ class LoginRequiredTests(BasicClientCase):
         self.assertEqual(self.valid_token, result)
         # print result
 
+    @mock.patch(
+        'werckercli.authentication.get_access_token',
+        mock.Mock(return_value=VALID_TOKEN)
+    )
     def test_argument_value(self):
 
         test_string = "test_string_1"
