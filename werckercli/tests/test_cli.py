@@ -35,7 +35,7 @@ class HanldeCommandsTests(TestCase):
         mock.Mock()
     )
     def test_implemented_base_commands(self):
-        my_cli = reload(cli)
+        my_cli = cli
         my_cli.handle_commands(
             {
                 'create': True,
@@ -65,7 +65,7 @@ class EnterUrlTests(TestCase):
         mock.Mock(return_value=VALID_GIT_SSH_KEY)
     )
     def test_valid_ssh(self):
-        my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.enter_url()
 
         self.assertEqual(result, VALID_GIT_SSH_KEY)
@@ -91,7 +91,7 @@ class EnterUrlTests(TestCase):
         mock.Mock(return_value="INVALID_GIT_SSH_KEY")
     )
     def test_invalid_location_no_loop(self):
-        my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.enter_url(loop=False)
 
         self.assertEqual(result, None)
