@@ -143,7 +143,8 @@ def self_test_suite():
         'authentication',
         'prompt',
         'cli',
-        'decorators'
+        'decorators',
+        'heroku',
     ]
 
     module_names = ['werckercli.tests.test_' + name for name in names]
