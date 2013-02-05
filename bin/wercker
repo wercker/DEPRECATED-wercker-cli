@@ -3,13 +3,21 @@
 
 Usage:
     wercker status
-    wercker create          - implemented
-    wercker login           - implemented
-    wercker logout          - implemented
+    wercker create
+    wercker login
+    wercker logout
     wercker deploy list
+    wercker deploy add
     wercker deploy <name>
+    wercker app link
     wercker (-h | --help)
     wercker --version
+
+Details:
+    create - Adds an application to wercker *implemented*ma
+    login  - Logs the user in and stores the token on the
+             machine *implemented*
+    forget - Removes the login token from the machine *implemented*
     """
 
 import docopt
