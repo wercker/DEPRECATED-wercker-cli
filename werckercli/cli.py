@@ -6,6 +6,8 @@ from werckercli.git import get_priority
 from werckercli import prompt
 from werckercli.commands.clearsettings import clear_settings\
     as command_clear_settings
+from werckercli.commands.login import login\
+    as command_login
 
 
 def get_intro():
@@ -20,16 +22,19 @@ def get_intro():
 
 
 def handle_commands(args):
-
+    """ Core handler for redirecting to the proper commands."""
     if args['create']:
         from werckercli.commands.create import create as command_create
         command_create()
+    elif args['login']:
+        command_login()
 
     elif args['logout']:
         command_clear_settings()
 
 
 def enter_url(loop=True):
+    """Get an url and validate it, asks confirmation for unsupported urls"""
     while True:
 
         url = raw_input("Enter a repository url:")
@@ -57,6 +62,7 @@ def enter_url(loop=True):
 
 
 def pick_url(options):
+    """Allows the user to pick one of the options or enter a new locaiton"""
     puts(
         "Please choose one of the following options: ")
 

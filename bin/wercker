@@ -4,7 +4,7 @@
 Usage:
     wercker status
     wercker create
-    wercker login
+    wercker login           - implemented
     wercker logout
     wercker deploy list
     wercker deploy <name>

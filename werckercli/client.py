@@ -5,6 +5,7 @@ import requests
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
+# PATH_PROJECT_LIST = 'project/gettemplates'
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
 
@@ -63,3 +64,4 @@ class Client():
                 'sourceControl': source_control,
                 'token': token
             })
+    # def list_projects(self, token):
