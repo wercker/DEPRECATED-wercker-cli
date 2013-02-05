@@ -17,8 +17,6 @@ def do_login(retry_count=2):
     password = getpass("password: ")
 
     client = Client()
-    print "client.wercker_url", client
-    print dir(client)
     status, content = client.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
