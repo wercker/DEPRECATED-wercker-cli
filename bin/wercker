@@ -3,9 +3,9 @@
 
 Usage:
     wercker status
-    wercker create
+    wercker create          - implemented
     wercker login           - implemented
-    wercker logout
+    wercker logout          - implemented
     wercker deploy list
     wercker deploy <name>
     wercker (-h | --help)
