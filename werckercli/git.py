@@ -89,5 +89,9 @@ def find_heroku_sources(repo_path):
 
     options = get_remote_options(repo_path)
 
+    heroku_options = []
     for option in options:
-        get_source_type(option.url)
+        if get_source_type(option.url) == SOURCE_HEROKU:
+            heroku_options.append(option)
+
+    return heroku_options
