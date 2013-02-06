@@ -1,5 +1,5 @@
 import mock
-from werckercli.decorators import login_required
+from werckercli import decorators
 
 from werckercli.tests import (
     BasicClientCase,
@@ -16,7 +16,9 @@ class LoginRequiredTests(BasicClientCase):
     )
     def test_valid_token(self):
 
-        @login_required
+        my_decorators = reload(decorators)
+
+        @my_decorators.login_required
         def nothing(valid_token=None):
             self.assertEqual(self.valid_token, valid_token)
 
@@ -28,7 +30,9 @@ class LoginRequiredTests(BasicClientCase):
     )
     def test_return_value(self):
 
-        @login_required
+        my_decorators = reload(decorators)
+
+        @my_decorators.login_required
         def nothing(valid_token=None):
 
             return valid_token
@@ -45,7 +49,9 @@ class LoginRequiredTests(BasicClientCase):
 
         test_string = "test_string_1"
 
-        @login_required
+        my_decorators = reload(decorators)
+
+        @my_decorators.login_required
         def nothing(arg1, valid_token=None):
             self.assertEqual(arg1, test_string)
 

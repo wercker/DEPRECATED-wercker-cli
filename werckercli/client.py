@@ -1,25 +1,20 @@
-import os
 import json
 import requests
+
+from werckercli.config import get_value, VALUE_WERCKER_URL
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
-DEFAULT_WERCKER_URL = "https://app.wercker.com"
-
 
 class Client():
-    wercker_url = os.environ.get("wercker_url")
+    wercker_url = get_value(VALUE_WERCKER_URL)
     api_version = '1.0'
 
     def __init__(self):
-        self.wercker_url = os.environ.get(
-            "wercker_url",
-        )
-        if self.wercker_url == "":
-            self.wercker_url = DEFAULT_WERCKER_URL
+        self.wercker_url = get_value(VALUE_WERCKER_URL)
 
     def do_post(self, path, data):
         """Make the request to the server."""

@@ -1,15 +1,9 @@
-import os
 from getpass import getpass
 
 from clint.textui import puts, colored
 
 from .client import Client
-
-from .paths import (
-    get_global_wercker_path,
-    get_global_wercker_filename,
-    check_or_create_path
-)
+from .config import get_value, set_value, VALUE_USER_TOKEN
 
 
 def do_login(retry_count=2):
@@ -34,19 +28,8 @@ def do_login(retry_count=2):
 def get_access_token():
 
     puts("Looking for login token...")
-    token = None
 
-    home = get_global_wercker_path()
-    check_or_create_path(home)
-
-    credentials = get_global_wercker_filename()
-
-    if os.path.isfile(credentials):
-        fh = open(credentials, 'r')
-        token = fh.readlines()
-
-        token = token[0]
-        fh.close()
+    token = get_value(VALUE_USER_TOKEN)
 
     if not token:
         puts(colored.yellow("Token not found\n"))
@@ -55,10 +38,8 @@ def get_access_token():
 
         if not token:
             return
-        fh = open(credentials, 'w+')
 
-        fh.write(token)
-        fh.close()
+        set_value(VALUE_USER_TOKEN, token)
         puts("Token saved. \n")
 
     return token
