@@ -105,7 +105,7 @@ class EnterUrlTests(TestCase):
         mock.Mock(return_value=VALID_GIT_SSH_KEY)
     )
     def test_valid_ssh(self):
-        my_cli = cli
+        my_cli = reload(cli)
         result = my_cli.enter_url()
 
         self.assertEqual(result, VALID_GIT_SSH_KEY)
