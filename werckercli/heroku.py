@@ -1,4 +1,6 @@
 import subprocess
+# import netrc
+from config import get_value, VALUE_HEROKU_TOKEN
 
 
 def is_toolbelt_installed(
@@ -18,3 +20,8 @@ def is_toolbelt_installed(
         return version_info[0].startswith(default_test_string)
 
     return False
+
+
+def get_token():
+
+    return get_value(VALUE_HEROKU_TOKEN)
