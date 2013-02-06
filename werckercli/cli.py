@@ -9,6 +9,8 @@ from werckercli.commands.clearsettings import clear_settings\
 from werckercli.commands.login import login\
     as command_login
 
+from werckercli.commands.deploy import add as command_deploy_add
+
 
 def get_intro():
     intro = 23*"-"
@@ -26,6 +28,9 @@ def handle_commands(args):
     if args['create']:
         from werckercli.commands.create import create as command_create
         command_create()
+    elif args['deploy']:
+        if args['add']:
+            command_deploy_add()
     elif args['login']:
         command_login()
     elif args['logout']:

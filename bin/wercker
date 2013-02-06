@@ -10,6 +10,7 @@ Usage:
     wercker deploy add
     wercker deploy <name>
     wercker app link
+    wercker app create
     wercker (-h | --help)
     wercker --version
 

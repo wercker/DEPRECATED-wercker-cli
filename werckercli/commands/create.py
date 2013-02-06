@@ -3,7 +3,7 @@ from clint.textui import puts, colored
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
 from werckercli.cli import pick_url, pick_project_name
-from werckercli.git import get_source_type, get_username
+from werckercli.git import get_preferred_source_type, get_username
 from werckercli import prompt
 from werckercli.client import Client
 
@@ -28,7 +28,7 @@ def create(path='.', valid_token=None):
 
     url = pick_url(options)
 
-    source = get_source_type(url)
+    source = get_preferred_source_type(url)
     puts("\n%s repository detected..." % source)
     puts("Selected repository url is %s\n" % url)
 

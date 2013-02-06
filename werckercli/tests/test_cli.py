@@ -40,7 +40,8 @@ class HanldeCommandsTests(TestCase):
             {
                 'create': True,
                 'logout': False,
-                'login': False
+                'login': False,
+                'deploy': False,
             }
         )
 
@@ -48,7 +49,8 @@ class HanldeCommandsTests(TestCase):
             {
                 'create': False,
                 'logout': True,
-                'login': False
+                'login': False,
+                'deploy': False,
             }
         )
 
