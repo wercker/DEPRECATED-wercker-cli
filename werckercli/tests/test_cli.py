@@ -3,19 +3,10 @@ import mock
 
 from werckercli.tests import (
     TestCase,
-    # DataSetTestCase,
-    # VALID_TOKEN
 )
 
 from werckercli import cli
 from werckercli.git import RemoteOption
-
-
-# def test_decorator(f):
-#     def new_f(*args, **kwargs):
-#         return f(valid_token=VALID_TOKEN, *args, **kwargs)
-
-#     return new_f
 
 
 class PrintIntroTtests(TestCase):
@@ -31,41 +22,75 @@ class HanldeCommandsTests(TestCase):
 
     @mock.patch('werckercli.authentication.get_access_token', mock.Mock())
     @mock.patch('werckercli.commands.create.create', mock.Mock())
+    @mock.patch('werckercli.commands.login.login', mock.Mock())
+    @mock.patch('werckercli.authentication.get_access_token', mock.Mock())
     @mock.patch(
         'werckercli.commands.clearsettings.clear_settings',
         mock.Mock()
     )
     def test_implemented_base_commands(self):
         my_cli = cli
-        my_cli.handle_commands(
-            {
-                'app': False,
-                'create': True,
-                'logout': False,
-                'login': False,
-                'deploy': False,
-            }
-        )
-        my_cli = cli
-        my_cli.handle_commands(
-            {
-                'app': True,
-                'create': True,
-                'logout': False,
-                'login': False,
-                'deploy': False,
-            }
-        )
+        with mock.patch('werckercli.commands.deploy.add', mock.Mock()):
+            with mock.patch(
+                'werckercli.authentication.get_access_token',
+                mock.Mock()
+            ):
 
-        my_cli.handle_commands(
-            {
-                'app': False,
-                'create': False,
-                'logout': True,
-                'login': False,
-                'deploy': False,
-            }
-        )
+                # create
+                my_cli.handle_commands(
+                    {
+                        'app': False,
+                        'create': True,
+                        'logout': False,
+                        'login': False,
+                        'deploy': False,
+                    }
+                )
+
+                #app create
+                my_cli.handle_commands(
+                    {
+                        'app': True,
+                        'create': True,
+                        'logout': False,
+                        'login': False,
+                        'deploy': False,
+                    }
+                )
+
+                # logout
+                my_cli.handle_commands(
+                    {
+                        'app': False,
+                        'create': False,
+                        'logout': True,
+                        'login': False,
+                        'deploy': False,
+                    }
+                )
+
+                my_cli.handle_commands(
+                    {
+                        'add': False,
+                        'app': False,
+                        'create': False,
+                        'logout': False,
+                        'login': True,
+                        'deploy': False,
+                    }
+                )
+
+                # deploy add
+                my_cli.handle_commands(
+                    {
+                        'add': True,
+                        'app': False,
+                        'create': False,
+                        'logout': False,
+                        'login': False,
+                        'deploy': True,
+                    }
+                )
 
 
 VALID_GIT_SSH_KEY = "git@github.com:wercker/wercker-bruticus.git"

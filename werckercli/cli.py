@@ -4,12 +4,6 @@ from clint.textui import colored, puts, indent
 
 from werckercli.git import get_priority
 from werckercli import prompt
-from werckercli.commands.clearsettings import clear_settings\
-    as command_clear_settings
-from werckercli.commands.login import login\
-    as command_login
-
-from werckercli.commands.deploy import add as command_deploy_add
 
 
 def get_intro():
@@ -25,15 +19,23 @@ def get_intro():
 
 def handle_commands(args):
     """ Core handler for redirecting to the proper commands."""
-    if args['create']:
-        from werckercli.commands.create import create as command_create
+
+    from werckercli.commands.create import create\
+        as command_create
+    from werckercli.commands.deploy import add\
+        as command_add
+    from werckercli.commands.clearsettings import clear_settings\
+        as command_clear_settings
+    from werckercli.commands.login import login\
+        as command_login
+
+    if args['app'] and args['create']:
         command_create()
-    elif args['app'] and args['create']:
-        from werckercli.commands.create import create as command_create
+    elif args['create']:
         command_create()
     elif args['deploy']:
         if args['add']:
-            command_deploy_add()
+            command_add()
     elif args['login']:
         command_login()
     elif args['logout']:
