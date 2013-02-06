@@ -2,8 +2,8 @@ from getpass import getpass
 
 from clint.textui import puts, colored
 
-from .client import Client
-from .config import get_value, set_value, VALUE_USER_TOKEN
+from werckercli.client import Client
+from werckercli.config import get_value, set_value, VALUE_USER_TOKEN
 
 
 def do_login(retry_count=2):

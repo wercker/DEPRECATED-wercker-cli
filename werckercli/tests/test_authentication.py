@@ -170,3 +170,13 @@ class GetAccessTokenTests(BasicClientCase):
 
         # login again
         self.test_new_login()
+
+    @mock.patch('clint.textui.puts', mock.Mock(return_value=None))
+    @mock.patch('werckercli.config.get_value', mock.Mock(return_value=None))
+    @mock.patch('werckercli.authentication.do_login', mock.Mock(return_value=None))
+    def test_login_failed(self):
+
+        my_authentication = reload(authentication)
+        with mock.patch("werckercli.authentication.do_login", mock.Mock(return_value=None)):
+            result = my_authentication.get_access_token()
+            self.assertEqual(result, None)

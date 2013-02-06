@@ -23,5 +23,4 @@ def is_toolbelt_installed(
 
 
 def get_token():
-
     return get_value(VALUE_HEROKU_TOKEN)
