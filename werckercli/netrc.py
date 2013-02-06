@@ -3,8 +3,10 @@
 # Module and documentation by Eric S. Raymond, 21 Dec 1998
 # netrc.py copied from python 2.7.3 source code, modified to call
 # str instead of repr for serializing the netrc file
+# and pep8 modification
 
-import os, shlex
+import os
+import shlex
 
 __all__ = ["netrc", "NetrcParseError"]
 
@@ -58,16 +60,26 @@ class netrc:
                 continue
             else:
                 raise NetrcParseError(
-                    "bad toplevel token %r" % tt, file, lexer.lineno)
+                    "bad toplevel token %r" % (
+                        tt,
+                        file,
+                        lexer.lineno
+                    )
+                )
 
-            # We're looking at start of an entry for a named machine or default.
+            # We're looking at start of an entry for a named machine or
+            # default.
             login = ''
             account = password = None
             self.hosts[entryname] = {}
             while 1:
                 tt = lexer.get_token()
-                if (tt=='' or tt == 'machine' or
-                    tt == 'default' or tt =='macdef'):
+                if (
+                    tt == '' or
+                    tt == 'machine' or
+                    tt == 'default' or
+                    tt == 'macdef'
+                ):
                     if password:
                         self.hosts[entryname] = (login, account, password)
                         lexer.push_token(tt)
@@ -101,7 +113,8 @@ class netrc:
         rep = ""
         for host in self.hosts.keys():
             attrs = self.hosts[host]
-            rep = rep + "machine "+ host + "\n\tlogin " + repr(attrs[0]) + "\n"
+            rep = rep + "machine " + host
+            rep += "\n\tlogin " + repr(attrs[0]) + "\n"
             if attrs[1]:
                 rep = rep + "account " + str(attrs[1])
             rep = rep + "\tpassword " + str(attrs[2]) + "\n"
