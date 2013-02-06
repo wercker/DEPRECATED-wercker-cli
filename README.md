@@ -15,4 +15,4 @@ wercker-cli for easy commandline access to wercker.
 
 <!-- ## TODO ## -->
 
-[![Wercker status](https://app.wercker.com/status/288ecdaa2a4eac34f8d20fac66ce4492/m)](https://app.wercker.com/project/bykey/288ecdaa2a4eac34f8d20fac66ce4492)
+[![Wercker status](https://app.wercker.com/status/841531b16e709d25f4ae566af33193cf/m)](https://app.wercker.com/project/bykey/841531b16e709d25f4ae566af33193cf)
