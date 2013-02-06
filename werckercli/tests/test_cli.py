@@ -29,6 +29,7 @@ class PrintIntroTtests(TestCase):
 
 class HanldeCommandsTests(TestCase):
 
+    @mock.patch('werckercli.authentication.get_access_token', mock.Mock())
     @mock.patch('werckercli.commands.create.create', mock.Mock())
     @mock.patch(
         'werckercli.commands.clearsettings.clear_settings',
@@ -38,6 +39,17 @@ class HanldeCommandsTests(TestCase):
         my_cli = cli
         my_cli.handle_commands(
             {
+                'app': False,
+                'create': True,
+                'logout': False,
+                'login': False,
+                'deploy': False,
+            }
+        )
+        my_cli = cli
+        my_cli.handle_commands(
+            {
+                'app': True,
                 'create': True,
                 'logout': False,
                 'login': False,
@@ -47,6 +59,7 @@ class HanldeCommandsTests(TestCase):
 
         my_cli.handle_commands(
             {
+                'app': False,
                 'create': False,
                 'logout': True,
                 'login': False,

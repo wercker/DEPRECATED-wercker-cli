@@ -28,6 +28,9 @@ def handle_commands(args):
     if args['create']:
         from werckercli.commands.create import create as command_create
         command_create()
+    elif args['app'] and args['create']:
+        from werckercli.commands.create import create as command_create
+        command_create()
     elif args['deploy']:
         if args['add']:
             command_deploy_add()

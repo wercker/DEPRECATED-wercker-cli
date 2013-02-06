@@ -1,8 +1,6 @@
-from werckercli.decorators import login_required
+# from werckercli.decorators import login_required
+from werckercli.authentication import get_access_token
 
 
-@login_required
-def login(valid_token=None):
-
-    if not valid_token:
-        raise ValueError("A valid token is required!")
+def login():
+    get_access_token()
