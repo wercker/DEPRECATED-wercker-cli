@@ -9,13 +9,16 @@ from werckercli.tests import BasicClientCase
 
 class GetValueTests(BasicClientCase):
     template_name = "home-with-netrc"
+    repo_name = "multiple-remotes"
 
-    wercker_url = "http://localhost:" + str(random.randint(1, 65536))
+    def setUp(self, *args, **kwargs):
+        self.wercker_url = "http://localhost:" + str(random.randint(1, 65536))
+        super(GetValueTests, self).setUp(*args, **kwargs)
 
+
+class GetValueUrlTests(GetValueTests):
     def test_get_value_wercker_url(self):
-
         result = config.get_value(config.VALUE_WERCKER_URL)
-
         self.assertEqual(result, self.wercker_url)
 
         os.environ.pop('wercker_url')
@@ -23,13 +26,6 @@ class GetValueTests(BasicClientCase):
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, config.DEFAULT_WERCKER_URL)
 
-    def test_get_value_user_token(self):
-        with mock.patch("clint.textui.puts", mock.Mock()):
-            reload(config)
-
-            result = config.get_value(config.VALUE_USER_TOKEN)
-
-        self.assertEqual(result, "'1234567890123456789912345678901234567890'")
 
     def test_get_value_heroku_token(self):
 
@@ -47,15 +43,32 @@ class GetValueTests(BasicClientCase):
         self.assertRaises(IOError, config.get_value, config.VALUE_HEROKU_TOKEN)
 
     def test_get_value_project_id(self):
-        self.assertRaises(
-            NotImplementedError,
-            config.get_value,
-            config.VALUE_PROJECT_ID
-        )
+
+        os.chdir(self.get_git_path())
+        result = config.get_value(config.VALUE_PROJECT_ID)
+        self.assertEqual(result, None)
+        # self.assertRaises(
+        #     NotImplementedError,
+        #     config.get_value,
+        #     config.VALUE_PROJECT_ID
+        # )
+
+
+class GetValueTokenTests(GetValueTests):
+    wercker_url = config.DEFAULT_WERCKER_URL
+
+    def test_get_value_user_token(self):
+        with mock.patch("clint.textui.puts", mock.Mock()):
+            reload(config)
+
+            result = config.get_value(config.VALUE_USER_TOKEN)
+
+        self.assertEqual(result, "'1234567890123456789912345678901234567890'")
 
 
 class SetValueTests(BasicClientCase):
     template_name = 'home-with-netrc'
+    repo_name = "multiple-remotes"
 
     def test_set_value_user_token(self):
         with mock.patch("clint.textui.puts", mock.Mock()):
@@ -67,7 +80,7 @@ class SetValueTests(BasicClientCase):
                 'test@password'
             )
 
-    def test_set_value_project_id(self):
+    def _test_set_value_project_id(self):
         self.assertRaises(
             NotImplementedError,
             config.set_value,

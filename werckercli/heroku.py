@@ -12,7 +12,11 @@ def is_toolbelt_installed(
 ):
 
     try:
-        p = subprocess.Popen(default_command, stdout=subprocess.PIPE)
+        p = subprocess.Popen(
+            default_command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
     except OSError:
         return False
 

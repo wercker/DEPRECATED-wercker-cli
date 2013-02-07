@@ -32,6 +32,7 @@ def create(path='.', valid_token=None):
     project = pick_project_name(url)
 
     default_user = get_username(url)
+
     user = prompt.get_value_with_default(
         "Please enter your %s username for access verification:" %
         source,
@@ -47,6 +48,8 @@ def create(path='.', valid_token=None):
         source,
         valid_token
     )
+
+    print response
 
     if response['success']:
         print "Project has been created"

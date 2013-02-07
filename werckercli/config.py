@@ -1,16 +1,12 @@
 import os
 import stat
 from urlparse import urlparse
-import netrc
+import ConfigParser
 
 from clint.textui import puts, colored
 
-# from .paths import (
-    # get_global_wercker_path,
-    # get_global_wercker_filename,
-    # check_or_create_path
-# )
-
+import netrc
+from werckercli.paths import find_git_root
 
 VALUE_USER_TOKEN = "user_token"
 VALUE_PROJECT_ID = "project_id"
@@ -18,6 +14,7 @@ VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
+DEFAULT_DOT_WERCKER_NAME = ".wercker"
 
 
 def _get_or_create_netrc_location():
@@ -47,7 +44,7 @@ def get_value(name, default_value=None):
     value = None
 
     if name == VALUE_WERCKER_URL:
-        if 'wercker_url' in os.environ:
+        if 'wercker_url' in os.environ.keys():
             value = os.environ.get("wercker_url")
         else:
             value = DEFAULT_WERCKER_URL
@@ -75,7 +72,35 @@ def get_value(name, default_value=None):
             value = result[2]
 
     elif name == VALUE_PROJECT_ID:
-        raise NotImplementedError("PROJECT_ID retreival not implemented yet")
+        # from paths import find_git_root
+
+        path = find_git_root(os.curdir)
+
+        if not path:
+            puts(
+                colored.red("Error:") +
+                " could not find the root repository."
+            )
+            return
+
+        file = os.path.join(
+            path,
+            DEFAULT_DOT_WERCKER_NAME
+        )
+
+        if not os.path.isfile(file):
+            puts(
+                colored.yellow("Warning:") +
+                " could not find a %s in the application root"
+            )
+
+            return
+
+        Config = ConfigParser.ConfigParser()
+
+        Config.read(file)
+
+        # raise NotImplementedError("PROJECT_ID retreival not implemented yet")
 
     return value
 
@@ -105,4 +130,32 @@ def set_value(name, value):
             fp.write(str(rc))
             fp.close()
     elif name == VALUE_PROJECT_ID:
-        raise NotImplementedError("PROJECT_ID storing not implemented yet")
+        path = find_git_root(os.curdir)
+
+        if not path:
+            puts(
+                colored.red("Error:") +
+                " could not find the root repository."
+            )
+            return
+
+        file = os.path.join(
+            path,
+            DEFAULT_DOT_WERCKER_NAME
+        )
+
+        Config = ConfigParser.ConfigParser()
+
+        if os.path.isfile(file):
+
+            Config.read(file)
+
+        if not 'project' in Config.sections():
+            Config.add_section('project')
+
+        fp = open(file, 'w')
+        Config.set('project', 'id', value)
+
+        Config.write(fp)
+
+        fp.close()

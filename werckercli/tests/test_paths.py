@@ -46,7 +46,9 @@ class GitFindRepoTests(DataSetTestCase):
         self.assertFalse(result is None)
 
     def test_find_git_root_from_curdir(self):
-        current_dir = os.getcwd()
+        # print os
+        # print os.getcwd()
+        # current_dir = os.getcwd()
 
         os.chdir(self.get_home_folder())
         os.mkdir('.git')
@@ -54,7 +56,7 @@ class GitFindRepoTests(DataSetTestCase):
 
         self.assertTrue(result)
 
-        os.chdir(current_dir)
+        # os.chdir(current_dir)
 
     def test_no_matching_parent(self):
         result = find_git_root(

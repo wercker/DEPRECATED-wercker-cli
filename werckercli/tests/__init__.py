@@ -62,6 +62,8 @@ class TempHomeSettingsCase(TestCase):
     def setUp(self):
         super(TempHomeSettingsCase, self).setUp()
 
+        self._initial_folder = os.getcwd()
+
         self.__home_folder = tempfile.mkdtemp()
         os.environ['HOME'] = self.__home_folder
 
@@ -72,6 +74,7 @@ class TempHomeSettingsCase(TestCase):
             )
 
     def tearDown(self):
+        os.chdir(self._initial_folder)
         super(TempHomeSettingsCase, self).tearDown()
         shutil.rmtree(self.__home_folder)
 
@@ -106,7 +109,7 @@ class DataSetTestCase(TempHomeSettingsCase):
         return folder + ".git"
 
 
-class BasicClientCase(TempHomeSettingsCase):
+class BasicClientCase(DataSetTestCase):
     wercker_url = "http://localhost:3000"
     valid_token = VALID_TOKEN
 
