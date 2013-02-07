@@ -188,3 +188,46 @@ class PickUrlOneOptionTests(TestCase):
             result,
             "VALID_URL"
         )
+
+class PickUrlThreeOptionTests(TestCase):
+
+    repo_name = "github-ssh"
+
+    options = [
+        RemoteOption(VALID_URL,  "origin", 2),
+        RemoteOption(VALID_URL+'2',  "secondary", 1),
+        RemoteOption('VALID_URL',  "other", 0)
+    ]
+
+    @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
+    @mock.patch("clint.textui.puts", mock.Mock())
+    def test_create_2(self):
+
+        my_cli = reload(cli)
+        result = my_cli.pick_url(self.options)
+        self.assertEqual(
+            result,
+            VALID_URL + '2'
+        )
+
+
+class PickUrlOneLowPrioOptionTests(TestCase):
+
+    repo_name = "github-ssh"
+
+    options = [
+        # RemoteOption(VALID_URL,  "origin", 2),
+        # RemoteOption(VALID_URL+'2',  "secondary", 1),
+        RemoteOption('VALID_URL',  "other", 0)
+    ]
+
+    @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))
+    @mock.patch("clint.textui.puts", mock.Mock())
+    def test_create_2(self):
+
+        my_cli = reload(cli)
+        result = my_cli.pick_url(self.options)
+        self.assertEqual(
+            result,
+            "VALID_URL"
+        )

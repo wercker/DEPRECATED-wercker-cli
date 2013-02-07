@@ -82,6 +82,7 @@ def pick_url(options):
 
     with indent(indent=1):
         for option in options:
+            print option.priority
             if(option.priority < 1):
                 puts('(%d) %s ' % (index, colored.red(option.url)))
                 if(default_choice == index):
