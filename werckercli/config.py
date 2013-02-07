@@ -47,10 +47,11 @@ def get_value(name, default_value=None):
     value = None
 
     if name == VALUE_WERCKER_URL:
-        value = os.environ.get("wercker_url")
-
-        if value == "":
+        if 'wercker_url' in os.environ:
+            value = os.environ.get("wercker_url")
+        else:
             value = DEFAULT_WERCKER_URL
+
         return value
 
     elif name == VALUE_USER_TOKEN:
@@ -103,10 +104,5 @@ def set_value(name, value):
         with open(file, 'w') as fp:
             fp.write(str(rc))
             fp.close()
-        # credentials = ""
-        # fh = open(credentials, 'w+')
-
-        # fh.write(value)
-        # fh.close()
     elif name == VALUE_PROJECT_ID:
         raise NotImplementedError("PROJECT_ID storing not implemented yet")
