@@ -132,8 +132,6 @@ def pick_url(options):
 
         elif choice == str(default_choice):
             selected = default_choice
-        elif choice == str(enter_custom_choice):
-            selected = enter_custom_choice
 
         if selected:
             if selected == enter_custom_choice:

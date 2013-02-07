@@ -93,7 +93,8 @@ class HanldeCommandsTests(TestCase):
                 )
 
 
-VALID_GIT_SSH_KEY = "git@github.com:wercker/wercker-bruticus.git"
+VALID_GITHUB_SSH_URL = "git@github.com:wercker/wercker-bruticus.git"
+VALID_BITBUCKET_SSH_URL = "git@bitbucket.org:postmodern/ronin.git"
 
 
 class EnterUrlTests(TestCase):
@@ -102,33 +103,33 @@ class EnterUrlTests(TestCase):
     @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=1))
     @mock.patch(
         '__builtin__.raw_input',
-        mock.Mock(return_value=VALID_GIT_SSH_KEY)
+        mock.Mock(return_value=VALID_GITHUB_SSH_URL)
     )
     def test_valid_ssh(self):
         my_cli = reload(cli)
         result = my_cli.enter_url()
 
-        self.assertEqual(result, VALID_GIT_SSH_KEY)
+        self.assertEqual(result, VALID_GITHUB_SSH_URL)
 
     @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
     @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=True))
     @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0))
     @mock.patch(
         '__builtin__.raw_input',
-        mock.Mock(return_value="INVALID_GIT_SSH_KEY")
+        mock.Mock(return_value="INVALID_GITHUB_SSH_URL")
     )
     def test_force_unknown_location(self):
         my_cli = reload(cli)
         result = my_cli.enter_url(loop=False)
 
-        self.assertEqual(result, "INVALID_GIT_SSH_KEY")
+        self.assertEqual(result, "INVALID_GITHUB_SSH_URL")
 
     @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
     @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=False))
     @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0))
     @mock.patch(
         '__builtin__.raw_input',
-        mock.Mock(return_value="INVALID_GIT_SSH_KEY")
+        mock.Mock(return_value="INVALID_GITHUB_SSH_URL")
     )
     def test_invalid_location_no_loop(self):
         my_cli = cli
@@ -251,3 +252,19 @@ class PickUrlOneLowPrioOptionTests(TestCase):
             result,
             "VALID_URL"
         )
+
+
+class PickProjectName(TestCase):
+
+    @mock.patch(
+        "werckercli.prompt.get_value_with_default",
+        mock.Mock(return_value=VALID_GITHUB_SSH_URL)
+    )
+    @mock.patch(
+        "clint.textui.puts",
+        mock.Mock(return_value=VALID_GITHUB_SSH_URL)
+    )
+    def test_get_bitbucket_name(self):
+        reload(cli)
+        name = cli.pick_project_name(VALID_GITHUB_SSH_URL)
+        self.assertEqual(name, VALID_GITHUB_SSH_URL)
