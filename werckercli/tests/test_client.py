@@ -14,6 +14,7 @@ from werckercli.client import (
     PATH_CREATE_PROJECT
 )
 
+
 def fake_do_post(*args, **kargs):
     pass
     # print args, kargs
