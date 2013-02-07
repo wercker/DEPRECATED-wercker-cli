@@ -189,6 +189,7 @@ class PickUrlOneOptionTests(TestCase):
             "VALID_URL"
         )
 
+
 class PickUrlThreeOptionTests(TestCase):
 
     repo_name = "github-ssh"
