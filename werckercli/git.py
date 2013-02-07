@@ -5,7 +5,7 @@ from dulwich.repo import Repo
 
 GITHUB_PATTERN = '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)'
 BITBUCKET_PATTERN = '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)'
-HEROKU_PATTERN = '(git@heroku.com:(?P<name>.*)'
+HEROKU_PATTERN = '(git@heroku.com):(?P<name>.*)'
 
 PREFERRED_PATTERNS = [
     GITHUB_PATTERN,
