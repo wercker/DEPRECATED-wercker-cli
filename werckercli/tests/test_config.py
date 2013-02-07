@@ -26,7 +26,6 @@ class GetValueUrlTests(GetValueTests):
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, config.DEFAULT_WERCKER_URL)
 
-
     def test_get_value_heroku_token(self):
 
         with mock.patch("clint.textui.puts", mock.Mock()) as puts:
