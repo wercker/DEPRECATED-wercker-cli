@@ -1,4 +1,3 @@
-import mock
 
 from werckercli.tests import (
     TestCase,

@@ -12,7 +12,6 @@ def is_toolbelt_installed(
     try:
         p = subprocess.Popen(default_command, stdout=subprocess.PIPE)
     except OSError:
-        print "oserror"
         return False
 
     version_info = p.stdout.readlines()
