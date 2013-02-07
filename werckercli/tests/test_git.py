@@ -13,6 +13,8 @@ from werckercli.git import (
     get_remote_options,
     get_source_type,
     get_username,
+    find_heroku_sources,
+
     GITHUB_PATTERN,
     BITBUCKET_PATTERN,
     HEROKU_PATTERN,
@@ -63,7 +65,7 @@ class GetPriorityTests(TestCase):
 class GetRemoteOptionsTests(DataSetTestCase):
     repo_name = "multiple-remotes"
 
-    def test_get_remotes(self):
+    def test_get_all_three_remotes(self):
 
         folder = os.path.join(
             self.folder,
@@ -72,7 +74,7 @@ class GetRemoteOptionsTests(DataSetTestCase):
         )
         options = get_remote_options(folder)
 
-        self.assertEqual(len(options), 2)
+        self.assertEqual(len(options), 3)
 
 
 class GetSourceTypeTests(TestCase):
@@ -142,12 +144,18 @@ class GetUserNAmeTests(TestCase):
     def test_bitbucket(self):
         result = get_username(VALID_BITBUCKET_SSH_URL)
         self.assertEqual(result, "postmodern")
-# def get_username(url):
-#     source = get_preferred_source_type(url)
 
-#     if source == SOURCE_GITHUB:
-#         match = re.match(GITHUB_PATTERN, url)
-#         return match.groupdict()['name']
-#     else:
-#         match = re.match(BITBUCKET_PATTERN, url)
-#         return match.groupdict()['name']
+
+class FindHerokuSources(DataSetTestCase):
+    repo_name = "multiple-remotes"
+
+    def test_no_heroku_options(self):
+
+        folder = os.path.join(
+            self.folder,
+            self.repo_name,
+            self.get_git_folder()
+        )
+
+        result = find_heroku_sources(folder)
+        self.assertEqual(len(result), 1)

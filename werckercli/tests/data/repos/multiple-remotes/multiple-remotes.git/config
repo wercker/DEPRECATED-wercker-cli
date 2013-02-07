@@ -9,3 +9,6 @@
 [remote "secondary"]
 	url = git@bitbucket.org:postmodern/ronin.git
 	fetch = +refs/heads/master:refs/remotes/secondary/master
+[remote "heroku"]
+    url = git@heroku.com:clitest.git
+    fetch = +refs/heads/*:refs/remotes/heroku/*
