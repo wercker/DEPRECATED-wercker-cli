@@ -189,6 +189,25 @@ class PickUrlOneOptionTests(TestCase):
             "VALID_URL"
         )
 
+    @mock.patch(
+        "__builtin__.raw_input",
+        mock.Mock(side_effect=["1=default", "2"])
+    )
+    @mock.patch("clint.textui.puts", mock.Mock())
+    def test_faulty_input(self):
+
+        my_cli = reload(cli)
+        with mock.patch(
+            "werckercli.cli.enter_url",
+            mock.Mock(return_value="VALID_URL")
+        ):
+
+            result = my_cli.pick_url(self.options)
+        self.assertEqual(
+            result,
+            "VALID_URL"
+        )
+
 
 class PickUrlThreeOptionTests(TestCase):
 

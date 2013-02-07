@@ -49,7 +49,6 @@ def enter_url(loop=True):
         url = raw_input("Enter a repository url:")
 
         if url != "":
-            print get_priority, get_priority()
             if get_priority(url, "custom") == 0:
                 puts(
                     colored.yellow("Warning:") +
@@ -82,7 +81,6 @@ def pick_url(options):
 
     with indent(indent=1):
         for option in options:
-            print option.priority
             if(option.priority < 1):
                 puts('(%d) %s ' % (index, colored.red(option.url)))
                 if(default_choice == index):
