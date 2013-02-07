@@ -13,7 +13,7 @@ def add(valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    options = git.get_heroku_source(os.curdir)
+    options = git.find_heroku_sources(os.curdir)
 
     if len(options) == 0:
         puts(colored.red("Error: ") + "No heroku remotes found")
@@ -22,6 +22,9 @@ def add(valid_token=None):
 
 
 def _add_heroku_by_git(git_url):
+    puts("Heroku remote %s selected." % git_url)
+
+    puts("Looking for Heroku API key...")
     token = heroku.get_token()
 
     if not token:
@@ -29,3 +32,12 @@ def _add_heroku_by_git(git_url):
         with indent(2):
             puts("Please make sure the heroku-toolbelt is installed")
             puts("and you are loged in.")
+        return
+
+    puts("API key found...")
+    puts("Retreiving applications from Heroku...")
+    apps = heroku.get_apps()
+
+    for app in apps:
+        if app['git_url'] == git_url:
+            print app['name']

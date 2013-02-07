@@ -1,6 +1,8 @@
 import subprocess
+import json
 
-# from requests import request
+import requests
+
 from config import get_value, VALUE_HEROKU_TOKEN
 
 
@@ -26,4 +28,18 @@ def is_toolbelt_installed(
 def get_token():
     return get_value(VALUE_HEROKU_TOKEN)
 
-# def get_apps():
+
+def get_apps():
+
+    result = requests.get(
+        'https://api.heroku.com/apps',
+        headers={'Accept': 'application/json'}
+    )
+
+    if result.status_code != 200:
+        raise IOError(
+            "No Status OK returned by heroku (got status=%d) " %
+            result.status_code
+        )
+
+    return json.loads(result.text)
