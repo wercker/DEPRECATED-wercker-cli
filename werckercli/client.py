@@ -41,14 +41,14 @@ class Client():
                 'oauthscope': scope
             })
 
-    def get_templates(self, project, platform, token):
-        return self.do_post(
-            PATH_GET_TEMPLATES,
-            {
-                'projectName': project,
-                'platform': platform,
-                'token': token
-            })
+    # def get_templates(self, project, platform, token):
+    #     return self.do_post(
+    #         PATH_GET_TEMPLATES,
+    #         {
+    #             'projectName': project,
+    #             'platform': platform,
+    #             'token': token
+    #         })
 
     def create_project(self, git_url, user, project, source_control, token):
         return self.do_post(

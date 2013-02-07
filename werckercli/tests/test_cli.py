@@ -3,6 +3,8 @@ import mock
 
 from werckercli.tests import (
     TestCase,
+    VALID_GITHUB_SSH_URL,
+    # VALID_BITBUCKET_SSH_URL,
 )
 
 from werckercli import cli
@@ -93,10 +95,6 @@ class HanldeCommandsTests(TestCase):
                 )
 
 
-VALID_GITHUB_SSH_URL = "git@github.com:wercker/wercker-bruticus.git"
-VALID_BITBUCKET_SSH_URL = "git@bitbucket.org:postmodern/ronin.git"
-
-
 class EnterUrlTests(TestCase):
 
     @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=True))
@@ -137,15 +135,13 @@ class EnterUrlTests(TestCase):
 
         self.assertEqual(result, None)
 
-VALID_URL = "git@github.com:wercker/wercker-bruticus.git"
-
 
 class PickUrlOneOptionTests(TestCase):
 
     repo_name = "github-ssh"
 
     options = [
-        RemoteOption(VALID_URL,  "origin", 2),
+        RemoteOption(VALID_GITHUB_SSH_URL,  "origin", 2),
         # RemoteOption(VALID_URL+'2',  "secondary", 1),
         # RemoteOption('VALID_URL',  "other", 0)
     ]
@@ -171,7 +167,7 @@ class PickUrlOneOptionTests(TestCase):
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
-            VALID_URL
+            VALID_GITHUB_SSH_URL
         )
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
@@ -215,8 +211,8 @@ class PickUrlThreeOptionTests(TestCase):
     repo_name = "github-ssh"
 
     options = [
-        RemoteOption(VALID_URL,  "origin", 2),
-        RemoteOption(VALID_URL+'2',  "secondary", 1),
+        RemoteOption(VALID_GITHUB_SSH_URL,  "origin", 2),
+        RemoteOption(VALID_GITHUB_SSH_URL+'2',  "secondary", 1),
         RemoteOption('VALID_URL',  "other", 0)
     ]
 
@@ -228,7 +224,7 @@ class PickUrlThreeOptionTests(TestCase):
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
-            VALID_URL + '2'
+            VALID_GITHUB_SSH_URL + '2'
         )
 
 
