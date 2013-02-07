@@ -2,7 +2,7 @@ import mock
 
 from werckercli.tests import (
     TestCase,
-    # DataSetTestCase,
+    TempHomeSettingsCase,
     # VALID_TOKEN
 )
 
@@ -24,7 +24,7 @@ class PopenMock:
         self.stdout = StdOutMock()
 
 
-class IsToolbeltInstalled(TestCase):
+class IsToolbeltInstalledTests(TestCase):
 
     def test_is_command_available(self):
         result = heroku.is_toolbelt_installed(
@@ -36,7 +36,7 @@ class IsToolbeltInstalled(TestCase):
 
     def test_is_not_right_command(self):
         result = heroku.is_toolbelt_installed(
-            default_command=['ls', '-la'],
+            default_command=['cat', '/dev/null'],
             default_test_string='fail'
         )
         self.assertFalse(result)
@@ -47,3 +47,20 @@ class IsToolbeltInstalled(TestCase):
             default_test_string='fail'
         )
         self.assertFalse(result)
+
+
+class GetTokenNoTests(TempHomeSettingsCase):
+
+    def test_no_token(self):
+        result = heroku.get_token()
+
+        self.assertEqual(result, None)
+
+
+class GetTokenYesTests(TempHomeSettingsCase):
+    template_name = "home-with-netrc"
+
+    def test_token_available(self):
+        result = heroku.get_token()
+
+        self.assertEqual(result, "1234567890123456789912345678901234567890")

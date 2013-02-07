@@ -1,5 +1,6 @@
 import subprocess
-# import netrc
+
+# from requests import request
 from config import get_value, VALUE_HEROKU_TOKEN
 
 
@@ -11,6 +12,7 @@ def is_toolbelt_installed(
     try:
         p = subprocess.Popen(default_command, stdout=subprocess.PIPE)
     except OSError:
+        print "oserror"
         return False
 
     version_info = p.stdout.readlines()
@@ -24,3 +26,5 @@ def is_toolbelt_installed(
 
 def get_token():
     return get_value(VALUE_HEROKU_TOKEN)
+
+# def get_apps():
