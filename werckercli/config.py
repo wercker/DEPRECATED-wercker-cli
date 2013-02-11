@@ -100,7 +100,13 @@ def get_value(name, default_value=None):
 
         Config.read(file)
 
-        # raise NotImplementedError("PROJECT_ID retreival not implemented yet")
+        try:
+            value = Config.get('project', 'id')
+        except (
+            ConfigParser.NoOptionError,
+            ConfigParser.NoSectionError
+        ):
+            value = None
 
     return value
 
@@ -120,11 +126,14 @@ def set_value(name, value):
         else:
             current_settings = (None, None, None)
 
-        rc.hosts[url.hostname] = (
-            current_settings[0],
-            current_settings[1],
-            value
-        )
+        if value is not None:
+            rc.hosts[url.hostname] = (
+                current_settings[0],
+                current_settings[1],
+                value
+            )
+        else:
+            rc.hosts.pop(url.hostname)
 
         with open(file, 'w') as fp:
             fp.write(str(rc))

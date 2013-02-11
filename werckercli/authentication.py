@@ -39,6 +39,9 @@ def get_access_token():
         if not token:
             return
 
+
+        print token
+
         set_value(VALUE_USER_TOKEN, token)
         puts("Token saved. \n")
 

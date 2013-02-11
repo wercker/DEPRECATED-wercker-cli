@@ -6,6 +6,7 @@ from werckercli.config import get_value, VALUE_WERCKER_URL
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
+PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -22,6 +23,7 @@ class Client():
         url = self.wercker_url + '/api/' + self.api_version + '/' + path
 
         data_string = json.dumps(data)
+        print data, url, data_string
 
         result = requests.post(
             url,
@@ -58,6 +60,17 @@ class Client():
                 'userName': user,
                 'projectName': project,
                 'sourceControl': source_control,
-                'token': token
+                'token': token,
             })
     # def list_projects(self, token):
+
+    def create_deploy_target(self, token, project, deploy_name, heroku_token):
+        return self.do_post(
+            PATH_CREATE_DEPLOYTARGET,
+            {
+                'token': token,
+                'projectId': project,
+                'appName': deploy_name,
+                'apiKey': heroku_token,
+            }
+        )

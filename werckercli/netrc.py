@@ -114,7 +114,7 @@ class netrc:
         for host in self.hosts.keys():
             attrs = self.hosts[host]
             rep = rep + "machine " + host
-            rep += "\n\tlogin " + repr(attrs[0]) + "\n"
+            rep += "\n\tlogin " + str(attrs[0]) + "\n"
             if attrs[1]:
                 rep = rep + "account " + str(attrs[1])
             rep = rep + "\tpassword " + str(attrs[2]) + "\n"
