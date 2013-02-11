@@ -49,7 +49,10 @@ def _add_heroku_by_git(token, project_id, git_url):
     # fp.close()
 
     # import mock
-    # with mock.patch('werckercli.heroku.get_apps', mock.Mock(return_value=apps)):
+    # with mock.patch(
+    #     'werckercli.heroku.get_apps',
+    #     mock.Mock(return_value=apps)
+    # ):
     apps = heroku.get_apps()
 
     preferred_app = None
