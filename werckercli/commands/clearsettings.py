@@ -19,6 +19,7 @@ def clear_settings():
 for the current user on this machine"""
         )
         sure = prompt.yn("Are you sure you want to do this?", default="n")
+        print sure
         if sure:
             # shutil.rmtree(get_global_wercker_path())
             config.set_value(config.VALUE_USER_TOKEN, None)

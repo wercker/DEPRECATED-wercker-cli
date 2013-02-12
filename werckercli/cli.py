@@ -24,6 +24,8 @@ def handle_commands(args):
         as command_create
     from werckercli.commands.deploy import add\
         as command_add
+    from werckercli.commands.deploy import list_by_project\
+        as command_list_by_project
     from werckercli.commands.clearsettings import clear_settings\
         as command_clear_settings
     from werckercli.commands.login import login\
@@ -36,6 +38,8 @@ def handle_commands(args):
     elif args['deploy']:
         if args['add']:
             command_add()
+        elif args['list']:
+            command_list_by_project()
     elif args['login']:
         command_login()
     elif args['logout']:
@@ -150,3 +154,5 @@ def pick_project_name(url):
     puts("Detecting project name...")
 
     return prompt.get_value_with_default("Enter project name: ", project)
+
+

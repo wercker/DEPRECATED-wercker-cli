@@ -59,7 +59,7 @@ apps for current heroku user"
         )
     c = Client()
 
-    result = c.create_deploy_target(
+    code, result = c.create_deploy_target(
         token,
         project_id,
         preferred_app['name'],
@@ -73,3 +73,24 @@ successfully added to the wercker applicaiton" % preferred_app['app'])
 
     elif result['errorMessage']:
         puts(colored.red("Error: ") + result['errorMessage'])
+
+
+@login_required
+def list_by_project(valid_token=None):
+
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    project_id = get_value(VALUE_PROJECT_ID)
+
+    if not project_id:
+        raise ValueError("No project id found")
+
+    c = Client()
+
+    code, result = c.get_deploy_targets_by_project(
+        valid_token,
+        project_id
+    )
+
+    print result

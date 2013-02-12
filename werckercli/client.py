@@ -7,6 +7,7 @@ PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
+PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -52,7 +53,6 @@ class Client():
                 'sourceControl': source_control,
                 'token': token,
             })
-    # def list_projects(self, token):
 
     def create_deploy_target(self, token, project, deploy_name, heroku_token):
         return self.do_post(
@@ -62,5 +62,14 @@ class Client():
                 'projectId': project,
                 'appName': deploy_name,
                 'apiKey': heroku_token,
+            }
+        )
+
+    def get_deploy_targets_by_project(self, token, project):
+        return self.do_post(
+            PATH_DEPLOY_TARGETS_BY_PROJECT,
+            {
+                'token': token,
+                'projectId': project
             }
         )

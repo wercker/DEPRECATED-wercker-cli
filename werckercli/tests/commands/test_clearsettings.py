@@ -2,67 +2,48 @@ import mock
 
 from werckercli.commands import clearsettings
 
-from werckercli.tests import TestCase
+from werckercli.tests import TempHomeSettingsCase
 
 
-class ClearSettingsTests(TestCase):
+class ClearClearSettingsTests(TempHomeSettingsCase):
 
+    template_name = "home-with-netrc"
+
+    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.config.get_value",
+                mock.Mock(return_value="data"))
+    @mock.patch("clint.textui.puts",
+                mock.Mock())
+    @mock.patch("werckercli.prompt.yn",
+                mock.Mock(return_value=True))
     def test_clear(self):
-        # print dir(arg)
-
-        home_path = "/werckercli/does_not_exist"
-
+        my_clearsettings = reload(clearsettings)
         with mock.patch(
-            "os.path.isdir",
-            mock.Mock(return_value=True)
-        ):
-            with mock.patch(
-                "werckercli.paths.get_global_wercker_path",
-                mock.Mock(return_value=home_path)
-            ):
-                with mock.patch(
-                    "shutil.rmtree",
-                    mock.Mock()
-                ) as rmtree:
-                    with mock.patch(
-                        "clint.textui.puts",
-                        mock.Mock()
-                    ):
-                        with mock.patch(
-                            "werckercli.prompt.yn",
-                            mock.Mock(return_value=True)
-                        ):
-                            my_clearsettings = reload(clearsettings)
+            "werckercli.config.set_value",
+            mock.Mock()
+        ) as set_value:
+            from werckercli.config import VALUE_USER_TOKEN
 
-                            my_clearsettings.clear_settings()
-                            rmtree.assert_called_once_with(home_path)
+            my_clearsettings.clear_settings()
+            set_value.assert_called_once_with(VALUE_USER_TOKEN, None)
 
+
+class NoClearClearSettingsTests(TempHomeSettingsCase):
+    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.config.get_value",
+                mock.Mock(return_value="data"))
+    @mock.patch("clint.textui.puts",
+                mock.Mock())
+    @mock.patch("werckercli.prompt.yn",
+                mock.Mock(return_value=False))
     def test_NO_clear(self):
-        # print dir(arg)
-
-        home_path = "/werckercli/does_not_exist"
-
         with mock.patch(
-            "os.path.isdir",
-            mock.Mock(return_value=True)
-        ):
-            with mock.patch(
-                "werckercli.paths.get_global_wercker_path",
-                mock.Mock(return_value=home_path)
-            ):
-                with mock.patch(
-                    "shutil.rmtree",
-                    mock.Mock()
-                ) as rmtree:
-                    with mock.patch(
-                        "clint.textui.puts",
-                        mock.Mock()
-                    ):
-                        with mock.patch(
-                            "werckercli.prompt.yn",
-                            mock.Mock(return_value=False)
-                        ):
-                            my_clearsettings = reload(clearsettings)
+            "werckercli.config.set_value",
+            mock.Mock()
+        ) as set_value:
 
-                            my_clearsettings.clear_settings()
-                            self.assertEqual(0, rmtree.call_count)
+            # my_clearsettings = reload(clearsettings)
+            my_clearsettings = clearsettings
+
+            my_clearsettings.clear_settings()
+            self.assertEqual(0, set_value.call_count)
