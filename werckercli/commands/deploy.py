@@ -90,7 +90,7 @@ def store_highest_length(list_lengths, row, props=None):
             try:
                 value = row[props[i]]
             except KeyError:
-                value = str(None)
+                value = '-'
         else:
             value = str(row[i])
 
@@ -117,7 +117,7 @@ def print_line(list_lengths, row, props=None):
             try:
                 value = row[props[i]]
             except KeyError:
-                value = None
+                value = '-'
             value = str(value)
         else:
             value = str(row[i])
