@@ -43,16 +43,6 @@ def _add_heroku_by_git(token, project_id, git_url):
     puts("API key found...")
     puts("Retreiving applications from Heroku...")
 
-    # fp = open('werckercli/tests/data/apps.response.json')
-    # import json
-    # apps = json.load(fp)
-    # fp.close()
-
-    # import mock
-    # with mock.patch(
-    #     'werckercli.heroku.get_apps',
-    #     mock.Mock(return_value=apps)
-    # ):
     apps = heroku.get_apps()
 
     preferred_app = None
@@ -75,4 +65,11 @@ apps for current heroku user"
         preferred_app['name'],
         heroku_token
     )
+
     print result
+    if result and result['status']:
+        puts("Heroku deploy target %s \
+successfully added to the wercker applicaiton" % preferred_app['app'])
+
+    elif result['errorMessage']:
+        puts(colored.red("Error: ") + result['errorMessage'])

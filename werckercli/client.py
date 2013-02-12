@@ -23,7 +23,6 @@ class Client():
         url = self.wercker_url + '/api/' + self.api_version + '/' + path
 
         data_string = json.dumps(data)
-        print data, url, data_string
 
         result = requests.post(
             url,
@@ -42,15 +41,6 @@ class Client():
                 'password': password,
                 'oauthscope': scope
             })
-
-    # def get_templates(self, project, platform, token):
-    #     return self.do_post(
-    #         PATH_GET_TEMPLATES,
-    #         {
-    #             'projectName': project,
-    #             'platform': platform,
-    #             'token': token
-    #         })
 
     def create_project(self, git_url, user, project, source_control, token):
         return self.do_post(
