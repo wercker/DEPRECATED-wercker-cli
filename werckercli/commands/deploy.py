@@ -66,13 +66,72 @@ apps for current heroku user"
         heroku_token
     )
 
-    print result
+    # print result
     if result and result['status']:
         puts("Heroku deploy target %s \
 successfully added to the wercker applicaiton" % preferred_app['app'])
 
     elif result['errorMessage']:
         puts(colored.red("Error: ") + result['errorMessage'])
+
+
+def store_highest_length(list_lengths, row, props=None):
+
+    if props:
+        values_list = props
+    else:
+        values_list = row
+
+    # print row, props
+
+    for i in range(len(values_list)):
+
+        if props:
+            try:
+                value = row[props[i]]
+            except KeyError:
+                value = str(None)
+        else:
+            value = str(row[i])
+
+        length = len(value)
+
+        if length > list_lengths[i]:
+            list_lengths[i] = length
+
+
+def print_line(list_lengths, row, props=None):
+
+    line = "| "
+
+    if props:
+        values_list = props
+    else:
+        values_list = row
+
+    for i in range(len(values_list)):
+        if i > 0:
+            line += " | "
+
+        if props:
+            try:
+                value = row[props[i]]
+            except KeyError:
+                value = None
+            value = str(value)
+        else:
+            value = str(row[i])
+
+        line += value.ljust(list_lengths[i])
+
+    line += " |"
+
+    puts(line)
+
+
+def print_hr(lengths):
+    line = "|" + ((sum(lengths) + (len(lengths) * 3) - 1) * "-") + "|"
+    puts(line)
 
 
 @login_required
@@ -88,9 +147,37 @@ def list_by_project(valid_token=None):
 
     c = Client()
 
+    puts("Retreiving list of deploy targets...")
     code, result = c.get_deploy_targets_by_project(
         valid_token,
         project_id
     )
 
-    print result
+    header = ['name', 'deploy by', 'deployed on', 'status', 'result']
+    props = [
+        'name',
+        'deployBy',
+        'deployFinishedOn',
+        'deployStatus',
+        'deployResult'
+    ]
+
+    max_lengths = []
+
+    for i in range(len(header)):
+        max_lengths.append(0)
+
+    store_highest_length(max_lengths, header)
+
+    if 'data' in result:
+        puts("Found %d result(s)...\n" % len(result['data']))
+        for row in result['data']:
+            store_highest_length(max_lengths, row, props)
+
+        print_hr(max_lengths)
+        print_line(max_lengths, header)
+        print_hr(max_lengths)
+
+        for row in result['data']:
+            print_line(max_lengths, row, props)
+        print_hr(max_lengths)
