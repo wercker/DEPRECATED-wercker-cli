@@ -11,7 +11,7 @@ PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
-class Client():
+class LegacyClient():
     wercker_url = get_value(VALUE_WERCKER_URL)
     api_version = '1.0'
 
@@ -43,12 +43,12 @@ class Client():
                 'oauthscope': scope
             })
 
-    def create_project(self, git_url, user, project, source_control, token):
+    def create_project(self, git_url, project, source_control, token):
         return self.do_post(
             PATH_CREATE_PROJECT,
             {
                 'gitUrl': git_url,
-                'userName': user,
+                # 'userName': user,
                 'projectName': project,
                 'sourceControl': source_control,
                 'token': token,
@@ -73,3 +73,7 @@ class Client():
                 'projectId': project
             }
         )
+
+
+class Client(LegacyClient):
+    wercker_url = get_value(VALUE_WERCKER_URL)

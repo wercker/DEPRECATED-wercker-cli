@@ -31,27 +31,26 @@ def create(path='.', valid_token=None):
 
     project = pick_project_name(url)
 
-    default_user = get_username(url)
+    # default_user = get_username(url)
 
-    user = prompt.get_value_with_default(
-        "Please enter your %s username for access verification:" %
-        source,
-        default_user
-    )
+    # user = prompt.get_value_with_default(
+    #     "Please enter your %s username for access verification:" %
+    #     source,
+    #     default_user
+    # )
 
     client = Client()
 
     status, response = client.create_project(
         url,
-        user,
+        # user,
         project,
         source,
         valid_token
     )
 
-    print response
-
     if response['success']:
+        print response
         print "Project has been created"
     else:
         print "Unable to create project. Status: %d. Response: " % status

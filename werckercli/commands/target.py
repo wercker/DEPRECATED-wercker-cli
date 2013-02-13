@@ -6,7 +6,7 @@ from werckercli import git
 from werckercli import heroku
 from werckercli.config import get_value, VALUE_PROJECT_ID
 from werckercli.decorators import login_required
-from werckercli.client import Client
+from werckercli.client import LegacyClient
 
 
 @login_required
@@ -61,7 +61,7 @@ def _add_heroku_by_git(token, project_id, git_url):
             "No matching heroku remote repository found in the \
 apps for current heroku user"
         )
-    c = Client()
+    c = LegacyClient()
 
     code, result = c.create_deploy_target(
         token,
