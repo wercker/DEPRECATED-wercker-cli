@@ -3,8 +3,7 @@ from clint.textui import puts, colored
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
 from werckercli.cli import pick_url, pick_project_name
-from werckercli.git import get_preferred_source_type, get_username
-from werckercli import prompt
+from werckercli.git import get_preferred_source_type
 from werckercli.client import Client
 
 
@@ -30,14 +29,6 @@ def create(path='.', valid_token=None):
     puts("Selected repository url is %s\n" % url)
 
     project = pick_project_name(url)
-
-    # default_user = get_username(url)
-
-    # user = prompt.get_value_with_default(
-    #     "Please enter your %s username for access verification:" %
-    #     source,
-    #     default_user
-    # )
 
     client = Client()
 
