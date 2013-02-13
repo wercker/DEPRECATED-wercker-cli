@@ -30,6 +30,10 @@ class HanldeCommandsTests(TestCase):
         'werckercli.commands.clearsettings.clear_settings',
         mock.Mock()
     )
+    @mock.patch(
+        'werckercli.commands.project.project_list',
+        mock.Mock()
+    )
     def test_implemented_base_commands(self):
         my_cli = cli
         with mock.patch('werckercli.commands.target.add', mock.Mock()):

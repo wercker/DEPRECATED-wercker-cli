@@ -4,9 +4,10 @@ from clint.textui import puts, colored, indent
 
 from werckercli import git
 from werckercli import heroku
+from werckercli.printer import store_highest_length, print_line, print_hr
 from werckercli.config import get_value, VALUE_PROJECT_ID
 from werckercli.decorators import login_required
-from werckercli.client import LegacyClient
+from werckercli.client import Client
 
 
 @login_required
@@ -61,7 +62,8 @@ def _add_heroku_by_git(token, project_id, git_url):
             "No matching heroku remote repository found in the \
 apps for current heroku user"
         )
-    c = LegacyClient()
+
+    c = Client()
 
     code, result = c.create_deploy_target(
         token,
@@ -76,65 +78,6 @@ successfully added to the wercker applicaiton" % preferred_app['name'])
 
     elif result['errorMessage']:
         puts(colored.red("Error: ") + result['errorMessage'])
-
-
-def store_highest_length(list_lengths, row, props=None):
-
-    if props:
-        values_list = props
-    else:
-        values_list = row
-
-    # print row, props
-
-    for i in range(len(values_list)):
-
-        if props:
-            try:
-                value = row[props[i]]
-            except KeyError:
-                value = '-'
-        else:
-            value = str(row[i])
-
-        length = len(value)
-
-        if length > list_lengths[i]:
-            list_lengths[i] = length
-
-
-def print_line(list_lengths, row, props=None):
-
-    line = "| "
-
-    if props:
-        values_list = props
-    else:
-        values_list = row
-
-    for i in range(len(values_list)):
-        if i > 0:
-            line += " | "
-
-        if props:
-            try:
-                value = row[props[i]]
-            except KeyError:
-                value = '-'
-            value = str(value)
-        else:
-            value = str(row[i])
-
-        line += value.ljust(list_lengths[i])
-
-    line += " |"
-
-    puts(line)
-
-
-def print_hr(lengths):
-    line = "|" + ((sum(lengths) + (len(lengths) * 3) - 1) * "-") + "|"
-    puts(line)
 
 
 @login_required
@@ -177,7 +120,7 @@ def list_by_project(valid_token=None):
         for row in result['data']:
             store_highest_length(max_lengths, row, props)
 
-        print_hr(max_lengths)
+        print_hr(max_lengths, first=True)
         print_line(max_lengths, header)
         print_hr(max_lengths)
 

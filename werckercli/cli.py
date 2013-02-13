@@ -22,6 +22,8 @@ def handle_commands(args):
 
     from werckercli.commands.create import create\
         as command_create
+    from werckercli.commands.project import project_list\
+        as command_project_list
     from werckercli.commands.target import add\
         as command_add
     from werckercli.commands.target import list_by_project\
@@ -35,6 +37,9 @@ def handle_commands(args):
         command_create()
     elif args['create']:
         command_create()
+    elif args['app']:
+        if args['list']:
+            command_project_list()
     elif args['target']:
         if args['add']:
             command_add()

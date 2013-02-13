@@ -8,6 +8,7 @@ PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
+PATH_GET_APPLICATIONS = 'applications'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -77,3 +78,17 @@ class LegacyClient():
 
 class Client(LegacyClient):
     wercker_url = get_value(VALUE_WERCKER_URL)
+
+    def do_get(self, path, data):
+        url = self.wercker_url + "/api/" + path
+
+        # data_string = json.dumps(data)
+
+        result = requests.get(
+            url,
+            params=data)
+
+        return result.status_code, json.loads(result.text)
+
+    def get_applications(self, token):
+        return self.do_get(PATH_GET_APPLICATIONS, {'token': token})
