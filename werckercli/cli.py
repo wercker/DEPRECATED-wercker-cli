@@ -22,9 +22,9 @@ def handle_commands(args):
 
     from werckercli.commands.create import create\
         as command_create
-    from werckercli.commands.deploy import add\
+    from werckercli.commands.target import add\
         as command_add
-    from werckercli.commands.deploy import list_by_project\
+    from werckercli.commands.target import list_by_project\
         as command_list_by_project
     from werckercli.commands.clearsettings import clear_settings\
         as command_clear_settings
@@ -35,7 +35,7 @@ def handle_commands(args):
         command_create()
     elif args['create']:
         command_create()
-    elif args['deploy']:
+    elif args['target']:
         if args['add']:
             command_add()
         elif args['list']:

@@ -6,9 +6,9 @@ Usage:
     wercker create
     wercker login
     wercker logout
-    wercker deploy list
-    wercker deploy add
-    wercker deploy <name>
+    wercker target list
+    wercker target add
+    wercker target <name>
     wercker app link
     wercker app create
     wercker (-h | --help)

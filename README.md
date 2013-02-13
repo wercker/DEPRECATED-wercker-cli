@@ -7,8 +7,8 @@ wercker-cli for easy commandline access to wercker.
         wercker create
         wercker login
         wercker logout
-        wercker deploy list
-        wercker deploy <name>
+        wercker target list
+        wercker target <name>
         wercker (-h | --help)
         wercker --version
 

@@ -32,7 +32,7 @@ class HanldeCommandsTests(TestCase):
     )
     def test_implemented_base_commands(self):
         my_cli = cli
-        with mock.patch('werckercli.commands.deploy.add', mock.Mock()):
+        with mock.patch('werckercli.commands.target.add', mock.Mock()):
             with mock.patch(
                 'werckercli.authentication.get_access_token',
                 mock.Mock()
@@ -45,7 +45,7 @@ class HanldeCommandsTests(TestCase):
                         'create': True,
                         'logout': False,
                         'login': False,
-                        'deploy': False,
+                        'target': False,
                     }
                 )
 
@@ -56,7 +56,7 @@ class HanldeCommandsTests(TestCase):
                         'create': True,
                         'logout': False,
                         'login': False,
-                        'deploy': False,
+                        'target': False,
                     }
                 )
 
@@ -67,7 +67,7 @@ class HanldeCommandsTests(TestCase):
                         'create': False,
                         'logout': True,
                         'login': False,
-                        'deploy': False,
+                        'target': False,
                     }
                 )
 
@@ -78,7 +78,7 @@ class HanldeCommandsTests(TestCase):
                         'create': False,
                         'logout': False,
                         'login': True,
-                        'deploy': False,
+                        'target': False,
                     }
                 )
 
@@ -90,7 +90,7 @@ class HanldeCommandsTests(TestCase):
                         'create': False,
                         'logout': False,
                         'login': False,
-                        'deploy': True,
+                        'target': True,
                     }
                 )
 
