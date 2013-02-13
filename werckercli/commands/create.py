@@ -50,7 +50,6 @@ def create(path='.', valid_token=None):
     )
 
     if response['success']:
-        print response
         print "Project has been created"
     else:
         print "Unable to create project. Status: %d. Response: " % status
