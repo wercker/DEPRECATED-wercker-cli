@@ -43,11 +43,11 @@ def _add_heroku_by_git(token, project_id, git_url):
     puts("API key found...")
     puts("Retreiving applications from Heroku...")
 
-    fp = open("werckercli/tests/data/apps.response.json")
-    import json
-    apps = json.load(fp)
-    fp.close()
-    # apps = heroku.get_apps()
+    # fp = open("werckercli/tests/data/apps.response.json")
+    # import json
+    # apps = json.load(fp)
+    # fp.close()
+    apps = heroku.get_apps()
 
     preferred_app = None
     for app in apps:
