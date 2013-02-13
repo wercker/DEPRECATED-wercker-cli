@@ -70,7 +70,6 @@ apps for current heroku user"
         heroku_token
     )
 
-    print result
     if 'success' in result and result['success'] is True:
         puts("Heroku deploy target %s \
 successfully added to the wercker applicaiton" % preferred_app['name'])
