@@ -112,6 +112,7 @@ def get_value(name, default_value=None):
 
 
 def set_value(name, value):
+
     if name == VALUE_USER_TOKEN:
 
         file = _get_or_create_netrc_location()
@@ -139,6 +140,7 @@ def set_value(name, value):
             fp.write(str(rc))
             fp.close()
     elif name == VALUE_PROJECT_ID:
+
         path = find_git_root(os.curdir)
 
         if not path:

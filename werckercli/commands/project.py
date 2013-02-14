@@ -1,5 +1,4 @@
 import os
-import operator
 
 from clint.textui import puts
 from werckercli.decorators import login_required
@@ -8,6 +7,7 @@ from werckercli.git import get_remote_options
 from werckercli.client import Client
 from werckercli.printer import print_hr, print_line, store_highest_length
 from werckercli.config import set_value, VALUE_PROJECT_ID
+
 
 @login_required
 def project_list(valid_token=None):

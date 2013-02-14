@@ -15,10 +15,14 @@ Usage:
     wercker --version
 
 Details:
-    create - Adds an application to wercker *implemented*ma
-    login  - Logs the user in and stores the token on the
-             machine *implemented*
-    forget - Removes the login token from the machine *implemented*
+    create      - Adds an application to wercker *implemented*ma
+    login       - Logs the user in and stores the token on the
+                  machine *implemented*
+    forget      - Removes the login token from the machine *implemented*
+    app create  - Adds an application to wercker *implemented*
+    app link    - link repository back up to an app on wercker *implemented*
+    target add  - add a heroku target as a deploy target *implemented*
+    target list - lists all deploy targets *implemented*
     """
 
 import docopt
