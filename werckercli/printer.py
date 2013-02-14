@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from clint.textui import puts
+from clint.textui import puts, colored
 
 
 def store_highest_length(list_lengths, row, props=None):
@@ -23,7 +23,7 @@ def store_highest_length(list_lengths, row, props=None):
         else:
             value = str(row[i])
 
-        length = len(value)
+        length = len(value) + 1
 
         if length > list_lengths[i]:
             list_lengths[i] = length
@@ -40,7 +40,7 @@ def print_line(list_lengths, row, props=None):
 
     for i in range(len(values_list)):
         if i > 0:
-            line += " │ "
+            line += "│ "
 
         if props:
             try:
@@ -51,9 +51,15 @@ def print_line(list_lengths, row, props=None):
         else:
             value = str(row[i])
 
-        line += value.ljust(list_lengths[i])
+        value = value.ljust(list_lengths[i])
+        if value.startswith("passed "):
+            value = colored.green(value)
+        elif value.startswith("failed "):
+            value = colored.red(value)
 
-    line += " │"
+        line += value
+
+    line += "│"
 
     puts(line)
 
@@ -73,15 +79,15 @@ def print_hr(lengths, first=False):
                 line += "├─"
         else:
             if first:
-                line += "─┬─"
+                line += "┬─"
             else:
-                line += "─┼─"
+                line += "┼─"
 
         line += value * "─"
         if i == length - 1:
             if first:
-                line += "─┐"
+                line += "┐"
             else:
-                line += "─┤"
+                line += "┤"
         # ((sum(lengths) + (len(lengths) * 3) - 1) * "─") + "|"
     puts(line)
