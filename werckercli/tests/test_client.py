@@ -99,7 +99,7 @@ class BasicClientTests(BasicClientCase):
             code, result = c.create_project(
                 "git_url",
                 # "user",
-                "project",
+                # "project",
                 "source_control",
                 "token"
             )

@@ -44,13 +44,13 @@ class LegacyClient():
                 'oauthscope': scope
             })
 
-    def create_project(self, git_url, project, source_control, token):
+    def create_project(self, git_url, source_control, token):
         return self.do_post(
             PATH_CREATE_PROJECT,
             {
                 'gitUrl': git_url,
                 # 'userName': user,
-                'projectName': project,
+                # 'projectName': project,
                 'sourceControl': source_control,
                 'token': token,
             })
