@@ -1,9 +1,13 @@
+import os
+import operator
+
 from clint.textui import puts
 from werckercli.decorators import login_required
+from werckercli.git import get_remote_options
 
 from werckercli.client import Client
 from werckercli.printer import print_hr, print_line, store_highest_length
-
+from werckercli.config import set_value, VALUE_PROJECT_ID
 
 @login_required
 def project_list(valid_token=None):
@@ -13,14 +17,12 @@ def project_list(valid_token=None):
 
     c = Client()
 
-    # c.do_post()
-
     response, result = c.get_applications(valid_token)
 
-    header = ['Author', 'name', 'status', 'followers', 'url']
+    header = ['name', 'author', 'status', 'followers', 'url']
     props = [
-        'author',
         'name',
+        'author',
         'status',
         'totalFollowers',
         'url'
@@ -37,6 +39,7 @@ def project_list(valid_token=None):
     for row in result:
         store_highest_length(max_lengths, row, props)
 
+    result = sorted(result, key=lambda k: k['name'])
     print_hr(max_lengths, first=True)
     print_line(max_lengths, header)
     print_hr(max_lengths)
@@ -44,3 +47,23 @@ def project_list(valid_token=None):
     for row in result:
         print_line(max_lengths, row, props)
     print_hr(max_lengths)
+
+
+@login_required
+def project_link(valid_token=None):
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    puts("Searching for git remote information... ")
+    options = get_remote_options(os.curdir)
+
+    puts("Retreiving list of applications...")
+    c = Client()
+
+    response, result = c.get_applications(valid_token)
+
+    for option in options:
+        for app in result:
+            if app['url'] == option.url:
+                set_value(VALUE_PROJECT_ID, app['id'])
+                return

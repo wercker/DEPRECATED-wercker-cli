@@ -9,7 +9,7 @@ from werckercli import prompt
 def get_intro():
     intro = 23*"-"
     intro += "\n"
-    intro += colored.white('welcome to ') + colored.green('wercker-cli')
+    intro += 'welcome to ' + colored.green('wercker-cli')
     intro += "\n"
     intro += 23*"-"
     intro += "\n"
@@ -24,6 +24,8 @@ def handle_commands(args):
         as command_create
     from werckercli.commands.project import project_list\
         as command_project_list
+    from werckercli.commands.project import project_link\
+        as command_project_link
     from werckercli.commands.target import add\
         as command_add
     from werckercli.commands.target import list_by_project\
@@ -40,6 +42,8 @@ def handle_commands(args):
     elif args['app']:
         if args['list']:
             command_project_list()
+        elif args['link']:
+            command_project_link()
     elif args['target']:
         if args['add']:
             command_add()
