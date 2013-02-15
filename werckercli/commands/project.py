@@ -6,7 +6,7 @@ from werckercli.git import get_remote_options
 
 from werckercli.client import Client
 from werckercli.printer import print_hr, print_line, store_highest_length
-from werckercli.config import set_value, VALUE_PROJECT_ID
+from werckercli.config import get_value, set_value, VALUE_PROJECT_ID
 
 
 @login_required
@@ -67,3 +67,26 @@ def project_link(valid_token=None):
             if app['url'] == option.url:
                 set_value(VALUE_PROJECT_ID, app['id'])
                 return
+
+
+@login_required
+def project_check_repo(valid_token=None):
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    puts("Checking permissions...")
+
+    c = Client()
+    code, response = c.check_permissions(
+        valid_token,
+        get_value(VALUE_PROJECT_ID)
+    )
+
+    if response['success'] is True:
+        if response['data']['hasAccess'] is True:
+            print "Werckerbot has access"
+        else:
+            if "details" in response['data']:
+                print response['data']['details']
+            else:
+                print "Werckerbot has no access"

@@ -9,6 +9,7 @@ PATH_CREATE_PROJECT = 'project/create'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 PATH_GET_APPLICATIONS = 'applications'
+PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -92,3 +93,11 @@ class Client(LegacyClient):
 
     def get_applications(self, token):
         return self.do_get(PATH_GET_APPLICATIONS, {'token': token})
+
+    def check_permissions(self, token, project):
+        print PATH_CHECK_PERMISSIONS.format(projectId=project)
+
+        return self.do_get(
+            PATH_CHECK_PERMISSIONS.format(projectId=project),
+            {'token': token}
+        )
