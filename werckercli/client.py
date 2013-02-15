@@ -95,7 +95,6 @@ class Client(LegacyClient):
         return self.do_get(PATH_GET_APPLICATIONS, {'token': token})
 
     def check_permissions(self, token, project):
-        print PATH_CHECK_PERMISSIONS.format(projectId=project)
 
         return self.do_get(
             PATH_CHECK_PERMISSIONS.format(projectId=project),
