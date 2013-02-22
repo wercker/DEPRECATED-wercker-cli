@@ -6,6 +6,7 @@ from werckercli.config import get_value, VALUE_WERCKER_URL
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
 PATH_CREATE_PROJECT = 'project/create'
+PATH_BUILD_PROJECT = 'projects/triggerbuild'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 PATH_GET_APPLICATIONS = 'applications'
@@ -75,6 +76,14 @@ class LegacyClient():
                 'projectId': project
             }
         )
+
+    def trigger_build(self, token, project):
+        return self.do_post(
+            PATH_BUILD_PROJECT,
+            {
+                'token': token,
+                'projectId': project
+            })
 
 
 class Client(LegacyClient):

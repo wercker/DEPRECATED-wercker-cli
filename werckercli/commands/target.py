@@ -52,9 +52,10 @@ def _add_heroku_by_git(token, project_id, git_url):
 
     preferred_app = None
     for app in apps:
-        # print app
+        print app
         if app['git_url'] == git_url:
             # print app['name']
+            # print app
             preferred_app = app
 
     if not preferred_app:

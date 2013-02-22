@@ -90,3 +90,16 @@ def project_check_repo(valid_token=None):
                 print response['data']['details']
             else:
                 print "Werckerbot has no access"
+
+
+@login_required
+def project_build(valid_token=None):
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    puts("Triggering build")
+
+    c = Client()
+    code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
+
+    print code, response
