@@ -28,10 +28,12 @@ class LegacyClient():
 
         data_string = json.dumps(data)
 
+        print("posting...")
         result = requests.post(
             url,
             data=data_string,
             headers={'Content-Type': 'application/json'})
+        print("done...")
 
         return result.status_code, json.loads(result.text)
 
