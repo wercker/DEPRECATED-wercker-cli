@@ -42,7 +42,7 @@ def create(path='.', valid_token=None):
 
     if response['success']:
         puts("A new application has been created.")
-        print response
+        # print response
         set_value(VALUE_PROJECT_ID, response['projectId'])
         puts("A .wercker file has been created which enables the \
 link between the source code and wercker.")

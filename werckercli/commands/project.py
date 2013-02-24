@@ -102,4 +102,4 @@ def project_build(valid_token=None):
     c = Client()
     code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
 
-    print code, response
+    # print code, response
