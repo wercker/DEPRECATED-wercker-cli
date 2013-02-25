@@ -21,7 +21,6 @@ def handle_commands(args):
     """ Core handler for redirecting to the proper commands."""
 
     # print args
-    from werckercli import __version___
 
     from werckercli.commands.create import create\
         as command_create
