@@ -1,29 +1,38 @@
 #!/usr/bin/env python
-"""wercker-cli
+"""
 
 Usage:
-    wercker status
     wercker create
     wercker login
     wercker logout
     wercker target list
     wercker target add
-    wercker target <name>
     wercker app link
     wercker app create
-    wercker (-h | --help)
+    wercker app checkrepo
+    wercker app build
     wercker --version
 
+----
+
 Details:
-    create      - Adds an application to wercker *implemented*ma
-    login       - Logs the user in and stores the token on the
-                  machine *implemented*
-    forget      - Removes the login token from the machine *implemented*
-    app create  - Adds an application to wercker *implemented*
-    app link    - link repository back up to an app on wercker *implemented*
-    target add  - add a heroku target as a deploy target *implemented*
-    target list - lists all deploy targets *implemented*
+    create          - Adds an application to wercker *implemented*ma
+    login           - Logs the user in and stores the token on the
+                      machine *implemented*
+    logout          - Removes the login token from the machine *implemented*
+    app create      - Adds an application to wercker *implemented*
+    app link        - link repository back up to an app on wercker
+                      *implemented*
+    app build       - trigger a new build for the current project.
+    app checkrepo   - validate if wercker has read rights on the repository
+                      *implementing*
+    target add      - add a heroku target as a deploy target *implemented*
+    target list     - lists all deploy targets *implemented*
     """
+
+# todo:
+#    wercker target <name>
+#    wercker status
 
 import docopt
 
@@ -35,6 +44,11 @@ from werckercli.cli import (
 
 from clint.textui import puts
 
+import werckercli
+
 puts(get_intro())
-args = docopt.docopt(__doc__)
+args = docopt.docopt(
+    __doc__,
+    version="version " + werckercli.__version__
+)
 handle_commands(args)
