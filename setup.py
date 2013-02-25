@@ -10,7 +10,8 @@ except ImportError:
     has_setuptools = False
 from distutils.core import Distribution
 
-werckercli_version_string = '0.0.1'
+from werckercli import __version__
+werckercli_version_string = __version__
 
 tests_require = ['httpretty', ]
 setup_kwargs = {}
@@ -43,5 +44,16 @@ setup(name='wercker-bruticus',
       tests_require=tests_require,
       extras_require={'test': tests_require},
       distclass=Distribution,
+      classifiers=[
+          "Development Status :: 3 - Alpha",
+          'Environment :: Console',
+          'Environment :: Web Environment',
+          'License :: OSI Approved :: MIT License',
+          'Programming Language :: Python',
+          'Intended Audience :: Developers',
+          'Intended Audience :: System Administrators',
+          "Operating System :: MacOS :: MacOS X",
+          'Operating System :: POSIX',
+      ],
       **setup_kwargs
       )
