@@ -70,26 +70,35 @@ def project_link(valid_token=None):
 
 
 @login_required
-def project_check_repo(valid_token=None):
+def project_check_repo(valid_token=None, failure_confirmation=False):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     puts("Checking permissions...")
 
-    c = Client()
-    code, response = c.check_permissions(
-        valid_token,
-        get_value(VALUE_PROJECT_ID)
-    )
+    while(True):
 
-    if response['success'] is True:
-        if response['data']['hasAccess'] is True:
-            print "Werckerbot has access"
-        else:
-            if "details" in response['data']:
-                print response['data']['details']
+        c = Client()
+        code, response = c.check_permissions(
+            valid_token,
+            get_value(VALUE_PROJECT_ID)
+        )
+
+        if response['success'] is True:
+            if response['data']['hasAccess'] is True:
+                puts("Werckerbot has access")
+                break
             else:
-                print "Werckerbot has no access"
+                if "details" in response['data']:
+                    # puts
+                    puts(response['data']['details'])
+                else:
+                    puts("Werckerbot has no access")
+                from werckercli import prompt
+                exit = prompt.yn("wercker might not be able to access\
+ your repository, are you sure you want to continue?", default="n")
+                if exit:
+                    break
 
 
 @login_required

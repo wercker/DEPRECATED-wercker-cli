@@ -41,14 +41,21 @@ def create(path='.', valid_token=None):
     )
 
     if response['success']:
+
         puts("A new application has been created.")
-        # print response
+
         set_value(VALUE_PROJECT_ID, response['projectId'])
+
         puts("A .wercker file has been created which enables the \
 link between the source code and wercker.")
 
         puts("trying to find deploy target information (for \
 platforms such as Heroku).")
+
+        from werckercli.commands.project import project_check_repo
+
+        project_check_repo(valid_token=valid_token)
+
         target_options = find_heroku_sources(path)
 
         nr_targets = len(target_options)
@@ -60,6 +67,7 @@ platforms such as Heroku).")
             target_add(valid_token=valid_token)
 
         from werckercli.commands.project import project_build
+
         puts("Triggering initial build...")
         project_build(valid_token=valid_token)
 

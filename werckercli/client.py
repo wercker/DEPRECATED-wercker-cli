@@ -28,7 +28,8 @@ class LegacyClient():
 
         data_string = json.dumps(data)
 
-        print("posting...")
+        print("communicating with %s ..." % self.wercker_url)
+
         result = requests.post(
             url,
             data=data_string,
