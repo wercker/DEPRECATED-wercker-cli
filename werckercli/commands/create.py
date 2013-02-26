@@ -51,7 +51,7 @@ link between the source code and wercker.")
 
         from werckercli.commands.project import project_check_repo
 
-        project_check_repo(valid_token=valid_token)
+        project_check_repo(valid_token=valid_token, failure_confirmation=True)
 
         puts("trying to find deploy target information (for \
 platforms such as Heroku).")
