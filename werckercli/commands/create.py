@@ -49,12 +49,12 @@ def create(path='.', valid_token=None):
         puts("A .wercker file has been created which enables the \
 link between the source code and wercker.")
 
-        puts("trying to find deploy target information (for \
-platforms such as Heroku).")
-
         from werckercli.commands.project import project_check_repo
 
         project_check_repo(valid_token=valid_token)
+
+        puts("trying to find deploy target information (for \
+platforms such as Heroku).")
 
         target_options = find_heroku_sources(path)
 

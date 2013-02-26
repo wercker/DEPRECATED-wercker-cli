@@ -1,6 +1,6 @@
 import os
 
-from clint.textui import puts
+from clint.textui import puts, colored
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
 
@@ -91,12 +91,22 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
             else:
                 if "details" in response['data']:
                     # puts
-                    puts(response['data']['details'])
+                    puts(
+                        colored.yellow("Warning: ") +
+                        response['data']['details']
+                    )
+
+                if failure_confirmation is True:
+                    from werckercli import prompt
+
+                    exit = not prompt.yn(
+                        "Please make sure the permissions on the\
+ project are correct, do you want wercker to check the permissions again?",
+                        default="y"
+                    )
                 else:
-                    puts("Werckerbot has no access")
-                from werckercli import prompt
-                exit = prompt.yn("wercker might not be able to access\
- your repository, are you sure you want to continue?", default="n")
+                    exit = True
+
                 if exit:
                     break
 
@@ -111,4 +121,10 @@ def project_build(valid_token=None):
     c = Client()
     code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
 
+    if response['success'] is False:
+        puts("Unable to trigger a build")
+        if "errorMessage" in response:
+            puts(colored.red("Error: ") + response['errorMessage'])
+    else:
+        puts("A new build has been created")
     # print code, response
