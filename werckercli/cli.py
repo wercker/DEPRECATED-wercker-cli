@@ -49,6 +49,8 @@ def handle_commands(args):
         command_create()
     elif args['create']:
         command_create()
+    elif args['deploy']:
+        command_builds_deploy()
     elif args['app']:
         if args['list']:
             command_project_list()
