@@ -1,4 +1,6 @@
 import os
+import datetime
+import re
 
 from clint.textui import puts, colored, indent
 
@@ -100,13 +102,41 @@ def list_by_project(valid_token=None):
         project_id
     )
 
-    header = ['name', 'deploy by', 'deployed on', 'status', 'result']
+    if 'data' in result:
+        for data in result['data']:
+            if 'deployFinishedOn' in data:
+                data['deployFinishedOn'] = \
+                    (datetime.datetime(
+                        *map(int,
+                             re.split('[^\d]', data['deployFinishedOn'])[:-1]
+                             )
+                    )).strftime("%c")
+
+            if 'commitHash' in data:
+                data['commitHash'] = data['commitHash'][:8]
+
+    # print result
+
+    header = [
+        'target',
+        'result',
+        'deploy by',
+        'deployed on',
+        'branch',
+        'commit',
+        # 'status',
+        'message'
+    ]
+
     props = [
         'name',
+        'deployResult',
         'deployBy',
         'deployFinishedOn',
-        'deployStatus',
-        'deployResult'
+        'branch',
+        'commitHash',
+        # 'deployStatus',
+        'commitMessage',
     ]
 
     max_lengths = []
