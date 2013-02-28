@@ -14,6 +14,7 @@ VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
+DEFAULT_WERCKER_URL = "https://dev.wercker.com"
 DEFAULT_DOT_WERCKER_NAME = ".wercker"
 
 
