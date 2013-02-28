@@ -91,7 +91,8 @@ def get_value(name, default_value=None):
         if not os.path.isfile(file):
             puts(
                 colored.yellow("Warning:") +
-                " could not find a %s in the application root"
+                " could not find a %s file in the application root" %
+                DEFAULT_DOT_WERCKER_NAME
             )
 
             return

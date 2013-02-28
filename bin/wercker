@@ -3,31 +3,32 @@
 
 Usage:
     wercker create
+    wercker deploy
     wercker login
     wercker logout
-    wercker target list
-    wercker target add
     wercker app link
     wercker app create
     wercker app checkrepo
     wercker app build
+    wercker builds list
+    wercker builds deploy
+    wercker target list
+    wercker target add
     wercker --version
 
 ----
 
 Details:
-    create          - Adds an application to wercker *implemented*ma
+    create          - Adds an application to wercker
     login           - Logs the user in and stores the token on the
-                      machine *implemented*
-    logout          - Removes the login token from the machine *implemented*
-    app create      - Adds an application to wercker *implemented*
+                      machine
+    logout          - Removes the login token from the machine
+    app create      - Adds an application to wercker
     app link        - link repository back up to an app on wercker
-                      *implemented*
     app build       - trigger a new build for the current project.
     app checkrepo   - validate if wercker has read rights on the repository
-                      *implementing*
-    target add      - add a heroku target as a deploy target *implemented*
-    target list     - lists all deploy targets *implemented*
+    target add      - add a heroku target as a deploy target
+    target list     - lists all deploy targets
     """
 
 # todo:

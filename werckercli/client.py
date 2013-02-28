@@ -10,7 +10,9 @@ PATH_BUILD_PROJECT = 'projects/triggerbuild'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 PATH_GET_APPLICATIONS = 'applications'
+PATH_DEPLOY = 'deploy'
 PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
+PATH_GET_BUILDS = 'project/{projectId}/builds'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -88,6 +90,15 @@ class LegacyClient():
                 'projectId': project
             })
 
+    def do_deploy(self, token, build, deploy_target):
+        return self.do_post(
+            PATH_DEPLOY,
+            {
+                'token': token,
+                'targetId': deploy_target,
+                'buildId': build
+            })
+
 
 class Client(LegacyClient):
     wercker_url = get_value(VALUE_WERCKER_URL)
@@ -106,9 +117,19 @@ class Client(LegacyClient):
     def get_applications(self, token):
         return self.do_get(PATH_GET_APPLICATIONS, {'token': token})
 
+    def get_builds(self, token, project):
+        return self.do_get(
+            PATH_GET_BUILDS.format(projectId=project),
+            {'token': token}
+        )
+
     def check_permissions(self, token, project):
 
         return self.do_get(
             PATH_CHECK_PERMISSIONS.format(projectId=project),
             {'token': token}
         )
+
+    # def do_deploy(self, token, build, target):
+
+    #     return self.

@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+import datetime
+import re
 
 from clint.textui import puts, colored
 
@@ -94,7 +96,6 @@ def print_hr(lengths, first=False):
                 line += "┐"
             else:
                 line += "┤"
-        # ((sum(lengths) + (len(lengths) * 3) - 1) * "─") + "|"
     puts(line)
 
 
@@ -142,3 +143,11 @@ def get_terminal_size():
 
     # i give up. return default.
     return (25, 80)
+
+
+def format_date(dateString):
+    return (datetime.datetime(
+        *map(int,
+             re.split('[^\d]', dateString)[:-1]
+             )
+    )).strftime("%x %X")

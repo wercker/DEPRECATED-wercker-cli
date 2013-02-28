@@ -47,6 +47,8 @@ class HanldeCommandsTests(TestCase):
                     {
                         'app': False,
                         'create': True,
+                        'deploy': False,
+                        'builds': False,
                         'logout': False,
                         'login': False,
                         'target': False,
@@ -58,6 +60,8 @@ class HanldeCommandsTests(TestCase):
                     {
                         'app': True,
                         'create': True,
+                        'builds': False,
+                        'deploy': False,
                         'logout': False,
                         'login': False,
                         'target': False,
@@ -69,6 +73,8 @@ class HanldeCommandsTests(TestCase):
                     {
                         'app': False,
                         'create': False,
+                        'builds': False,
+                        'deploy': False,
                         'logout': True,
                         'login': False,
                         'target': False,
@@ -79,7 +85,9 @@ class HanldeCommandsTests(TestCase):
                     {
                         'add': False,
                         'app': False,
+                        'builds': False,
                         'create': False,
+                        'deploy': False,
                         'logout': False,
                         'login': True,
                         'target': False,
@@ -91,7 +99,9 @@ class HanldeCommandsTests(TestCase):
                     {
                         'add': True,
                         'app': False,
+                        'builds': False,
                         'create': False,
+                        'deploy': False,
                         'logout': False,
                         'login': False,
                         'target': True,

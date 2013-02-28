@@ -32,6 +32,10 @@ def handle_commands(args):
         as command_project_check_repo
     from werckercli.commands.project import project_build\
         as command_project_build
+    from werckercli.commands.build import build_list\
+        as command_builds_list
+    from werckercli.commands.build import build_deploy\
+        as command_builds_deploy
     from werckercli.commands.target import add\
         as command_add
     from werckercli.commands.target import list_by_project\
@@ -54,6 +58,11 @@ def handle_commands(args):
             command_project_check_repo()
         elif "build" in args and args["build"]:
             command_project_build()
+    elif args["builds"]:
+        if args['list']:
+            command_builds_list()
+        if args['deploy']:
+            command_builds_deploy()
     elif args['target']:
         if args['add']:
             command_add()

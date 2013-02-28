@@ -1,12 +1,15 @@
 import os
-import datetime
-import re
 
 from clint.textui import puts, colored, indent
 
 from werckercli import git
 from werckercli import heroku
-from werckercli.printer import store_highest_length, print_line, print_hr
+from werckercli.printer import (
+    store_highest_length,
+    print_line, print_hr,
+    format_date
+)
+
 from werckercli.config import get_value, VALUE_PROJECT_ID
 from werckercli.decorators import login_required
 from werckercli.client import Client
@@ -83,17 +86,7 @@ successfully added to the wercker applicaiton" % preferred_app['name'])
         puts(colored.red("Error: ") + result['errorMessage'])
 
 
-@login_required
-def list_by_project(valid_token=None):
-
-    if not valid_token:
-        raise ValueError("A valid token is required!")
-
-    project_id = get_value(VALUE_PROJECT_ID)
-
-    if not project_id:
-        raise ValueError("No project id found")
-
+def get_targets(valid_token, project_id):
     c = Client()
 
     puts("Retreiving list of deploy targets...")
@@ -102,20 +95,21 @@ def list_by_project(valid_token=None):
         project_id
     )
 
+    return result
+
+
+def print_targets(targets, print_index=False):
+
+    result = targets
+
     if 'data' in result:
         for data in result['data']:
             if 'deployFinishedOn' in data:
                 data['deployFinishedOn'] = \
-                    (datetime.datetime(
-                        *map(int,
-                             re.split('[^\d]', data['deployFinishedOn'])[:-1]
-                             )
-                    )).strftime("%c")
+                    format_date(data['deployFinishedOn'])
 
             if 'commitHash' in data:
                 data['commitHash'] = data['commitHash'][:8]
-
-    # print result
 
     header = [
         'target',
@@ -139,6 +133,10 @@ def list_by_project(valid_token=None):
         'commitMessage',
     ]
 
+    if print_index:
+        header = [''] + header
+        props = ['index'] + props
+
     max_lengths = []
 
     for i in range(len(header)):
@@ -148,7 +146,10 @@ def list_by_project(valid_token=None):
 
     if 'data' in result:
         puts("Found %d result(s)...\n" % len(result['data']))
+        index = 0
         for row in result['data']:
+            if print_index:
+                row['index'] = index + 1
             store_highest_length(max_lengths, row, props)
 
         print_hr(max_lengths, first=True)
@@ -158,3 +159,19 @@ def list_by_project(valid_token=None):
         for row in result['data']:
             print_line(max_lengths, row, props)
         print_hr(max_lengths)
+
+
+@login_required
+def list_by_project(valid_token=None):
+
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    project_id = get_value(VALUE_PROJECT_ID)
+
+    if not project_id:
+        raise ValueError("No project id found")
+
+    targets = get_targets(valid_token, project_id)
+
+    print_targets(targets)
