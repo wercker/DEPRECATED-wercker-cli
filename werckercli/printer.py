@@ -30,9 +30,8 @@ def store_highest_length(list_lengths, row, props=None):
 
     lines, columns = get_terminal_size()
 
-    total_length = sum(list_lengths)
-
-    print total_length
+    # total_length = sum(list_lengths)
+    # print total_length
 
 
 def print_line(list_lengths, row, props=None):
