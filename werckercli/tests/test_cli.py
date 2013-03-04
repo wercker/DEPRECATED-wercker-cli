@@ -46,6 +46,7 @@ class HanldeCommandsTests(TestCase):
                 my_cli.handle_commands(
                     {
                         'apps': False,
+                        'status': False,
                         'create': True,
                         'deploy': False,
                         'builds': False,
@@ -59,6 +60,7 @@ class HanldeCommandsTests(TestCase):
                 my_cli.handle_commands(
                     {
                         'apps': True,
+                        'status': False,
                         'create': True,
                         'builds': False,
                         'deploy': False,
@@ -72,6 +74,7 @@ class HanldeCommandsTests(TestCase):
                 my_cli.handle_commands(
                     {
                         'apps': False,
+                        'status': False,
                         'create': False,
                         'builds': False,
                         'deploy': False,
@@ -83,8 +86,9 @@ class HanldeCommandsTests(TestCase):
 
                 my_cli.handle_commands(
                     {
-                        'add': False,
                         'apps': False,
+                        'status': False,
+                        'add': False,
                         'builds': False,
                         'create': False,
                         'deploy': False,
@@ -99,6 +103,7 @@ class HanldeCommandsTests(TestCase):
                     {
                         'add': True,
                         'apps': False,
+                        'status': False,
                         'builds': False,
                         'create': False,
                         'deploy': False,
