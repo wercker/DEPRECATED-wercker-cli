@@ -6,14 +6,14 @@ Usage:
     wercker deploy
     wercker login
     wercker logout
-    wercker app link
-    wercker app create
-    wercker app checkrepo
-    wercker app build
+    wercker apps link
+    wercker apps create
+    wercker apps checkrepo
+    wercker apps build
     wercker builds list
     wercker builds deploy
-    wercker target list
-    wercker target add
+    wercker targets list
+    wercker targets add
     wercker --version
 
 ----
@@ -23,16 +23,16 @@ Details:
     login           - Logs the user in and stores the token on the
                       machine
     logout          - Removes the login token from the machine
-    app create      - Adds an application to wercker
-    app link        - link repository back up to an app on wercker
-    app build       - trigger a new build for the current project.
-    app checkrepo   - validate if wercker has read rights on the repository
-    target add      - add a heroku target as a deploy target
-    target list     - lists all deploy targets
+    apps create     - Adds an application to wercker
+    apps link       - link repository back up to an apps on wercker
+    apps build      - trigger a new build for the current project.
+    apps checkrepo  - validate if wercker has read rights on the repository
+    targets add     - add a heroku targets as a deploy target
+    targets list    - lists all deploy targets
     """
 
 # todo:
-#    wercker target <name>
+#    wercker targets <name>
 #    wercker status
 
 import docopt

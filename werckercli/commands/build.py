@@ -166,6 +166,7 @@ def print_builds(builds, print_index=False):
 
     if type(result) is list:
         index = 0
+        result = result[:5]
         for row in result:
             if "startedOn" in row:
                 row['creationDate'] = format_date(row['creationDate'])
