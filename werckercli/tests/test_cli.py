@@ -45,52 +45,52 @@ class HanldeCommandsTests(TestCase):
                 # create
                 my_cli.handle_commands(
                     {
-                        'app': False,
+                        'apps': False,
                         'create': True,
                         'deploy': False,
                         'builds': False,
                         'logout': False,
                         'login': False,
-                        'target': False,
+                        'targets': False,
                     }
                 )
 
                 #app create
                 my_cli.handle_commands(
                     {
-                        'app': True,
+                        'apps': True,
                         'create': True,
                         'builds': False,
                         'deploy': False,
                         'logout': False,
                         'login': False,
-                        'target': False,
+                        'targets': False,
                     }
                 )
 
                 # logout
                 my_cli.handle_commands(
                     {
-                        'app': False,
+                        'apps': False,
                         'create': False,
                         'builds': False,
                         'deploy': False,
                         'logout': True,
                         'login': False,
-                        'target': False,
+                        'targets': False,
                     }
                 )
 
                 my_cli.handle_commands(
                     {
                         'add': False,
-                        'app': False,
+                        'apps': False,
                         'builds': False,
                         'create': False,
                         'deploy': False,
                         'logout': False,
                         'login': True,
-                        'target': False,
+                        'targets': False,
                     }
                 )
 
@@ -98,13 +98,13 @@ class HanldeCommandsTests(TestCase):
                 my_cli.handle_commands(
                     {
                         'add': True,
-                        'app': False,
+                        'apps': False,
                         'builds': False,
                         'create': False,
                         'deploy': False,
                         'logout': False,
                         'login': False,
-                        'target': True,
+                        'targets': True,
                     }
                 )
 

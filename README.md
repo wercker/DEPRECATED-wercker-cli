@@ -14,14 +14,14 @@ wercker-cli for easy commandline access to wercker.
         wercker deploy
         wercker login
         wercker logout
-        wercker app link
-        wercker app create
-        wercker app checkrepo
-        wercker app build
+        wercker apps link
+        wercker apps create
+        wercker apps checkrepo
+        wercker apps build
         wercker builds list
         wercker builds deploy
-        wercker target list
-        wercker target add
+        wercker targets list
+        wercker targets add
         wercker --version
 
 ## Commands

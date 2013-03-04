@@ -45,13 +45,13 @@ def handle_commands(args):
     from werckercli.commands.login import login\
         as command_login
 
-    if args['app'] and args['create']:
+    if args['apps'] and args['create']:
         command_create()
     elif args['create']:
         command_create()
     elif args['deploy']:
         command_builds_deploy()
-    elif args['app']:
+    elif args['apps']:
         if args['list']:
             command_project_list()
         elif args['link']:
@@ -65,7 +65,7 @@ def handle_commands(args):
             command_builds_list()
         if args['deploy']:
             command_builds_deploy()
-    elif args['target']:
+    elif args['targets']:
         if args['add']:
             command_add()
         elif args['list']:
