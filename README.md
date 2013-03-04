@@ -43,13 +43,13 @@ Retreives a login token for wercker and stores it in the .netrc in the users' ho
 ### logout
 Removes the login token from the .netrc file
 
-### app create
+### apps create
 This is an alias for wercker create
 
-### app link
+### apps link
 Retrieve application information for storing in the .wercker file.
 
-### app checkrepo
+### apps checkrepo
 Check the permissions for the current repository. If werckerbot has access to the repository through a group (on bitbucket) or the linked bitbucket/github account does not have sufficient rights to check permissions the tool will be unable to verify.
 
 ### builds list
@@ -58,8 +58,8 @@ Shows a list of the most recent builds
 ### builds deploy
 An alias for `wercker deploy`
 
-### target add
+### targets add
 Add a new deploy target to your application. Currently only supports heroku targets.
 
-### target list
+### targets list
 Lists all deploy targets
