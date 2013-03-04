@@ -1,4 +1,4 @@
-# wercker-bruticus #
+# wercker-cli #
 
 wercker-cli for easy commandline access to wercker.
 
