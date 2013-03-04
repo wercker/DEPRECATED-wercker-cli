@@ -10,6 +10,8 @@ from werckercli.printer import (
     format_date,
 )
 
+# from werckercli.commands.target import
+
 from werckercli.config import (
     get_value,
     VALUE_PROJECT_ID
@@ -18,6 +20,7 @@ from werckercli.config import (
 from werckercli.commands.target import (
     get_targets,
     print_targets,
+    pick_target
 )
 
 
@@ -82,32 +85,14 @@ def build_deploy(valid_token=None):
         else:
             puts(colored.red("warning: ") + " invalid build selected.")
 
-    targets = get_targets(valid_token, projectId)
-
-    if not "data" in targets or len(targets['data']) == 0:
-        # print targets['data']
-        puts(colored.red("No targets to deploy to were found"))
-        return
-
-    print_targets(targets, print_index=True)
-
-    while(True):
-        result = get_value_with_default("Select a target to deploy to", '1')
-
-        valid_values = [str(i + 1) for i in range(len(targets['data']))]
-
-        if result in valid_values:
-            target_index = valid_values.index(result)
-            break
-        else:
-            puts(colored.red("warning: ") + " invalid target selected.")
+    target_index = pick_target(valid_token, projectId)
 
     c = Client()
 
     code, result = c.do_deploy(
         valid_token,
         passed_builds[deploy_index]['id'],
-        targets['data'][target_index]['id']
+        target_index
     )
 
     if "success" in result and result['success'] is True:

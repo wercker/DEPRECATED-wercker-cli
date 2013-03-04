@@ -10,9 +10,10 @@ from werckercli.printer import (
     format_date
 )
 
-from werckercli.config import get_value, VALUE_PROJECT_ID
+from werckercli.config import get_value, VALUE_PROJECT_ID, VALUE_WERCKER_URL
 from werckercli.decorators import login_required
 from werckercli.client import Client
+from werckercli.prompt import get_value_with_default
 
 
 @login_required
@@ -161,6 +162,30 @@ def print_targets(targets, print_index=False):
         print_hr(max_lengths)
 
 
+def pick_target(valid_token, projectId):
+    targets = get_targets(valid_token, projectId)
+
+    if not "data" in targets or len(targets['data']) == 0:
+        # print targets['data']
+        puts(colored.red("No targets to deploy to were found"))
+        return
+
+    print_targets(targets, print_index=True)
+
+    while(True):
+        result = get_value_with_default("Select a target to deploy to", '1')
+
+        valid_values = [str(i + 1) for i in range(len(targets['data']))]
+
+        if result in valid_values:
+            target_index = valid_values.index(result)
+            break
+        else:
+            puts(colored.red("warning: ") + " invalid target selected.")
+
+    return targets['data'][target_index]['id']
+
+
 @login_required
 def list_by_project(valid_token=None):
 
@@ -175,3 +200,28 @@ def list_by_project(valid_token=None):
     targets = get_targets(valid_token, project_id)
 
     print_targets(targets)
+
+
+@login_required
+def link_to_deploy_target(valid_token=None):
+
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    project_id = get_value(VALUE_PROJECT_ID)
+
+    if not project_id:
+        raise ValueError("No project id found")
+
+    target = pick_target(valid_token, project_id)
+
+    wercker_url = get_value(VALUE_WERCKER_URL)
+
+    link = "{wercker_url}/deploytarget/{target}".format(
+        wercker_url=wercker_url,
+        target=target
+    )
+    puts("Opening link: {link}".format(link=link))
+    import webbrowser
+
+    webbrowser.open(link)

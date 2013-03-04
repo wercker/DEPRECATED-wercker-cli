@@ -40,11 +40,14 @@ def handle_commands(args):
         as command_add
     from werckercli.commands.target import list_by_project\
         as command_list_by_project
+    from werckercli.commands.target import link_to_deploy_target\
+        as command_target_details
     from werckercli.commands.clearsettings import clear_settings\
         as command_clear_settings
     from werckercli.commands.login import login\
         as command_login
 
+    print args
     if args['apps'] and args['create']:
         command_create()
     elif args['create']:
@@ -72,6 +75,8 @@ def handle_commands(args):
             command_add()
         elif args['list']:
             command_list_by_project()
+        elif args['details']:
+            command_target_details()
     elif args['login']:
         command_login()
     elif args['logout']:
