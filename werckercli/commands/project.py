@@ -110,6 +110,7 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
                 if exit:
                     break
 
+
 @login_required
 def project_build(valid_token=None):
     if not valid_token:
