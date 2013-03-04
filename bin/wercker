@@ -3,6 +3,7 @@
 
 Usage:
     wercker create
+    wercker status
     wercker deploy
     wercker login
     wercker logout
@@ -33,7 +34,6 @@ Details:
 
 # todo:
 #    wercker targets <name>
-#    wercker status
 
 import docopt
 

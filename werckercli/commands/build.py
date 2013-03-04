@@ -22,7 +22,7 @@ from werckercli.commands.target import (
 
 
 @login_required
-def build_list(valid_token=None):
+def build_list(valid_token=None, limit=5):
 
     if not valid_token:
         raise ValueError("A valid token is required!")
@@ -38,7 +38,7 @@ def build_list(valid_token=None):
         return
 
     builds = get_builds(valid_token, projectId)
-    print_builds(builds)
+    print_builds(builds, limit=limit)
 
 
 @login_required
@@ -128,7 +128,7 @@ def get_builds(valid_token, projectId):
     return result
 
 
-def print_builds(builds, print_index=False):
+def print_builds(builds, print_index=False, limit=5):
 
     result = builds
 
@@ -166,7 +166,7 @@ def print_builds(builds, print_index=False):
 
     if type(result) is list:
         index = 0
-        result = result[:5]
+        result = result[:limit]
         for row in result:
             if "startedOn" in row:
                 row['creationDate'] = format_date(row['creationDate'])

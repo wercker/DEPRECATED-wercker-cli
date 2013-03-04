@@ -12,6 +12,7 @@ Usage:
 
     Usage:
         wercker create
+        wercker status
         wercker deploy
         wercker login
         wercker logout
@@ -34,6 +35,9 @@ Starts a wizard like setup, to get your application fully working on wercker. In
 * tries to find and add a heroku deploy target.
 
 The newly created application information is stored in a .wercker file in the root of your repository. You don't need to add this file to your git repository, if a user has access to the project, a user can run `wercker app link` to rebuild the .wercker file
+
+### status
+Shows the status of the latest build.
 
 ### deploy
 Starts a simple wizard like setup for deploying your latest build to a deploy target.
