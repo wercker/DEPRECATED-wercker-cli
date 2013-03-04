@@ -82,12 +82,10 @@ def build_deploy(valid_token=None):
         else:
             puts(colored.red("warning: ") + " invalid build selected.")
 
-    print deploy_index
-
     targets = get_targets(valid_token, projectId)
 
     if not "data" in targets or len(targets['data']) == 0:
-        print targets['data']
+        # print targets['data']
         puts(colored.red("No targets to deploy to were found"))
         return
 
@@ -115,7 +113,7 @@ def build_deploy(valid_token=None):
     if "success" in result and result['success'] is True:
         puts(colored.green("Build scheduled for deploy"))
     else:
-        print "Unable to schedule deploy"
+        puts(colored.red("Error: ") + "Unable to schedule deploy")
 
 
 def get_builds(valid_token, projectId):
@@ -187,6 +185,5 @@ def print_builds(builds, print_index=False):
         print_hr(max_lengths)
 
         for row in result:
-            # print row
             print_line(max_lengths, row, props)
         print_hr(max_lengths)

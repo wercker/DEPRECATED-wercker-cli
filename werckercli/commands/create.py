@@ -72,5 +72,9 @@ platforms such as Heroku).")
         project_build(valid_token=valid_token)
 
     else:
-        print "Unable to create project. Status: %d. Response: " % status
-        print response
+        puts(
+            colored.red("Error: ") +
+            "Unable to create project. Status: %d. Response: " % status
+        )
+
+        # print response
