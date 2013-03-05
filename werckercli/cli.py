@@ -47,40 +47,43 @@ def handle_commands(args):
     from werckercli.commands.login import login\
         as command_login
 
-    if args['apps'] and args['create']:
-        command_create()
-    elif args['create']:
-        command_create()
-    elif args['status']:
-        command_builds_list(limit=1)
-    elif args['deploy']:
-        command_builds_deploy()
-    elif args['apps']:
-        if args['list']:
-            command_project_list()
-        elif args['link']:
-            command_project_link()
-        elif args['checkrepo']:
-            command_project_check_repo()
-        elif "build" in args and args["build"]:
-            command_project_build()
-    elif args["builds"]:
-        if args['list']:
-            command_builds_list()
-        if args['deploy']:
+    try:
+        if args['apps'] and args['create']:
+            command_create()
+        elif args['create']:
+            command_create()
+        elif args['status']:
+            command_builds_list(limit=1)
+        elif args['deploy']:
             command_builds_deploy()
-    elif args['targets']:
-        if args['add']:
-            command_add()
-        elif args['list']:
-            command_list_by_project()
-        elif args['details'] or args['open']:
-            command_target_details()
-    elif args['login']:
-        command_login()
-    elif args['logout']:
-        command_clear_settings()
-
+        elif args['apps']:
+            if args['list']:
+                command_project_list()
+            elif args['link']:
+                command_project_link()
+            elif args['checkrepo']:
+                command_project_check_repo()
+            elif "build" in args and args["build"]:
+                command_project_build()
+        elif args["builds"]:
+            if args['list']:
+                command_builds_list()
+            if args['deploy']:
+                command_builds_deploy()
+        elif args['targets']:
+            if args['add']:
+                command_add()
+            elif args['list']:
+                command_list_by_project()
+            elif args['details'] or args['open']:
+                command_target_details()
+        elif args['login']:
+            command_login()
+        elif args['logout']:
+            command_clear_settings()
+    except KeyboardInterrupt:
+        puts("\nAborted...")
+        pass
 
 def enter_url(loop=True):
     """Get an url and validate it, asks confirmation for unsupported urls"""

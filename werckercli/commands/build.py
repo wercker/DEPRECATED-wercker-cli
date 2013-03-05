@@ -18,8 +18,8 @@ from werckercli.config import (
 )
 
 from werckercli.commands.target import (
-    get_targets,
-    print_targets,
+    # get_targets,
+    # print_targets,
     pick_target
 )
 
@@ -107,9 +107,6 @@ def get_builds(valid_token, projectId):
     puts("Retreiving builds from wercker...")
     status, result = c.get_builds(valid_token, projectId)
 
-    if type(result) is list:
-        puts("Found %d result(s)...\n" % len(result))
-
     return result
 
 
@@ -152,6 +149,9 @@ def print_builds(builds, print_index=False, limit=5):
     if type(result) is list:
         index = 0
         result = result[:limit]
+        if type(result) is list:
+            puts("Found %d result(s)...\n" % len(result))
+
         for row in result:
             if "startedOn" in row:
                 row['creationDate'] = format_date(row['creationDate'])
