@@ -3,14 +3,17 @@ import re
 from collections import namedtuple
 from dulwich.repo import Repo
 
-GITHUB_PATTERN = '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)'
-BITBUCKET_PATTERN = '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)'
-HEROKU_PATTERN = '(git@heroku.com):(?P<name>.*)'
-
-PREFERRED_PATTERNS = [
-    GITHUB_PATTERN,
-    BITBUCKET_PATTERN
+GITHUB_PATTERNS = [
+    '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)',
+    'https://github.com/(?P<name>.*)/(?P<project>.*)'
+,]
+BITBUCKET_PATTERNS = [
+    '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)',
+    'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*)'
 ]
+HEROKU_PATTERNS = ['(git@heroku.com):(?P<name>.*)']
+
+PREFERRED_PATTERNS = GITHUB_PATTERNS + BITBUCKET_PATTERNS
 
 SOURCE_GITHUB = "github"
 SOURCE_BITBUCKET = "bitbucket"
@@ -66,11 +69,11 @@ def get_preferred_source_type(url):
 
 def get_source_type(url, pattern):
     if re.search(pattern, url):
-        if pattern == GITHUB_PATTERN:
+        if pattern in GITHUB_PATTERNS:
             return SOURCE_GITHUB
-        if pattern == BITBUCKET_PATTERN:
+        if pattern in BITBUCKET_PATTERNS:
             return SOURCE_BITBUCKET
-        if pattern == HEROKU_PATTERN:
+        if pattern in HEROKU_PATTERNS:
             return SOURCE_HEROKU
 
 
@@ -78,11 +81,19 @@ def get_username(url):
     source = get_preferred_source_type(url)
 
     if source == SOURCE_GITHUB:
-        match = re.match(GITHUB_PATTERN, url)
-        return match.groupdict()['name']
+
+        for pattern in GITHUB_PATTERNS:
+            match = re.match(pattern, url)
+
+            if match:
+                return match.groupdict()['name']
     else:
-        match = re.match(BITBUCKET_PATTERN, url)
-        return match.groupdict()['name']
+
+        for pattern in BITBUCKET_PATTERNS:
+            match = re.match(pattern, url)
+
+            if match:
+                return match.groupdict()['name']
 
 
 def find_heroku_sources(repo_path):
@@ -91,7 +102,8 @@ def find_heroku_sources(repo_path):
 
     heroku_options = []
     for option in options:
-        if get_source_type(option.url, HEROKU_PATTERN) == SOURCE_HEROKU:
-            heroku_options.append(option)
+        for pattern in HEROKU_PATTERNS:
+            if get_source_type(option.url, pattern) == SOURCE_HEROKU:
+                heroku_options.append(option)
 
     return heroku_options
