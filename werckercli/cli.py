@@ -83,7 +83,7 @@ def handle_commands(args):
             command_clear_settings()
     except KeyboardInterrupt:
         puts("\nAborted...")
-        pass
+
 
 def enter_url(loop=True):
     """Get an url and validate it, asks confirmation for unsupported urls"""
