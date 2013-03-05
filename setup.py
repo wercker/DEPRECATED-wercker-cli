@@ -21,7 +21,7 @@ if has_setuptools:
     setup_kwargs['test_suite'] = 'werckercli.tests.test_suite'
 
 # print has_setuptools
-setup(name='wercker-cli',
+setup(name='wercker',
       description='wercker command line interface',
       keywords='cli, command line',
       version=werckercli_version_string,
