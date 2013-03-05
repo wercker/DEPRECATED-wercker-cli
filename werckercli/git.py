@@ -108,3 +108,38 @@ def find_heroku_sources(repo_path):
                 heroku_options.append(option)
 
     return heroku_options
+
+
+def convert_to_url(url):
+    match = None
+    source_type = None
+
+    for pattern in GITHUB_PATTERNS:
+        match = re.match(pattern, url)
+
+        if match:
+            source_type = SOURCE_GITHUB
+            break
+
+    if not source_type:
+        for pattern in BITBUCKET_PATTERNS:
+            match = re.match(pattern, url)
+
+            if match:
+                source_type = SOURCE_BITBUCKET
+                break
+
+    if source_type == SOURCE_BITBUCKET:
+        source_dict = match.groupdict()
+        return "git@bitbucket.org:{owner}/{project}".format(
+            owner=source_dict['name'],
+            project=source_dict['project']
+        )
+    if source_type == SOURCE_GITHUB:
+        source_dict = match.groupdict()
+        return "git@github.com:{owner}/{project}".format(
+            owner=source_dict['name'],
+            project=source_dict['project']
+        )
+
+    return url

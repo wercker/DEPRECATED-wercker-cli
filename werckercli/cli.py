@@ -74,7 +74,7 @@ def handle_commands(args):
             command_add()
         elif args['list']:
             command_list_by_project()
-        elif args['details']:
+        elif args['details'] or args['open']:
             command_target_details()
     elif args['login']:
         command_login()

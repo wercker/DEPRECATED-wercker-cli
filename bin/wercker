@@ -7,6 +7,7 @@ Usage:
     wercker deploy
     wercker login
     wercker logout
+    wercker open targets
     wercker apps link
     wercker apps create
     wercker apps checkrepo
@@ -15,21 +16,28 @@ Usage:
     wercker builds deploy
     wercker targets list
     wercker targets add
+    wercker targets details
     wercker --version
 
 ----
 
 Details:
     create          - Adds an application to wercker
+    status          - shows the status of the most recent build
+    deploy          - deploy a build to a deploy target
     login           - Logs the user in and stores the token on the
                       machine
     logout          - Removes the login token from the machine
+    open targets    - opens a webpage showing a deploy target's details
     apps create     - Adds an application to wercker
     apps link       - link repository back up to an apps on wercker
     apps build      - trigger a new build for the current project.
     apps checkrepo  - validate if wercker has read rights on the repository
+    builds lists    - shows a list of the most recent builds
+    builds deploy   - alias for deploy
     targets add     - add a heroku targets as a deploy target
     targets list    - lists all deploy targets
+    targets details - alias for open targets
     """
 
 # todo:

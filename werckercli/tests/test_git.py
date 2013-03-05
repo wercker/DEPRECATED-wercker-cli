@@ -16,6 +16,7 @@ from werckercli.git import (
     get_source_type,
     get_username,
     find_heroku_sources,
+    convert_to_url,
 
     GITHUB_PATTERNS,
     BITBUCKET_PATTERNS,
@@ -151,8 +152,14 @@ class GetUserNAmeTests(TestCase):
         result = get_username(VALID_GITHUB_SSH_URL)
         self.assertEqual(result, "wercker")
 
+        result = get_username(VALID_GITHUB_HTTPS_URL)
+        self.assertEqual(result, "wercker")
+
     def test_bitbucket(self):
         result = get_username(VALID_BITBUCKET_SSH_URL)
+        self.assertEqual(result, "postmodern")
+
+        result = get_username(VALID_BITBUCKET_HTTPS_URL)
         self.assertEqual(result, "postmodern")
 
 
@@ -169,3 +176,27 @@ class FindHerokuSources(DataSetTestCase):
 
         result = find_heroku_sources(folder)
         self.assertEqual(len(result), 1)
+
+
+class ConvertToUrlTests(TestCase):
+
+    def test_bitbucket(self):
+        result = convert_to_url(VALID_BITBUCKET_SSH_URL)
+        self.assertEqual(result, VALID_BITBUCKET_SSH_URL)
+
+        result = convert_to_url(VALID_BITBUCKET_HTTPS_URL)
+        self.assertEqual(result, VALID_BITBUCKET_SSH_URL)
+
+    def test_github(self):
+        result = convert_to_url(VALID_GITHUB_SSH_URL)
+        self.assertEqual(result, VALID_GITHUB_SSH_URL)
+
+        result = convert_to_url(VALID_GITHUB_HTTPS_URL)
+        self.assertEqual(result, VALID_GITHUB_SSH_URL)
+
+    def test_custom_url(self):
+        custom_url = "git@exotic-git-host.com:specialuser/secretproject"
+
+        result = convert_to_url(custom_url)
+
+        self.assertEqual(result, custom_url)

@@ -16,6 +16,7 @@ Usage:
         wercker deploy
         wercker login
         wercker logout
+        wercker open targets
         wercker apps link
         wercker apps create
         wercker apps checkrepo
@@ -48,8 +49,11 @@ Retreives a login token for wercker and stores it in the .netrc in the users' ho
 ### logout
 Removes the login token from the .netrc file
 
+### open targets
+Opens a webpage showing a deploy target's details
+
 ### apps create
-This is an alias for wercker create
+This is an alias for `wercker create`
 
 ### apps link
 Retrieve application information for storing in the .wercker file.
@@ -68,3 +72,6 @@ Add a new deploy target to your application. Currently only supports heroku targ
 
 ### targets list
 Lists all deploy targets
+
+### targets details
+This is an alias for `wercker open targets`
