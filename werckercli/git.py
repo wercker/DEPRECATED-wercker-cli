@@ -6,7 +6,8 @@ from dulwich.repo import Repo
 GITHUB_PATTERNS = [
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)',
     'https://github.com/(?P<name>.*)/(?P<project>.*)'
-,]
+]
+
 BITBUCKET_PATTERNS = [
     '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)',
     'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*)'
