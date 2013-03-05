@@ -24,7 +24,7 @@ from utils import (
 )
 
 VALID_TOKEN = '50ffd4a6b4e145006c0000031359019219496'
-VALID_GITHUB_SSH_URL = "git@github.com:wercker/wercker-bruticus.git"
+VALID_GITHUB_SSH_URL = "git@github.com:wercker/wercker-cli.git"
 VALID_BITBUCKET_SSH_URL = "git@bitbucket.org:postmodern/ronin.git"
 VALID_HEROKU_SSH_URL = "git@heroku.com:clitest.git"
 
