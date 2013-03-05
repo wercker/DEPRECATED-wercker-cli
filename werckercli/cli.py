@@ -47,7 +47,6 @@ def handle_commands(args):
     from werckercli.commands.login import login\
         as command_login
 
-    print args
     if args['apps'] and args['create']:
         command_create()
     elif args['create']:

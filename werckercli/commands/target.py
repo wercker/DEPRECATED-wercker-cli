@@ -151,6 +151,7 @@ def print_targets(targets, print_index=False):
         for row in result['data']:
             if print_index:
                 row['index'] = index + 1
+            index += 1
             store_highest_length(max_lengths, row, props)
 
         print_hr(max_lengths, first=True)
