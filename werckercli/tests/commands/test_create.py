@@ -37,7 +37,7 @@ from werckercli.commands import create
 #         )
 #         self.assertEqual(
 #             result,
-#             "git@github.com:wercker/wercker-bruticus.git"
+#             "git@github.com:wercker/wercker-cli.git"
 #         )
 
 #     @mock.patch("werckercli.decorators.login_required", test_decorator)
@@ -56,7 +56,7 @@ from werckercli.commands import create
 #         )
 #         self.assertEqual(
 #             result,
-#             "git@github.com:wercker/wercker-bruticus.git"
+#             "git@github.com:wercker/wercker-cli.git"
 #         )
 
 #     @mock.patch("werckercli.decorators.login_required", test_decorator)
@@ -102,7 +102,7 @@ from werckercli.commands import create
 #         result = my_create.create()
         # self.assertEqual(
         #     result,
-        #     "git@github.com:wercker/wercker-bruticus.git"
+        #     "git@github.com:wercker/wercker-cli.git"
         # )
 
 #     @mock.patch("werckercli.decorators.login_required", test_decorator)
@@ -114,7 +114,7 @@ from werckercli.commands import create
 #         result = my_create.create()
         # self.assertEqual(
         #     result,
-        #     "git@github.com:wercker/wercker-bruticus.git"
+        #     "git@github.com:wercker/wercker-cli.git"
         # )
 
 

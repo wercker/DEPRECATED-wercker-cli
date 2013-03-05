@@ -174,7 +174,7 @@ class PickUrlOneOptionTests(TestCase):
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
-            "git@github.com:wercker/wercker-bruticus.git"
+            "git@github.com:wercker/wercker-cli.git"
         )
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))

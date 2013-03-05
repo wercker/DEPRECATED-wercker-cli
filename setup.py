@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Setup file for wercker-bruticus
+# Setup file for wercker-cli
 # Copyright (C) 20013 Wercker <pleasemailus@wercker.com>
 
 try:
@@ -21,7 +21,7 @@ if has_setuptools:
     setup_kwargs['test_suite'] = 'werckercli.tests.test_suite'
 
 # print has_setuptools
-setup(name='wercker-bruticus',
+setup(name='wercker-cli',
       description='wercker command line interface',
       keywords='cli, command line',
       version=werckercli_version_string,
