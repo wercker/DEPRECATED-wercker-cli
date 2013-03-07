@@ -1,8 +1,10 @@
-#!/usr/bin/python
 # -*- coding: UTF-8 -*-
+#!/usr/bin/python
+
 import datetime
 import re
 
+# from clint.textui import puts, colored
 from werckercli.cli import term, puts
 
 
@@ -38,7 +40,7 @@ def store_highest_length(list_lengths, row, props=None):
 
 def print_line(list_lengths, row, props=None):
 
-    line = "│ "
+    line = u"│ "
 
     if props:
         values_list = props
@@ -47,33 +49,35 @@ def print_line(list_lengths, row, props=None):
 
     for i in range(len(values_list)):
         if i > 0:
-            line += "│ "
+            line += u"│ "
 
         if props:
             try:
-                value = row[props[i]]
+                value = str(row[props[i]])
             except KeyError:
-                value = '-'
-            value = str(value)
+                value = u'-'
+            value = value
         else:
-            value = str(row[i])
+            value = row[i]
+
+        value = value.encode("utf-8")
 
         value = value.ljust(list_lengths[i])
-        if value.startswith("passed "):
+        if value.startswith(u"passed "):
             value = term.green(value)
-        elif value.startswith("failed "):
+        elif value.startswith(u"failed "):
             value = term.red(value)
 
         line += value
 
-    line += "│"
+    line += u"│"
 
     puts(line)
 
 
 def print_hr(lengths, first=False):
 
-    line = ""
+    line = u""
     length = len(lengths)
     for i in range(length):
 
@@ -81,21 +85,21 @@ def print_hr(lengths, first=False):
 
         if i == 0:
             if first:
-                line += "┌─"
+                line += u"┌─"
             else:
-                line += "├─"
+                line += u"├─"
         else:
             if first:
-                line += "┬─"
+                line += u"┬─"
             else:
-                line += "┼─"
+                line += u"┼─"
 
-        line += value * "─"
+        line += value * u"─"
         if i == length - 1:
             if first:
-                line += "┐"
+                line += u"┐"
             else:
-                line += "┤"
+                line += u"┤"
     puts(line)
 
 
@@ -108,7 +112,7 @@ def get_terminal_size():
 
     def ioctl_GWINSZ(fd):
         import fcntl
-        import term, putsios
+        import termios
 
         return struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
 

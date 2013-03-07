@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from __future__ import print_function
 import os
 
@@ -11,17 +14,17 @@ term = Terminal()
 
 def puts(content):
     # print_function content
-    print(content)
+    print(content.encode("utf-8"))
     # pass
 
 
 def get_intro():
-    intro = 23*"-"
-    intro += "\n"
-    intro += 'welcome to ' + term.green('wercker-cli')
-    intro += "\n"
-    intro += 23*"-"
-    intro += "\n"
+    intro = 23*u"-"
+    intro += u"\n"
+    intro += u'welcome to ' + term.green('wercker-cli')
+    intro += u"\n"
+    intro += 23*u"-"
+    intro += u"\n"
 
     return intro
 

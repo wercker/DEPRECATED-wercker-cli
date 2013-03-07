@@ -18,7 +18,10 @@ from werckercli import authentication
 
 class DoLoginTests(BasicClientCase):
 
-    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
+    @mock.patch(
+        'werckercli.authentication.getpass',
+        mock.Mock(return_value='test')
+    )
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
     @mock.patch('werckercli.authentication.puts', mock.Mock())
     def test_do_Login(self):
@@ -71,7 +74,10 @@ class DoLoginTests(BasicClientCase):
 
         self.assertEqual(result, self.valid_token + "1")
 
-    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
+    @mock.patch(
+        'werckercli.authentication.getpass',
+        mock.Mock(return_value='test')
+    )
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
     @mock.patch('werckercli.authentication.puts', mock.Mock())
     def test_do_login_retry_test(self):
@@ -172,8 +178,14 @@ class GetAccessTokenTests(BasicClientCase):
         result = my_authentication.get_access_token()
         self.assertEqual(result, self.valid_token)
 
-    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
-    @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
+    @mock.patch(
+        'werckercli.authentication.getpass',
+        mock.Mock(return_value='test')
+    )
+    @mock.patch(
+        '__builtin__.raw_input',
+        mock.Mock(return_value='test')
+    )
     def test_login_again(self):
         self.test_new_login()
 
@@ -181,7 +193,10 @@ class GetAccessTokenTests(BasicClientCase):
         self.test_new_login()
 
     @mock.patch('werckercli.authentication.puts', mock.Mock(return_value=None))
-    @mock.patch('werckercli.authentication.get_value', mock.Mock(return_value=None))
+    @mock.patch(
+        'werckercli.authentication.get_value',
+        mock.Mock(return_value=None)
+    )
     @mock.patch(
         'werckercli.authentication.do_login',
         mock.Mock(return_value=None)
