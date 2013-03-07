@@ -38,7 +38,7 @@ setup(name='wercker',
       install_requires=[
           'dulwich',
           'docopt',
-          'clint',
+          'blessings',
           'requests',
       ],
       tests_require=tests_require,
