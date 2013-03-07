@@ -44,7 +44,7 @@ Shows the status of the latest build.
 Starts a simple wizard like setup for deploying your latest build to a deploy target.
 
 ### login
-Retreives a login token for wercker and stores it in the .netrc in the users' home folder.
+Retrieves a login token for wercker and stores it in the .netrc in the users' home folder.
 
 ### logout
 Removes the login token from the .netrc file
