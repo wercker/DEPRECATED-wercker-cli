@@ -109,3 +109,23 @@ def format_date(dateString):
              re.split('[^\d]', dateString)[:-1]
              )
     )).strftime("%x %X")
+
+
+def print_progress(percentage, prefix="progress", add_percentage=True):
+
+    bar_width = term.width - len(prefix) - 3
+
+    if add_percentage:
+        bar_width -= 6
+    per_percent = bar_width/100.0
+
+    filled = int(per_percent * percentage)
+
+    bar = prefix + u" ["
+    bar += term.black_on_white + (u"-" * filled) + term.normal + ((bar_width - filled) * u".")
+    bar += u"]"
+
+    if add_percentage:
+        bar += " {percentage:3.1f}%".format(percentage=percentage)
+
+    puts(bar)

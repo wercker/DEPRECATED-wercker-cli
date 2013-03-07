@@ -178,3 +178,12 @@ def print_builds(builds, print_index=False, limit=5):
         for row in result:
             print_line(max_lengths, row, props)
         print_hr(max_lengths)
+
+
+@login_required
+def monitor_builds(valid_token=None):
+
+    if not valid_token:
+        raise ValueError("A valid token is required!")
+
+    pass

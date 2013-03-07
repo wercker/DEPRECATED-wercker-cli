@@ -58,6 +58,9 @@ def handle_commands(args):
         as command_clear_settings
     from werckercli.commands.login import login\
         as command_login
+    from werckercli.commands.build import monitor_builds\
+        as command_monitor_builds
+
 
     try:
         if args['apps'] and args['create']:
@@ -93,6 +96,9 @@ def handle_commands(args):
             command_login()
         elif args['logout']:
             command_clear_settings()
+        elif 'builds' in args and args['builds']:
+            if 'monitor' in args and args['monitor']:
+                command_monitor_builds
     except KeyboardInterrupt:
         puts("\nAborted...")
 
