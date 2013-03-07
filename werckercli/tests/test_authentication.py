@@ -18,10 +18,12 @@ from werckercli import authentication
 
 class DoLoginTests(BasicClientCase):
 
-    @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
+    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
-    @mock.patch('clint.textui.puts', mock.Mock())
+    @mock.patch('werckercli.authentication.puts', mock.Mock())
     def test_do_Login(self):
+        from werckercli.cli import puts
+        print puts
         self.register_api_call(
             PATH_BASIC_ACCESS_TOKEN,
             [
@@ -54,8 +56,14 @@ class DoLoginTests(BasicClientCase):
             ]
         )
 
-        my_authentication = reload(authentication)
-        result = my_authentication.do_login()
+        my_authentication = authentication
+
+        with mock.patch('werckercli.cli.puts', mock.Mock):
+            # my_authentication = reload(authentication)
+            # from werckercli.cli import puts
+
+            # print fake_puts, puts
+            result = my_authentication.do_login()
 
         self.assertEqual(result, self.valid_token)
 
@@ -63,9 +71,9 @@ class DoLoginTests(BasicClientCase):
 
         self.assertEqual(result, self.valid_token + "1")
 
-    @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
+    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
-    @mock.patch('clint.textui.puts', mock.Mock())
+    @mock.patch('werckercli.authentication.puts', mock.Mock())
     def test_do_login_retry_test(self):
         self.register_api_call(
             PATH_BASIC_ACCESS_TOKEN,
@@ -111,7 +119,8 @@ class DoLoginTests(BasicClientCase):
                 },
             ]
         )
-        my_authentication = reload(authentication)
+        # my_authentication = reload(authentication)
+        my_authentication = authentication
         result = my_authentication.do_login()
         self.assertEqual(result, self.valid_token)
         self.assertEqual(len(HTTPretty.latest_requests), 3)
@@ -163,7 +172,7 @@ class GetAccessTokenTests(BasicClientCase):
         result = my_authentication.get_access_token()
         self.assertEqual(result, self.valid_token)
 
-    @mock.patch('getpass.getpass', mock.Mock(return_value='test'))
+    @mock.patch('werckercli.authentication.getpass', mock.Mock(return_value='test'))
     @mock.patch('__builtin__.raw_input', mock.Mock(return_value='test'))
     def test_login_again(self):
         self.test_new_login()
@@ -171,15 +180,16 @@ class GetAccessTokenTests(BasicClientCase):
         # login again
         self.test_new_login()
 
-    @mock.patch('clint.textui.puts', mock.Mock(return_value=None))
-    @mock.patch('werckercli.config.get_value', mock.Mock(return_value=None))
+    @mock.patch('werckercli.authentication.puts', mock.Mock(return_value=None))
+    @mock.patch('werckercli.authentication.get_value', mock.Mock(return_value=None))
     @mock.patch(
         'werckercli.authentication.do_login',
         mock.Mock(return_value=None)
     )
     def test_login_failed(self):
 
-        my_authentication = reload(authentication)
+        # my_authentication = reload(authentication)
+        my_authentication = authentication
 
         with mock.patch(
             "werckercli.authentication.do_login",

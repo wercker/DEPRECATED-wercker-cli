@@ -123,12 +123,13 @@ class EnterUrlTests(TestCase):
         mock.Mock(return_value=VALID_GITHUB_SSH_URL)
     )
     def test_valid_ssh(self):
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.enter_url()
 
         self.assertEqual(result, VALID_GITHUB_SSH_URL)
 
-    @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
+    @mock.patch('werckercli.cli.puts', mock.Mock(return_value=False))
     @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=True))
     @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0))
     @mock.patch(
@@ -136,12 +137,13 @@ class EnterUrlTests(TestCase):
         mock.Mock(return_value="INVALID_GITHUB_SSH_URL")
     )
     def test_force_unknown_location(self):
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.enter_url(loop=False)
 
         self.assertEqual(result, "INVALID_GITHUB_SSH_URL")
 
-    @mock.patch('clint.textui.puts', mock.Mock(return_value=False))
+    @mock.patch('werckercli.cli.puts', mock.Mock(return_value=False))
     @mock.patch('werckercli.prompt.yn', mock.Mock(return_value=False))
     @mock.patch('werckercli.git.get_priority', mock.Mock(return_value=0))
     @mock.patch(
@@ -167,10 +169,11 @@ class PickUrlOneOptionTests(TestCase):
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value=""))
     @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_create_default(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
@@ -179,10 +182,11 @@ class PickUrlOneOptionTests(TestCase):
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))
     @mock.patch("werckercli.cli.enter_url", mock.Mock(return_value=""))
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_create_1(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
@@ -190,10 +194,11 @@ class PickUrlOneOptionTests(TestCase):
         )
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_create_2(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         with mock.patch(
             "werckercli.cli.enter_url",
             mock.Mock(return_value="VALID_URL")
@@ -209,10 +214,11 @@ class PickUrlOneOptionTests(TestCase):
         "__builtin__.raw_input",
         mock.Mock(side_effect=["1=default", "2"])
     )
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_faulty_input(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         with mock.patch(
             "werckercli.cli.enter_url",
             mock.Mock(return_value="VALID_URL")
@@ -236,10 +242,11 @@ class PickUrlThreeOptionTests(TestCase):
     ]
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="2"))
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_create_2(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
@@ -258,10 +265,11 @@ class PickUrlOneLowPrioOptionTests(TestCase):
     ]
 
     @mock.patch("__builtin__.raw_input", mock.Mock(return_value="1"))
-    @mock.patch("clint.textui.puts", mock.Mock())
+    @mock.patch("werckercli.cli.puts", mock.Mock())
     def test_create_2(self):
 
-        my_cli = reload(cli)
+        # my_cli = reload(cli)
+        my_cli = cli
         result = my_cli.pick_url(self.options)
         self.assertEqual(
             result,
@@ -276,10 +284,10 @@ class PickProjectName(TestCase):
         mock.Mock(return_value=VALID_GITHUB_SSH_URL)
     )
     @mock.patch(
-        "clint.textui.puts",
+        "werckercli.cli.puts",
         mock.Mock(return_value=VALID_GITHUB_SSH_URL)
     )
     def test_get_bitbucket_name(self):
-        reload(cli)
+        # reload(cli)
         name = cli.pick_project_name(VALID_GITHUB_SSH_URL)
         self.assertEqual(name, VALID_GITHUB_SSH_URL)

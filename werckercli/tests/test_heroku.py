@@ -1,4 +1,4 @@
-
+import mock
 from werckercli.tests import (
     TestCase,
     TempHomeSettingsCase,
@@ -59,6 +59,10 @@ class GetTokenNoTests(TempHomeSettingsCase):
 class GetTokenYesTests(TempHomeSettingsCase):
     template_name = "home-with-netrc"
 
+    @mock.patch(
+        'werckercli.heroku.get_value',
+        mock.Mock(return_value="1234567890123456789912345678901234567890")
+    )
     def test_token_available(self):
         result = heroku.get_token()
 

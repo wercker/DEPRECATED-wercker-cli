@@ -30,6 +30,7 @@ class BasicClientTests(BasicClientCase):
 
         os.environ['wercker_url'] = self.wercker_url
 
+    @mock.patch("werckercli.client.puts", mock.Mock())
     def test_core_and_environ_settings(self):
 
         c = Client()
@@ -43,6 +44,7 @@ class BasicClientTests(BasicClientCase):
 
         self.assertFalse(c.wercker_url == self.wercker_url)
 
+    @mock.patch("werckercli.client.puts", mock.Mock())
     def test_do_post(self):
 
         asserted_return = {"status_code": "200"}
@@ -66,6 +68,7 @@ class BasicClientTests(BasicClientCase):
         self.assertEqual(result, asserted_return)
         self.assertEqual(json.dumps(result), asserted_return_string)
 
+    @mock.patch("werckercli.client.puts", mock.Mock())
     def test_request_oauth_token(self):
 
         expected_response = {'all_good': 'true'}
@@ -86,6 +89,7 @@ class BasicClientTests(BasicClientCase):
 
         self.assertEqual(expected_response, result)
 
+    @mock.patch("werckercli.client.puts", mock.Mock())
     def test_create_project(self):
 
         with mock.patch.object(

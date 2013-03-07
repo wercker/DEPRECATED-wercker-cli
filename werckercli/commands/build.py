@@ -1,5 +1,3 @@
-from clint.textui import puts, colored
-
 from werckercli.decorators import login_required
 from werckercli.client import Client
 from werckercli.prompt import get_value_with_default
@@ -11,6 +9,7 @@ from werckercli.printer import (
 )
 
 # from werckercli.commands.target import
+from werckercli.cli import term, puts
 
 from werckercli.config import (
     get_value,
@@ -34,7 +33,7 @@ def build_list(valid_token=None, limit=5):
 
     if not projectId:
         puts(
-            colored.red("Error: ") +
+            term.red("Error: ") +
             "No project found. Please create or link a project first"
         )
 
@@ -54,14 +53,14 @@ def build_deploy(valid_token=None):
 
     if not projectId:
         puts(
-            colored.red("Error: ") +
+            term.red("Error: ") +
             "No project found. Please create or link a project first"
         )
 
     builds = get_builds(valid_token, projectId)
 
     if type(builds) is not list or len(builds) == 0:
-        puts(colored.yellow("warning: ") + "No builds found.")
+        puts(term.yellow("warning: ") + "No builds found.")
         return
 
     passed_builds = [build for build in builds if build['result'] == "passed"]
@@ -83,7 +82,7 @@ def build_deploy(valid_token=None):
             deploy_index = valid_values.index(result)
             break
         else:
-            puts(colored.red("warning: ") + " invalid build selected.")
+            puts(term.red("warning: ") + " invalid build selected.")
 
     target_index = pick_target(valid_token, projectId)
 
@@ -96,9 +95,9 @@ def build_deploy(valid_token=None):
     )
 
     if "success" in result and result['success'] is True:
-        puts(colored.green("Build scheduled for deploy"))
+        puts(term.green("Build scheduled for deploy"))
     else:
-        puts(colored.red("Error: ") + "Unable to schedule deploy")
+        puts(term.red("Error: ") + "Unable to schedule deploy")
 
 
 def get_builds(valid_token, projectId):

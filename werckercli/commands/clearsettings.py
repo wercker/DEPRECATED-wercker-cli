@@ -1,8 +1,7 @@
 # import os
 # import shutil
 
-from clint.textui import puts, colored
-
+from werckercli.cli import term, puts
 from werckercli import prompt
 # from werckercli.paths import get_global_wercker_path
 from werckercli import config
@@ -22,11 +21,11 @@ for the current user on this machine"""
         if sure:
             # shutil.rmtree(get_global_wercker_path())
             config.set_value(config.VALUE_USER_TOKEN, None)
-            puts(colored.green("wercker settings removed succesfully."))
+            puts(term.green("wercker settings removed succesfully."))
             return True
         else:
-            puts(colored.yellow("cancelled."))
+            puts(term.yellow("cancelled."))
     else:
-        puts(colored.yellow("no settings found."))
+        puts(term.yellow("no settings found."))
 
     # return False

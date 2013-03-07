@@ -3,7 +3,7 @@
 import datetime
 import re
 
-from clint.textui import puts, colored
+from werckercli.cli import term, puts
 
 
 def store_highest_length(list_lengths, row, props=None):
@@ -60,9 +60,9 @@ def print_line(list_lengths, row, props=None):
 
         value = value.ljust(list_lengths[i])
         if value.startswith("passed "):
-            value = colored.green(value)
+            value = term.green(value)
         elif value.startswith("failed "):
-            value = colored.red(value)
+            value = term.red(value)
 
         line += value
 
@@ -108,7 +108,7 @@ def get_terminal_size():
 
     def ioctl_GWINSZ(fd):
         import fcntl
-        import termios
+        import term, putsios
 
         return struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
 

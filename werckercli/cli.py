@@ -1,15 +1,24 @@
+from __future__ import print_function
 import os
 
-from clint.textui import colored, puts, indent
+from blessings import Terminal
 
 from werckercli.git import get_priority
 from werckercli import prompt
+
+term = Terminal()
+
+
+def puts(content):
+    # print_function content
+    print(content)
+    # pass
 
 
 def get_intro():
     intro = 23*"-"
     intro += "\n"
-    intro += 'welcome to ' + colored.green('wercker-cli')
+    intro += 'welcome to ' + term.green('wercker-cli')
     intro += "\n"
     intro += 23*"-"
     intro += "\n"
@@ -94,7 +103,7 @@ def enter_url(loop=True):
         if url != "":
             if get_priority(url, "custom") == 0:
                 puts(
-                    colored.yellow("Warning:") +
+                    term.yellow("Warning:") +
                     " This is not a valid ssh url for github/bitbucket."
                 )
 
@@ -122,23 +131,22 @@ def pick_url(options):
     enter_custom_choice = 1
     default_choice = 1
 
-    with indent(indent=1):
-        for option in options:
-            if(option.priority < 1):
-                puts('(%d) %s ' % (index, colored.red(option.url)))
-                if(default_choice == index):
-                    default_choice += 1
-            else:
-                to_print = '(%d) %s ' % (index, option.url)
+    for option in options:
+        if(option.priority < 1):
+            puts(' (%d) %s ' % (index, term.red(option.url)))
+            if(default_choice == index):
+                default_choice += 1
+        else:
+            to_print = ' (%d) %s ' % (index, option.url)
 
-                if(index == default_choice):
-                    to_print = colored.green(to_print)
-                puts(to_print)
-            index += 1
+            if(index == default_choice):
+                to_print = term.green(to_print)
+            puts(to_print)
+        index += 1
 
-        enter_custom_choice = len(options) + 1
+    enter_custom_choice = len(options) + 1
 
-        puts('(%d) enter a new location' % index)
+    puts('(%d) enter a new location' % index)
 
     def option_to_str(i):
         if not i == default_choice:

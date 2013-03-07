@@ -1,6 +1,6 @@
 from getpass import getpass
 
-from clint.textui import puts, colored
+from werckercli.cli import term, puts
 
 from werckercli.client import Client
 from werckercli.config import get_value, set_value, VALUE_USER_TOKEN
@@ -20,7 +20,7 @@ def do_login(retry_count=2):
     elif retry_count > 0:
 
         puts(
-            colored.yellow("warning: ") +
+            term.yellow("warning: ") +
             "login/password incorrect, please try again.\n")
         return do_login(retry_count - 1)
 
@@ -32,7 +32,7 @@ def get_access_token():
     token = get_value(VALUE_USER_TOKEN)
 
     if not token:
-        puts(colored.yellow("Token not found\n"))
+        puts(term.yellow("Token not found\n"))
         puts("Attempting to log in...")
         token = do_login()
 

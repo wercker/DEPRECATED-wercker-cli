@@ -1,7 +1,5 @@
 import os
 
-from clint.textui import puts, colored, indent
-
 from werckercli import git
 from werckercli import heroku
 from werckercli.printer import (
@@ -14,6 +12,7 @@ from werckercli.config import get_value, VALUE_PROJECT_ID, VALUE_WERCKER_URL
 from werckercli.decorators import login_required
 from werckercli.client import Client
 from werckercli.prompt import get_value_with_default
+from werckercli.cli import term, puts
 
 
 @login_required
@@ -29,7 +28,7 @@ def add(valid_token=None):
     options = git.find_heroku_sources(os.curdir)
 
     if len(options) == 0:
-        puts(colored.red("Error: ") + "No heroku remotes found")
+        puts(term.red("Error: ") + "No heroku remotes found")
     elif len(options) == 1:
         _add_heroku_by_git(valid_token, project_id, options[0].url)
 
@@ -41,10 +40,10 @@ def _add_heroku_by_git(token, project_id, git_url):
     heroku_token = heroku.get_token()
 
     if not heroku_token:
-        puts(colored.red("Error: "))
-        with indent(2):
-            puts("Please make sure the heroku-toolbelt is installed")
-            puts("and you are loged in.")
+        puts(term.red("Error: "))
+        # with indent(2):
+        puts("  Please make sure the heroku-toolbelt is installed")
+        puts("  and you are loged in.")
         return
 
     puts("API key found...")
@@ -84,7 +83,7 @@ apps for current heroku user"
 successfully added to the wercker applicaiton" % preferred_app['name'])
 
     elif result['errorMessage']:
-        puts(colored.red("Error: ") + result['errorMessage'])
+        puts(term.red("Error: ") + result['errorMessage'])
 
 
 def get_targets(valid_token, project_id):
@@ -168,7 +167,7 @@ def pick_target(valid_token, projectId):
 
     if not "data" in targets or len(targets['data']) == 0:
         # print targets['data']
-        puts(colored.red("No targets to deploy to were found"))
+        puts(term.red("No targets to deploy to were found"))
         return
 
     print_targets(targets, print_index=True)
@@ -182,7 +181,7 @@ def pick_target(valid_token, projectId):
             target_index = valid_values.index(result)
             break
         else:
-            puts(colored.red("warning: ") + " invalid target selected.")
+            puts(term.red("warning: ") + " invalid target selected.")
 
     return targets['data'][target_index]['id']
 

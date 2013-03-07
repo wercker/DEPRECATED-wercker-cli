@@ -1,9 +1,8 @@
 import os
 
-from clint.textui import puts, colored
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
-
+from werckercli.cli import term, puts
 from werckercli.client import Client
 from werckercli.printer import print_hr, print_line, store_highest_length
 from werckercli.config import get_value, set_value, VALUE_PROJECT_ID
@@ -92,7 +91,7 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
                 if "details" in response['data']:
                     # puts
                     puts(
-                        colored.yellow("Warning: ") +
+                        term.yellow("Warning: ") +
                         response['data']['details']
                     )
 
@@ -124,7 +123,7 @@ def project_build(valid_token=None):
     if response['success'] is False:
         puts("Unable to trigger a build on the default/master branch")
         if "errorMessage" in response:
-            puts(colored.red("Error: ") + response['errorMessage'])
+            puts(term.red("Error: ") + response['errorMessage'])
     else:
         puts("A new build has been created")
     # print code, response

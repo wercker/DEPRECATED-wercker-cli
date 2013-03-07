@@ -1,10 +1,9 @@
-from clint.textui import puts, colored
-
 from werckercli.decorators import login_required
 from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
+from werckercli.cli import term, puts
 from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
@@ -26,7 +25,7 @@ def create(path='.', valid_token=None):
 
     puts(
         "Found %s repository location(s)...\n"
-        % colored.white(str(count))
+        % term.white(str(count))
     )
 
     url = pick_url(options)
@@ -77,7 +76,7 @@ platforms such as Heroku).")
 
     else:
         puts(
-            colored.red("Error: ") +
+            term.red("Error: ") +
             "Unable to create project. Status: %d. Response: " % status
         )
 

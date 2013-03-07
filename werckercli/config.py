@@ -3,7 +3,8 @@ import stat
 from urlparse import urlparse
 import ConfigParser
 
-from clint.textui import puts, colored
+# from clint.textui import puts, colored
+from werckercli.cli import term, puts
 
 import netrc
 from werckercli.paths import find_git_root
@@ -28,7 +29,7 @@ def _get_or_create_netrc_location():
         mode = oct(stat.S_IMODE(result.st_mode))
         if mode != '0600':
             puts(
-                colored.yellow('warning:') +
+                term.yellow('warning:') +
                 'Found permission %s, on %s. It should be 0600' %
                 (mode, file)
             )
@@ -78,7 +79,7 @@ def get_value(name, default_value=None):
 
         if not path:
             puts(
-                colored.red("Error:") +
+                term.red("Error:") +
                 " could not find the root repository."
             )
             return
@@ -90,7 +91,7 @@ def get_value(name, default_value=None):
 
         if not os.path.isfile(file):
             puts(
-                colored.yellow("Warning:") +
+                term.yellow("Warning:") +
                 " could not find a %s file in the application root" %
                 DEFAULT_DOT_WERCKER_NAME
             )
@@ -146,7 +147,7 @@ def set_value(name, value):
 
         if not path:
             puts(
-                colored.red("Error:") +
+                term.red("Error:") +
                 " could not find the root repository."
             )
             return

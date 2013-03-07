@@ -28,8 +28,8 @@ class GetValueUrlTests(GetValueTests):
 
     def test_get_value_heroku_token(self):
 
-        with mock.patch("clint.textui.puts", mock.Mock()) as puts:
-            reload(config)
+        with mock.patch("werckercli.config.puts", mock.Mock()) as puts:
+            # reload(config)
             result = config.get_value(config.VALUE_HEROKU_TOKEN)
 
             self.assertEqual(puts.call_count, 1)
@@ -41,6 +41,7 @@ class GetValueUrlTests(GetValueTests):
 
         self.assertRaises(IOError, config.get_value, config.VALUE_HEROKU_TOKEN)
 
+    @mock.patch("werckercli.config.puts", mock.Mock())
     def test_get_value_project_id(self):
 
         os.chdir(self.get_git_path())
@@ -57,8 +58,8 @@ class GetValueTokenTests(GetValueTests):
     wercker_url = config.DEFAULT_WERCKER_URL
 
     def test_get_value_user_token(self):
-        with mock.patch("clint.textui.puts", mock.Mock()):
-            reload(config)
+        with mock.patch("werckercli.config.puts", mock.Mock()):
+            # reload(config)
 
             result = config.get_value(config.VALUE_USER_TOKEN)
 
@@ -70,8 +71,8 @@ class SetValueTests(BasicClientCase):
     repo_name = "multiple-remotes"
 
     def test_set_value_user_token(self):
-        with mock.patch("clint.textui.puts", mock.Mock()):
-            reload(config)
+        with mock.patch("werckercli.config.puts", mock.Mock()):
+            # reload(config)
 
             config.set_value(config.VALUE_USER_TOKEN, "test@password")
             self.assertEqual(
