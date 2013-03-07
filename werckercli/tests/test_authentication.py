@@ -178,7 +178,6 @@ class GetAccessTokenTests(BasicClientCase):
                 mock.Mock(return_value=VALID_TOKEN))
     def test_new_login(self):
 
-        # my_authentication = reload(authentication)
         my_authentication = authentication
         result = my_authentication.get_access_token()
         self.assertEqual(result, self.valid_token)
