@@ -2,7 +2,7 @@ from getpass import getpass
 
 from werckercli.cli import term, puts
 
-from werckercli.client import Client
+from werckercli import client
 from werckercli.config import get_value, set_value, VALUE_USER_TOKEN
 
 
@@ -10,8 +10,8 @@ def do_login(retry_count=2):
     username = raw_input("username: ")
     password = getpass("password: ")
 
-    client = Client()
-    status, content = client.request_oauth_token(username, password)
+    cl = client.Client()
+    status, content = cl.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
         puts("Login successful.")
