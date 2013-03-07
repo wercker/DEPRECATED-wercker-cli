@@ -19,8 +19,6 @@ Usage:
     wercker targets details
     wercker --version
 
-----
-
 Details:
     create          - Adds an application to wercker
     status          - shows the status of the most recent build
@@ -58,6 +56,7 @@ import werckercli
 puts(get_intro())
 args = docopt.docopt(
     __doc__,
-    version="version " + werckercli.__version__
+    version="version " + werckercli.__version__,
+    help=True
 )
 handle_commands(args)

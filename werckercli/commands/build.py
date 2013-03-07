@@ -116,6 +116,7 @@ def print_builds(builds, print_index=False, limit=5):
 
     header = [
         'result',
+        'progress',
         'branch',
         'hash',
         'created',
@@ -124,6 +125,7 @@ def print_builds(builds, print_index=False, limit=5):
 
     props = [
         'result',
+        'progress',
         'branch',
         # 'deployResult',
         # 'deployBy',
@@ -155,6 +157,10 @@ def print_builds(builds, print_index=False, limit=5):
         for row in result:
             if "startedOn" in row:
                 row['creationDate'] = format_date(row['creationDate'])
+
+            if "progress" in row:
+                row['progress'] = "{progress:.1f}%".format(
+                    progress=row['progress'])
 
             if "commit" in row:
                 row["commit"] = row['commit'][:8]
