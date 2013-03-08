@@ -122,7 +122,8 @@ def print_progress(percentage, prefix="progress", add_percentage=True):
     filled = int(per_percent * percentage)
 
     bar = prefix + u" ["
-    bar += term.black_on_white + (u"-" * filled) + term.normal + ((bar_width - filled) * u".")
+    bar += term.black_on_white + (u"-" * filled) + term.normal +\
+        ((bar_width - filled) * u".")
     bar += u"]"
 
     if add_percentage:
