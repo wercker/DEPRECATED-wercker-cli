@@ -85,20 +85,24 @@ class ProgressBar(object):
         self.stream.flush()
 
     def _at_last_line(self):
-        """Return a context manager that positions the cursor at the last line, lets you write things, and then returns it to its previous position."""
+        """Return a context manager that positions the cursor at the last line,
+lets you write things, and then returns it to its previous position."""
         return self._term.location(0, self.lines)
 
     def dodging(bar):
-        """Return a context manager which erases the bar, lets you output things, and then redraws the bar.
+        """Return a context manager which erases the bar, lets you output
+things, and then redraws the bar.
 
         It's reentrant.
 
         """
         class ShyProgressBar(object):
-            """Context manager that implements a progress bar that gets out of the way"""
+            """Context manager that implements a progress bar that gets out of
+the way"""
 
             def __enter__(self):
-                """Erase the progress bar so bits of disembodied progress bar don't get scrolled up the terminal."""
+                """Erase the progress bar so bits of disembodied progress bar
+don't get scrolled up the terminal."""
                 # My terminal has no status line, so we make one manually.
                 bar._is_dodging += 1  # Increment before calling erase(), which
                                       # calls dodging() again.
