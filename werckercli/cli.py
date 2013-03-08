@@ -61,7 +61,6 @@ def handle_commands(args):
     from werckercli.commands.build import monitor_builds\
         as command_monitor_builds
 
-
     try:
         if args['apps'] and args['create']:
             command_create()

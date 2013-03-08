@@ -7,6 +7,7 @@ Usage:
     wercker deploy
     wercker login
     wercker logout
+    wercker monitor builds
     wercker open targets
     wercker apps link
     wercker apps create
@@ -36,6 +37,7 @@ Details:
     targets add     - add a heroku targets as a deploy target
     targets list    - lists all deploy targets
     targets details - alias for open targets
+
 """
 
 # todo:
