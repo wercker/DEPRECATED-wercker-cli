@@ -125,5 +125,9 @@ def project_build(valid_token=None):
         if "errorMessage" in response:
             puts(term.red("Error: ") + response['errorMessage'])
     else:
+
         puts("A new build has been created")
+
+        if "buildId" in response:
+            return response["buildId"]
     # print code, response

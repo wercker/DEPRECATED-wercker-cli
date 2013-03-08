@@ -82,8 +82,10 @@ def handle_commands(args):
         elif args["builds"]:
             if args['list']:
                 command_builds_list()
-            if args['deploy']:
+            elif args['deploy']:
                 command_builds_deploy()
+            elif 'monitor' in args and args['monitor']:
+                command_monitor_builds()
         elif args['targets']:
             if args['add']:
                 command_add()
@@ -95,9 +97,7 @@ def handle_commands(args):
             command_login()
         elif args['logout']:
             command_clear_settings()
-        elif 'builds' in args and args['builds']:
-            if 'monitor' in args and args['monitor']:
-                command_monitor_builds
+        # print(args)
     except KeyboardInterrupt:
         puts("\nAborted...")
 

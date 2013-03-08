@@ -186,4 +186,15 @@ def monitor_builds(valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    pass
+    from werckercli.commands.project import project_build
+
+    buildId = project_build(valid_token=valid_token)
+
+    if buildId:
+        puts(buildId)
+
+    cl = Client()
+
+    while True:
+
+    # cl = Client()
