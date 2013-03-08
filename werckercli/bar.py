@@ -52,13 +52,21 @@ class ProgressBar(object):
 
         # Figure out graph:
         GRAPH_WIDTH = 14
-        # min() is in case we somehow get the total test count wrong. It's tricky.
-        num_filled = int(round(min(1.0, float(percentage) / self.max) * GRAPH_WIDTH))
+        # min() is in case we somehow get the total test count wrong.
+        # It's tricky.
+        num_filled = int(round(
+            min(1.0, float(percentage) / self.max) * GRAPH_WIDTH
+        ))
+
         graph = ''.join([self._fill_cap(' ' * num_filled),
-                         self._empty_cap(self._empty_char * (GRAPH_WIDTH - num_filled))])
+                        self._empty_cap(
+                            self._empty_char * (GRAPH_WIDTH - num_filled)
+                        )])
 
         # Figure out the test identifier portion:
-        cols_for_path = self.cols - GRAPH_WIDTH - 2  # 2 spaces between path & graph
+        # 2 spaces between path & graph
+        # cols_for_path = self.cols - GRAPH_WIDTH - 2
+
         # if len(test_path) > cols_for_path:
             # test_path = test_path[len(test_path) - cols_for_path:]
         # else:
