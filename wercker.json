@@ -1,6 +1,6 @@
 {
-    "customSteps" : {
-        "install_test_dependencies": [
+    "custom steps" : {
+        "install test dependencies": [
             "pip install coverage",
             "pip install httpretty",
             "pip install mock",
