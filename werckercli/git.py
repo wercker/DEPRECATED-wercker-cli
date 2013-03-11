@@ -3,6 +3,11 @@ import re
 from collections import namedtuple
 from dulwich.repo import Repo
 
+from dulwich.errors import (
+    NotGitRepository
+)
+
+
 GITHUB_PATTERNS = [
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*).git',
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)',
@@ -28,10 +33,14 @@ SOURCE_HEROKU = "heroku"
 SOURCE_UNKNOWN = ""
 RemoteOption = namedtuple('RemoteOption', 'url remote priority')
 
-
 def get_remote_options(repo_path, prio_remote="origin"):
 
-    repo = Repo(repo_path)
+    try:
+        repo = Repo(repo_path)
+    except NotGitRepository:
+        # puts("No git repository found!")
+        return []
+
     conf = repo.get_config()
     options = []
 

@@ -30,6 +30,10 @@ def create(path='.', valid_token=None):
         % term.white(str(count))
     )
 
+    if count == 0:
+        puts(term.red("Fatal:") + " wercker create has to be run from inside a git repository.")
+        return
+
     url = pick_url(options)
     url = convert_to_url(url)
 
