@@ -8,6 +8,7 @@ Usage:
     wercker login
     wercker logout
     wercker open targets
+    wercker list app jobs
     wercker apps list
     wercker apps link
     wercker apps checkrepo
@@ -61,4 +62,5 @@ args = docopt.docopt(
     version="version " + werckercli.__version__,
     help=True
 )
+
 handle_commands(args)

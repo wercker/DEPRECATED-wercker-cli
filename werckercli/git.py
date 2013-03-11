@@ -4,13 +4,18 @@ from collections import namedtuple
 from dulwich.repo import Repo
 
 GITHUB_PATTERNS = [
+    '(git@)*(github.com):(?P<name>.*)/(?P<project>.*).git',
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)',
+    'https://github.com/(?P<name>.*)/(?P<project>.*).git',
     'https://github.com/(?P<name>.*)/(?P<project>.*)'
 ]
 
 BITBUCKET_PATTERNS = [
+    '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*).git',
     '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)',
+    'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*).git',
     'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*)',
+    'ssh://git@bitbucket.org/(?P<name>.*)/(?P<project>.*).git',
     'ssh://git@bitbucket.org/(?P<name>.*)/(?P<project>.*)'
 ]
 HEROKU_PATTERNS = ['(git@heroku.com):(?P<name>.*)']
@@ -119,6 +124,7 @@ def convert_to_url(url):
         match = re.match(pattern, url)
 
         if match:
+            # print url, pattern, source_type
             source_type = SOURCE_GITHUB
             break
 
@@ -127,18 +133,19 @@ def convert_to_url(url):
             match = re.match(pattern, url)
 
             if match:
+                # print url, pattern, source_type
                 source_type = SOURCE_BITBUCKET
                 break
 
     if source_type == SOURCE_BITBUCKET:
         source_dict = match.groupdict()
-        return "git@bitbucket.org:{owner}/{project}".format(
+        return "git@bitbucket.org:{owner}/{project}.git".format(
             owner=source_dict['name'],
             project=source_dict['project']
         )
     if source_type == SOURCE_GITHUB:
         source_dict = match.groupdict()
-        return "git@github.com:{owner}/{project}".format(
+        return "git@github.com:{owner}/{project}.git".format(
             owner=source_dict['name'],
             project=source_dict['project']
         )
