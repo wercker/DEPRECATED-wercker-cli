@@ -1,7 +1,7 @@
 import os
 
 from werckercli.decorators import login_required
-from werckercli.git import get_remote_options
+from werckercli.git import get_remote_options, convert_to_url
 from werckercli.cli import get_term, puts
 from werckercli.client import Client
 from werckercli.printer import (
@@ -70,7 +70,8 @@ def project_link(valid_token=None):
 
     for option in options:
         for app in result:
-            if app['url'] == option.url:
+            # print option.url, app['url']
+            if convert_to_url(app['url']) == convert_to_url(option.url):
                 set_value(VALUE_PROJECT_ID, app['id'])
                 return
 
