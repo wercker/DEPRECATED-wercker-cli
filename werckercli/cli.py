@@ -14,17 +14,13 @@ terminal_file_handle = sys.stdout
 
 
 def get_term():
-    # globl term
-    # term = "test"
     return Terminal(stream=terminal_file_handle)
 
 
 def puts(content):
-    # print_function content
     terminal_file_handle.write(
         content.encode("utf-8") + '\n'
     )
-    # pass
 
 
 def get_intro():
@@ -43,7 +39,6 @@ def handle_commands(args):
     """ Core handler for redirecting to the proper commands."""
 
     # print args
-
     from werckercli.commands.create import create\
         as command_create
     from werckercli.commands.project import project_list\
