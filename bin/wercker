@@ -8,6 +8,7 @@ Usage:
     wercker login
     wercker logout
     wercker open targets
+    wercker apps list
     wercker apps link
     wercker apps create
     wercker apps checkrepo
@@ -27,6 +28,7 @@ Details:
                       machine
     logout          - Removes the login token from the machine
     open targets    - opens a webpage showing a deploy target's details
+    apps list       - List apps the user has access to
     apps create     - Adds an application to wercker
     apps link       - link repository back up to an apps on wercker
     apps build      - trigger a new build for the current project.
