@@ -33,6 +33,7 @@ SOURCE_HEROKU = "heroku"
 SOURCE_UNKNOWN = ""
 RemoteOption = namedtuple('RemoteOption', 'url remote priority')
 
+
 def get_remote_options(repo_path, prio_remote="origin"):
 
     try:
