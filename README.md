@@ -17,6 +17,7 @@ Usage:
         wercker login
         wercker logout
         wercker open targets
+        wercker apps list
         wercker apps link
         wercker apps create
         wercker apps checkrepo
@@ -51,6 +52,12 @@ Removes the login token from the .netrc file
 
 ### open targets
 Opens a webpage showing a deploy target's details
+
+### apps list
+Shows a list of all applications available to the user
+
+### list app jobs
+Shows a list of all builds and deploys that are still scheduled.
 
 ### apps create
 This is an alias for `wercker create`
