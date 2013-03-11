@@ -11,7 +11,6 @@ Usage:
     wercker list app jobs
     wercker apps list
     wercker apps link
-    wercker apps create
     wercker apps checkrepo
     wercker apps build
     wercker builds list
