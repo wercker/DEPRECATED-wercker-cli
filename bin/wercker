@@ -5,16 +5,13 @@ Usage:
     wercker create
     wercker status
     wercker deploy
+    wercker builds
+    *wercker open targets
+    wercker queue
+    wercker apps
+    wercker link
     wercker login
     wercker logout
-    wercker open targets
-    wercker list app jobs
-    wercker apps list
-    wercker apps link
-    wercker apps checkrepo
-    wercker apps build
-    wercker builds list
-    wercker builds deploy
     wercker targets list
     wercker targets add
     wercker targets details
@@ -42,6 +39,7 @@ Details:
 
 # todo:
 #    wercker targets <name>
+#    wercker jobs -> jobs page on beta.wercker.com
 
 import docopt
 
