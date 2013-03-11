@@ -48,7 +48,7 @@ def store_highest_length(list_lengths, row, props=None):
     # print total_length
 
 
-def print_line(list_lengths, row, props=None):
+def print_line(list_lengths, row, props=None, line_index=0):
 
     term = get_term()
 
@@ -58,6 +58,8 @@ def print_line(list_lengths, row, props=None):
         values_list = props
     else:
         values_list = row
+
+    more_lines = False
 
     for i in range(len(values_list)):
         if i > 0:
@@ -72,7 +74,14 @@ def print_line(list_lengths, row, props=None):
         else:
             value = row[i]
 
-        value = value.split("\n")[0]
+        values = value.split("\n")
+        if line_index < len(values):
+            value = values[line_index]
+
+            if line_index + 1 < len(values):
+                more_lines = True
+        else:
+            value = ""
 
         value = value.encode("utf-8")
 
@@ -87,6 +96,9 @@ def print_line(list_lengths, row, props=None):
     line += u"│"
 
     puts(line)
+
+    if more_lines:
+        print_line(list_lengths, row, props=props, line_index=line_index+1)
 
 
 def print_hr(lengths, first=False):
