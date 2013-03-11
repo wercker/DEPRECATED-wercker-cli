@@ -14,6 +14,7 @@ PATH_GET_APPLICATIONS = 'applications'
 PATH_DEPLOY = 'deploy'
 PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
 PATH_GET_BUILDS = 'project/{projectId}/builds'
+PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -128,6 +129,13 @@ class Client(LegacyClient):
 
         return self.do_get(
             PATH_CHECK_PERMISSIONS.format(projectId=project),
+            {'token': token}
+        )
+
+    def get_deploys(self, token, deploy_target_id):
+
+        return self.do_get(
+            PATH_GET_DEPLOYS.format(deployTargetId=deploy_target_id),
             {'token': token}
         )
 

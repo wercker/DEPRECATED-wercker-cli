@@ -63,6 +63,8 @@ def handle_commands(args):
         as command_clear_settings
     from werckercli.commands.login import login\
         as command_login
+    from werckercli.commands.project import project_list_queue\
+        as command_list_jobs
 
     try:
         if args['apps'] and args['create']:
@@ -98,6 +100,11 @@ def handle_commands(args):
             command_login()
         elif args['logout']:
             command_clear_settings()
+        elif \
+                'list' in args and args['list'] and\
+                'app' in args and args['app'] and\
+                'jobs' in args and args['jobs']:
+            command_list_jobs()
     except KeyboardInterrupt:
         puts("\nAborted...")
 

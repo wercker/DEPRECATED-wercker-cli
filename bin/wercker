@@ -62,4 +62,5 @@ args = docopt.docopt(
     version="version " + werckercli.__version__,
     help=True
 )
+
 handle_commands(args)
