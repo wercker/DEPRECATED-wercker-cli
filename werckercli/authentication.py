@@ -1,12 +1,14 @@
 from getpass import getpass
 
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 
 from werckercli import client
 from werckercli.config import get_value, set_value, VALUE_USER_TOKEN
 
 
 def do_login(retry_count=2):
+    term = get_term()
+
     username = raw_input("username: ")
     password = getpass("password: ")
 
@@ -26,6 +28,8 @@ def do_login(retry_count=2):
 
 
 def get_access_token():
+
+    term = get_term()
 
     puts("Looking for login token...")
 

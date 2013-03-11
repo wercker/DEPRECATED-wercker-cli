@@ -5,7 +5,7 @@ import datetime
 import re
 
 # from clint.textui import puts, colored
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 
 
 def store_highest_length(list_lengths, row, props=None):
@@ -27,10 +27,20 @@ def store_highest_length(list_lengths, row, props=None):
         else:
             value = str(row[i])
 
-        length = len(value) + 1
+        lines = value.split("\n")
 
-        if length > list_lengths[i]:
-            list_lengths[i] = length
+        x_length = 0
+
+        for line in lines:
+            if x_length < len(line):
+                x_length = len(line)
+
+        x_length += 1
+
+        if x_length > list_lengths[i]:
+            list_lengths[i] = x_length
+
+    return list_lengths
 
     # lines, columns = get_terminal_size()
 
@@ -39,6 +49,8 @@ def store_highest_length(list_lengths, row, props=None):
 
 
 def print_line(list_lengths, row, props=None):
+
+    term = get_term()
 
     line = u"│ "
 
@@ -59,6 +71,8 @@ def print_line(list_lengths, row, props=None):
             value = value
         else:
             value = row[i]
+
+        value = value.split("\n")[0]
 
         value = value.encode("utf-8")
 

@@ -10,7 +10,8 @@ GITHUB_PATTERNS = [
 
 BITBUCKET_PATTERNS = [
     '(git@bitbucket.org):(?P<name>.*)/(?P<project>.*)',
-    'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*)'
+    'https://(?P<login>.*)@bitbucket.org/(?P<name>.*)/(?P<project>.*)',
+    'ssh://git@bitbucket.org/(?P<name>.*)/(?P<project>.*)'
 ]
 HEROKU_PATTERNS = ['(git@heroku.com):(?P<name>.*)']
 

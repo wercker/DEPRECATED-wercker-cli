@@ -9,7 +9,7 @@ from werckercli.printer import (
 )
 
 # from werckercli.commands.target import
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 
 from werckercli.config import (
     get_value,
@@ -25,6 +25,8 @@ from werckercli.commands.target import (
 
 @login_required
 def build_list(valid_token=None, limit=5):
+
+    term = get_term()
 
     if not valid_token:
         raise ValueError("A valid token is required!")
@@ -48,6 +50,8 @@ def build_deploy(valid_token=None):
 
     if not valid_token:
         raise ValueError("A valid token is required!")
+
+    term = get_term()
 
     projectId = get_value(VALUE_PROJECT_ID)
 

@@ -1,14 +1,14 @@
 # import os
 # import shutil
 
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 from werckercli import prompt
 # from werckercli.paths import get_global_wercker_path
 from werckercli import config
 
 
 def clear_settings():
-
+    term = get_term()
     # home = get_global_wercker_path()
     # print home
 

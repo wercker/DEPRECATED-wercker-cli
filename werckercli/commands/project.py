@@ -2,7 +2,7 @@ import os
 
 from werckercli.decorators import login_required
 from werckercli.git import get_remote_options
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 from werckercli.client import Client
 from werckercli.printer import print_hr, print_line, store_highest_length
 from werckercli.config import get_value, set_value, VALUE_PROJECT_ID
@@ -72,6 +72,8 @@ def project_link(valid_token=None):
 def project_check_repo(valid_token=None, failure_confirmation=False):
     if not valid_token:
         raise ValueError("A valid token is required!")
+
+    term = get_term()
 
     puts("Checking permissions...")
 

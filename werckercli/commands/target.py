@@ -12,12 +12,12 @@ from werckercli.config import get_value, VALUE_PROJECT_ID, VALUE_WERCKER_URL
 from werckercli.decorators import login_required
 from werckercli.client import Client
 from werckercli.prompt import get_value_with_default
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 
 
 @login_required
 def add(valid_token=None):
-
+    term = get_term()
     if not valid_token:
         raise ValueError("A valid token is required!")
 
@@ -34,6 +34,7 @@ def add(valid_token=None):
 
 
 def _add_heroku_by_git(token, project_id, git_url):
+    term = get_term()
     puts("Heroku remote %s selected." % git_url)
 
     puts("Looking for Heroku API key...")
@@ -163,6 +164,7 @@ def print_targets(targets, print_index=False):
 
 
 def pick_target(valid_token, projectId):
+    term = get_term()
     targets = get_targets(valid_token, projectId)
 
     if not "data" in targets or len(targets['data']) == 0:

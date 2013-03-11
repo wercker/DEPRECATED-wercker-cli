@@ -3,7 +3,7 @@ from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
-from werckercli.cli import term, puts
+from werckercli.cli import get_term, puts
 from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
@@ -17,6 +17,8 @@ from werckercli.client import Client
 def create(path='.', valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
+
+    term = get_term()
 
     puts("Searching for git remote information... ")
     options = get_remote_options(path, )

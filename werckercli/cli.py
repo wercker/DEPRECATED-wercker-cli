@@ -3,22 +3,32 @@
 
 from __future__ import print_function
 import os
+import sys
 
 from blessings import Terminal
 
 from werckercli.git import get_priority
 from werckercli import prompt
 
-term = Terminal()
+terminal_file_handle = sys.stdout
+
+
+def get_term():
+    # globl term
+    # term = "test"
+    return Terminal(stream=terminal_file_handle)
 
 
 def puts(content):
     # print_function content
-    print(content.encode("utf-8"))
+    terminal_file_handle.write(
+        content.encode("utf-8") + '\n'
+    )
     # pass
 
 
 def get_intro():
+    term = get_term()
     intro = 23*u"-"
     intro += u"\n"
     intro += u'welcome to ' + term.green('wercker-cli')
@@ -99,6 +109,9 @@ def handle_commands(args):
 
 def enter_url(loop=True):
     """Get an url and validate it, asks confirmation for unsupported urls"""
+
+    term = get_term()
+
     while True:
 
         url = raw_input("Enter a repository url:")
@@ -127,6 +140,9 @@ def enter_url(loop=True):
 
 def pick_url(options):
     """Allows the user to pick one of the options or enter a new locaiton"""
+
+    term = get_term()
+
     puts(
         "Please choose one of the following options: ")
 

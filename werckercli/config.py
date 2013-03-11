@@ -4,7 +4,7 @@ from urlparse import urlparse
 import ConfigParser
 
 # from clint.textui import puts, colored
-from werckercli.cli import term, puts
+from werckercli.cli import puts, get_term
 
 import netrc
 from werckercli.paths import find_git_root
@@ -19,6 +19,7 @@ DEFAULT_DOT_WERCKER_NAME = ".wercker"
 
 
 def _get_or_create_netrc_location():
+    term = get_term()
     try:
         file = os.path.join(os.environ['HOME'], ".netrc")
     except KeyError:
@@ -43,6 +44,7 @@ def _get_or_create_netrc_location():
 
 def get_value(name, default_value=None):
     value = None
+    term = get_term()
 
     if name == VALUE_WERCKER_URL:
         if 'wercker_url' in os.environ.keys():
@@ -114,6 +116,8 @@ def get_value(name, default_value=None):
 
 
 def set_value(name, value):
+
+    term = get_term()
 
     if name == VALUE_USER_TOKEN:
 
