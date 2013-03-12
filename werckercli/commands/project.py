@@ -104,6 +104,12 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
                         term.yellow("Warning: ") +
                         response['data']['details']
                     )
+                else:
+                    puts(
+                        term.yellow("Warning: ") +
+                        "Werckerbot has no access to this repository."
+
+                    )
 
                 if failure_confirmation is True:
                     from werckercli import prompt
