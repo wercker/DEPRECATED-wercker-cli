@@ -113,17 +113,23 @@ def get_username(url):
                 return match.groupdict()['name']
 
 
-def find_heroku_sources(repo_path):
-
-    options = get_remote_options(repo_path)
+def filter_heroku_sources(options):
 
     heroku_options = []
+
     for option in options:
         for pattern in HEROKU_PATTERNS:
             if get_source_type(option.url, pattern) == SOURCE_HEROKU:
                 heroku_options.append(option)
 
     return heroku_options
+
+
+def find_heroku_sources(repo_path):
+
+    options = get_remote_options(repo_path)
+
+    return filter_heroku_sources(options)
 
 
 def convert_to_url(url):

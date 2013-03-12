@@ -7,6 +7,7 @@ from werckercli.cli import get_term, puts
 from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
+    filter_heroku_sources,
     find_heroku_sources
 )
 from werckercli.config import set_value, VALUE_PROJECT_ID
@@ -39,16 +40,9 @@ def create(path='.', valid_token=None):
     puts("Searching for git remote information... ")
     options = get_remote_options(path)
 
-    if options is None:
+    heroku_options = filter_heroku_sources(options)
 
-        error_message = term.red("Fatal:")
-
-        error_message += " wercker create has to be run from inside\
- a git repository."
-
-        puts(error_message)
-
-        return
+    options = [o for o in options if o not in heroku_options]
 
     count = len(options)
 
@@ -88,7 +82,7 @@ link between the source code and wercker.")
         puts("trying to find deploy target information (for \
 platforms such as Heroku).")
 
-        target_options = find_heroku_sources(path)
+        target_options = heroku_options
 
         nr_targets = len(target_options)
         puts("%s automatic supported targets found." % str(nr_targets))

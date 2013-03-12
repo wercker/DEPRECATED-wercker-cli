@@ -167,7 +167,7 @@ def pick_url(options):
 
     enter_custom_choice = len(options) + 1
 
-    puts('(%d) enter a new location' % index)
+    puts(' (%d) enter a new location' % index)
 
     def option_to_str(i):
         if not i == default_choice:
