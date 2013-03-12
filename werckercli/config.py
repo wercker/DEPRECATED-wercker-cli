@@ -42,7 +42,7 @@ def _get_or_create_netrc_location():
     return file
 
 
-def get_value(name, default_value=None):
+def get_value(name, default_value=None, path=os.curdir):
     value = None
     term = get_term()
 
@@ -77,12 +77,12 @@ def get_value(name, default_value=None):
     elif name == VALUE_PROJECT_ID:
         # from paths import find_git_root
 
-        path = find_git_root(os.curdir)
+        path = find_git_root(path)
 
         if not path:
             puts(
                 term.red("Error:") +
-                " could not find the root repository."
+                " could not find a git repository."
             )
             return
 

@@ -40,7 +40,7 @@ def get_remote_options(repo_path, prio_remote="origin"):
         repo = Repo(repo_path)
     except NotGitRepository:
         # puts("No git repository found!")
-        return []
+        return None
 
     conf = repo.get_config()
     options = []

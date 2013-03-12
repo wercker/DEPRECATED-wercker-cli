@@ -11,6 +11,7 @@ from werckercli.git import (
 )
 from werckercli.config import set_value, VALUE_PROJECT_ID
 from werckercli.client import Client
+from werckercli.paths import find_git_root
 
 
 @login_required
@@ -20,17 +21,25 @@ def create(path='.', valid_token=None):
 
     term = get_term()
 
+    path = find_git_root(path)
+
+    # print path
+
+    if not path:
+        puts(
+            term.red("Error:") +
+            " could not find a repository." +
+            "wercker create requires a git repository. Create/clone a\
+ repository first."
+        )
+        return
+
+    term = get_term()
+
     puts("Searching for git remote information... ")
-    options = get_remote_options(path, )
+    options = get_remote_options(path)
 
-    count = len(options)
-
-    puts(
-        "Found %s repository location(s)...\n"
-        % term.white(str(count))
-    )
-
-    if count == 0:
+    if options is None:
 
         error_message = term.red("Fatal:")
 
@@ -40,6 +49,13 @@ def create(path='.', valid_token=None):
         puts(error_message)
 
         return
+
+    count = len(options)
+
+    puts(
+        "Found %s repository location(s)...\n"
+        % term.white(str(count))
+    )
 
     url = pick_url(options)
     url = convert_to_url(url)
