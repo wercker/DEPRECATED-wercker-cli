@@ -14,18 +14,16 @@ Usage:
         wercker create
         wercker status
         wercker deploy
+        wercker builds
+        wercker open targets
+        wercker queue
+        wercker apps
+        wercker link
         wercker login
         wercker logout
-        wercker open targets
-        wercker apps list
-        wercker apps link
-        wercker apps create
-        wercker apps checkrepo
-        wercker apps build
-        wercker builds list
-        wercker builds deploy
-        wercker targets list
         wercker targets add
+        wercker targets list
+        wercker targets details
         wercker --version
 
 ## Commands
@@ -36,7 +34,7 @@ Starts a wizard like setup, to get your application fully working on wercker. In
 * triggers a build
 * tries to find and add a heroku deploy target.
 
-The newly created application information is stored in a .wercker file in the root of your repository. You don't need to add this file to your git repository, if a user has access to the project, a user can run `wercker app link` to rebuild the .wercker file
+The newly created application information is stored in a .wercker file in the root of your repository. You don't need to add this file to your git repository, if a user has access to the project, a user can run `wercker link` to rebuild the .wercker file
 
 ### status
 Shows the status of the latest build.
@@ -53,26 +51,17 @@ Removes the login token from the .netrc file
 ### open targets
 Opens a webpage showing a deploy target's details
 
-### apps list
+### apps
 Shows a list of all applications available to the user
 
-### list app jobs
+### queue
 Shows a list of all builds and deploys that are still scheduled.
-
-### apps create
-This is an alias for `wercker create`
 
 ### apps link
 Retrieve application information for storing in the .wercker file.
 
-### apps checkrepo
-Check the permissions for the current repository. If werckerbot has access to the repository through a group (on bitbucket) or the linked bitbucket/github account does not have sufficient rights to check permissions the tool will be unable to verify.
-
-### builds list
+### builds
 Shows a list of the most recent builds
-
-### builds deploy
-An alias for `wercker deploy`
 
 ### targets add
 Add a new deploy target to your application. Currently only supports heroku targets.
