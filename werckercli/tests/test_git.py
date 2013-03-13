@@ -13,7 +13,7 @@ from werckercli.tests import (
 from werckercli.git import (
     get_priority,
     get_remote_options,
-    get_source_type,
+    get_source_type_pattern,
     get_username,
     find_heroku_sources,
     convert_to_url,
@@ -88,11 +88,11 @@ class GetRemoteOptionsTests(DataSetTestCase):
         self.assertEqual(len(options), 3)
 
 
-class GetSourceTypeTests(TestCase):
+class GetSourceTypePatternTests(TestCase):
 
     def test_github(self):
 
-        result = get_source_type(
+        result = get_source_type_pattern(
             VALID_GITHUB_SSH_URL,
             GITHUB_PATTERNS[0]
         )
@@ -100,17 +100,20 @@ class GetSourceTypeTests(TestCase):
         self.assertEqual(result, SOURCE_GITHUB)
 
         self.assertEqual(
-            get_source_type(VALID_BITBUCKET_SSH_URL, GITHUB_PATTERNS[0]),
+            get_source_type_pattern(
+                VALID_BITBUCKET_SSH_URL,
+                GITHUB_PATTERNS[0]
+            ),
             None
         )
         self.assertEqual(
-            get_source_type(VALID_HEROKU_SSH_URL, GITHUB_PATTERNS[0]),
+            get_source_type_pattern(VALID_HEROKU_SSH_URL, GITHUB_PATTERNS[0]),
             None
         )
 
     def test_bitbucket(self):
 
-        result = get_source_type(
+        result = get_source_type_pattern(
             VALID_BITBUCKET_SSH_URL,
             BITBUCKET_PATTERNS[0]
         )
@@ -118,17 +121,23 @@ class GetSourceTypeTests(TestCase):
         self.assertEqual(result, SOURCE_BITBUCKET)
 
         self.assertEqual(
-            get_source_type(VALID_GITHUB_SSH_URL, BITBUCKET_PATTERNS[0]),
+            get_source_type_pattern(
+                VALID_GITHUB_SSH_URL,
+                BITBUCKET_PATTERNS[0]
+            ),
             None
         )
         self.assertEqual(
-            get_source_type(VALID_HEROKU_SSH_URL, BITBUCKET_PATTERNS[0]),
+            get_source_type_pattern(
+                VALID_HEROKU_SSH_URL,
+                BITBUCKET_PATTERNS[0]
+            ),
             None
         )
 
     def test_heroku(self):
 
-        result = get_source_type(
+        result = get_source_type_pattern(
             VALID_HEROKU_SSH_URL,
             HEROKU_PATTERNS[0]
         )
@@ -136,11 +145,17 @@ class GetSourceTypeTests(TestCase):
         self.assertEqual(result, SOURCE_HEROKU)
 
         self.assertEqual(
-            get_source_type(VALID_BITBUCKET_SSH_URL, HEROKU_PATTERNS[0]),
+            get_source_type_pattern(
+                VALID_BITBUCKET_SSH_URL,
+                HEROKU_PATTERNS[0]
+            ),
             None
         )
         self.assertEqual(
-            get_source_type(VALID_GITHUB_SSH_URL, HEROKU_PATTERNS[0]),
+            get_source_type_pattern(
+                VALID_GITHUB_SSH_URL,
+                HEROKU_PATTERNS[0]
+            ),
             None
         )
 

@@ -140,7 +140,7 @@ def enter_url(loop=True):
             return
 
 
-def pick_url(options):
+def pick_url(options, allow_custom_input=False):
     """Allows the user to pick one of the options or enter a new locaiton"""
 
     term = get_term()
@@ -167,7 +167,8 @@ def pick_url(options):
 
     enter_custom_choice = len(options) + 1
 
-    puts(' (%d) enter a new location' % index)
+    if allow_custom_input:
+        puts(' (%d) enter a new location' % index)
 
     def option_to_str(i):
         if not i == default_choice:
@@ -175,17 +176,23 @@ def pick_url(options):
         else:
             return str(i) + "=default"
 
-    choices = map(
-        option_to_str,
-        range(1, index + 1)
-    )
+    if allow_custom_input:
+        choices = map(
+            option_to_str,
+            range(1, index + 1)
+        )
+    else:
+        choices = map(
+            option_to_str,
+            range(1, index)
+        )
 
     while True:
 
         url = None
 
         choice = raw_input(
-            "choice (%s): " % (
+            "Make your choice (%s): " % (
                 ",".join(choices),
             )
         )
@@ -206,7 +213,7 @@ def pick_url(options):
             selected = default_choice
 
         if selected:
-            if selected == enter_custom_choice:
+            if allow_custom_input and selected == enter_custom_choice:
                 url = enter_url()
             else:
                 url = options[selected-1].url

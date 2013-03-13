@@ -8,11 +8,13 @@ from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
     filter_heroku_sources,
-    find_heroku_sources
 )
 from werckercli.config import set_value, VALUE_PROJECT_ID
 from werckercli.client import Client
 from werckercli.paths import find_git_root
+
+from werckercli.commands.target import add as target_add
+from werckercli.commands.project import project_check_repo, project_build
 
 
 @login_required
@@ -21,10 +23,7 @@ def create(path='.', valid_token=None):
         raise ValueError("A valid token is required!")
 
     term = get_term()
-
     path = find_git_root(path)
-
-    # print path
 
     if not path:
         puts(
@@ -34,8 +33,6 @@ def create(path='.', valid_token=None):
  repository first."
         )
         return
-
-    term = get_term()
 
     puts("Searching for git remote information... ")
     options = get_remote_options(path)
@@ -60,6 +57,10 @@ def create(path='.', valid_token=None):
 
     client = Client()
 
+    profile = client.get_profile(valid_token)
+
+    return
+
     status, response = client.create_project(
         url,
         source,
@@ -75,8 +76,6 @@ def create(path='.', valid_token=None):
         puts("A .wercker file has been created which enables the \
 link between the source code and wercker.")
 
-        from werckercli.commands.project import project_check_repo
-
         project_check_repo(valid_token=valid_token, failure_confirmation=True)
 
         puts("trying to find deploy target information (for \
@@ -88,11 +87,7 @@ platforms such as Heroku).")
         puts("%s automatic supported targets found." % str(nr_targets))
 
         if nr_targets:
-            from werckercli.commands.target import add as target_add
-
             target_add(valid_token=valid_token)
-
-        from werckercli.commands.project import project_build
 
         puts("Triggering initial build...")
         project_build(valid_token=valid_token)
@@ -102,5 +97,3 @@ platforms such as Heroku).")
             term.red("Error: ") +
             "Unable to create project. Status: %d. Response: " % status
         )
-
-        # print response

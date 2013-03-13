@@ -204,7 +204,7 @@ class PickUrlOneOptionTests(TestCase):
             mock.Mock(return_value="VALID_URL")
         ):
 
-            result = my_cli.pick_url(self.options)
+            result = my_cli.pick_url(self.options, allow_custom_input=True)
         self.assertEqual(
             result,
             "VALID_URL"
@@ -224,7 +224,7 @@ class PickUrlOneOptionTests(TestCase):
             mock.Mock(return_value="VALID_URL")
         ):
 
-            result = my_cli.pick_url(self.options)
+            result = my_cli.pick_url(self.options, allow_custom_input=True)
         self.assertEqual(
             result,
             "VALID_URL"

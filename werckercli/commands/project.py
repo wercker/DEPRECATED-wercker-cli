@@ -138,6 +138,7 @@ def project_build(valid_token=None):
     c = Client()
     code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
 
+    print response
     if response['success'] is False:
         puts("Unable to trigger a build on the default/master branch")
         if "errorMessage" in response:

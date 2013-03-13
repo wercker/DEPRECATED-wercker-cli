@@ -27,6 +27,8 @@ HEROKU_PATTERNS = ['(git@heroku.com):(?P<name>.*)']
 
 PREFERRED_PATTERNS = GITHUB_PATTERNS + BITBUCKET_PATTERNS
 
+KNOWN_PATTERNS = GITHUB_PATTERNS + BITBUCKET_PATTERNS + HEROKU_PATTERNS
+
 SOURCE_GITHUB = "github"
 SOURCE_BITBUCKET = "bitbucket"
 SOURCE_HEROKU = "heroku"
@@ -78,13 +80,15 @@ def get_priority(url, remote, prio_remote="origin"):
 
 def get_preferred_source_type(url):
     for pattern in PREFERRED_PATTERNS:
-        result = get_source_type(url, pattern)
+        result = get_source_type_pattern(url, pattern)
 
         if result is not None:
             return result
 
 
-def get_source_type(url, pattern):
+# def get_source_type
+
+def get_source_type_pattern(url, pattern):
     if re.search(pattern, url):
         if pattern in GITHUB_PATTERNS:
             return SOURCE_GITHUB
@@ -119,7 +123,7 @@ def filter_heroku_sources(options):
 
     for option in options:
         for pattern in HEROKU_PATTERNS:
-            if get_source_type(option.url, pattern) == SOURCE_HEROKU:
+            if get_source_type_pattern(option.url, pattern) == SOURCE_HEROKU:
                 heroku_options.append(option)
 
     return heroku_options
