@@ -115,10 +115,10 @@ class Client(LegacyClient):
             url,
             params=data)
 
-        print url, result
+        # print url, result
         # print result.headers
         # print result.encoding
-        print dir(result)
+        # print dir(result)
         status = result.status_code
         result_json = {}
         try:
