@@ -8,8 +8,17 @@ from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
     filter_heroku_sources,
+    get_source_type,
+    SOURCE_BITBUCKET,
+    SOURCE_GITHUB,
 )
-from werckercli.config import set_value, VALUE_PROJECT_ID
+
+from werckercli.config import (
+    set_value,
+    get_value,
+    VALUE_PROJECT_ID,
+    VALUE_WERCKER_URL
+)
 from werckercli.client import Client
 from werckercli.paths import find_git_root
 
@@ -57,9 +66,33 @@ def create(path='.', valid_token=None):
 
     client = Client()
 
-    profile = client.get_profile(valid_token)
+    code, profile = client.get_profile(valid_token)
+    # print profile
+    # return
+    source_type = get_source_type(url)
 
-    return
+    if source_type == SOURCE_BITBUCKET:
+        if profile['hasBitbucketToken'] is not True:
+            puts("No bitbucket account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on bitbucket to our\
+  service.")
+            puts("Launching {url} to start linking.".format(
+                get_value(
+                    VALUE_WERCKER_URL
+                ) + '/provider/add/cli/bitbucket'
+            ))
+            raw_input("Press enter to continue...")
+    elif source_type == SOURCE_GITHUB:
+        if profile['hasGithubToken'] is not True:
+            puts("No github account linked with your profile. Wercker uses\
+ this conneciton to linkup some events for your repository on github to our\
+ service.")
+            puts("Launching {url} to start linking.".format(
+                get_value(
+                    VALUE_WERCKER_URL
+                ) + '/provider/add/cli/github'
+            ))
+            raw_input("Press enter to continue...")
 
     status, response = client.create_project(
         url,

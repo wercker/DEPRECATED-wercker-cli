@@ -86,8 +86,6 @@ def get_preferred_source_type(url):
             return result
 
 
-# def get_source_type
-
 def get_source_type_pattern(url, pattern):
     if re.search(pattern, url):
         if pattern in GITHUB_PATTERNS:
@@ -96,6 +94,15 @@ def get_source_type_pattern(url, pattern):
             return SOURCE_BITBUCKET
         if pattern in HEROKU_PATTERNS:
             return SOURCE_HEROKU
+
+
+def get_source_type(url):
+
+    for pattern in KNOWN_PATTERNS:
+        known = get_source_type_pattern(url, pattern)
+
+        if known:
+            return known
 
 
 def get_username(url):
