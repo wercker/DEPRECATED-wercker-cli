@@ -6,14 +6,14 @@ Usage:
     wercker status
     wercker deploy
     wercker builds
-    *wercker open targets
+    wercker open targets
     wercker queue
     wercker apps
     wercker link
     wercker login
     wercker logout
-    wercker targets list
     wercker targets add
+    wercker targets list
     wercker targets details
     wercker --version
 
@@ -25,13 +25,9 @@ Details:
                       machine
     logout          - Removes the login token from the machine
     open targets    - opens a webpage showing a deploy target's details
-    apps list       - List apps the user has access to
-    apps create     - Adds an application to wercker
-    apps link       - link repository back up to an apps on wercker
-    apps build      - trigger a new build for the current project.
-    apps checkrepo  - validate if wercker has read rights on the repository
-    builds lists    - shows a list of the most recent builds
-    builds deploy   - alias for deploy
+    apps            - List apps the user has access to
+    link            - link repository back up to an apps on wercker
+    builds          - shows a list of the most recent builds
     targets add     - add a heroku targets as a deploy target
     targets list    - lists all deploy targets
     targets details - alias for open targets

@@ -115,7 +115,6 @@ class Client(LegacyClient):
             url,
             params=data)
 
-        print url, result
         # print result.headers
         # print result.encoding
         # print dir(result)

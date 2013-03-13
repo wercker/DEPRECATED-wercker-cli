@@ -76,19 +76,19 @@ def handle_commands(args):
         elif args['deploy']:
             command_builds_deploy()
         elif args['apps']:
-            if args['list']:
-                command_project_list()
-            elif args['link']:
-                command_project_link()
-            elif args['checkrepo']:
-                command_project_check_repo()
-            elif "build" in args and args["build"]:
-                command_project_build()
+            # if args['list']:
+            command_project_list()
+        elif args['link']:
+            command_project_link()
+            # elif args['checkrepo']:
+            #     command_project_check_repo()
+            # elif "build" in args and args["build"]:
+            #     command_project_build()
         elif args["builds"]:
-            if args['list']:
-                command_builds_list()
-            if args['deploy']:
-                command_builds_deploy()
+            # if args['list']:
+            command_builds_list()
+            # if args['deploy']:
+                # command_builds_deploy()
         elif args['targets']:
             if args['add']:
                 command_add()
@@ -100,10 +100,11 @@ def handle_commands(args):
             command_login()
         elif args['logout']:
             command_clear_settings()
-        elif \
-                'list' in args and args['list'] and\
-                'app' in args and args['app'] and\
-                'jobs' in args and args['jobs']:
+        # elif \
+        #         'list' in args and args['list'] and\
+        #         'app' in args and args['app'] and\
+        #         'jobs' in args and args['jobs']:
+        elif args['queue']:
             command_list_jobs()
     except KeyboardInterrupt:
         puts("\nAborted...")

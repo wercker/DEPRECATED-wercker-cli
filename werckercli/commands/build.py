@@ -106,10 +106,17 @@ def build_deploy(valid_token=None):
 
 
 def get_builds(valid_token, projectId):
+    term = get_term()
     c = Client()
 
     puts("Retreiving builds from wercker...")
     status, result = c.get_builds(valid_token, projectId)
+
+    if status != 200:
+        puts(
+            term.yellow("Warning: ") +
+            "A problem occurred while retreiving builds"
+        )
 
     return result
 
