@@ -21,6 +21,7 @@ from werckercli.commands.target import (
     # print_targets,
     pick_target
 )
+from werckercli.paths import find_git_root
 
 
 @login_required

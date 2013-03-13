@@ -104,6 +104,12 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
                         term.yellow("Warning: ") +
                         response['data']['details']
                     )
+                else:
+                    puts(
+                        term.yellow("Warning: ") +
+                        "Werckerbot has no access to this repository."
+
+                    )
 
                 if failure_confirmation is True:
                     from werckercli import prompt
@@ -133,9 +139,10 @@ def project_build(valid_token=None):
     code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
 
     if response['success'] is False:
-        puts("Unable to trigger a build on the default/master branch")
         if "errorMessage" in response:
             puts(term.red("Error: ") + response['errorMessage'])
+        else:
+            puts("Unable to trigger a build on the default/master branch")
     else:
         puts("A new build has been created")
     # print code, response

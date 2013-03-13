@@ -3,6 +3,11 @@ import re
 from collections import namedtuple
 from dulwich.repo import Repo
 
+from dulwich.errors import (
+    NotGitRepository
+)
+
+
 GITHUB_PATTERNS = [
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*).git',
     '(git@)*(github.com):(?P<name>.*)/(?P<project>.*)',
@@ -22,6 +27,8 @@ HEROKU_PATTERNS = ['(git@heroku.com):(?P<name>.*)']
 
 PREFERRED_PATTERNS = GITHUB_PATTERNS + BITBUCKET_PATTERNS
 
+KNOWN_PATTERNS = GITHUB_PATTERNS + BITBUCKET_PATTERNS + HEROKU_PATTERNS
+
 SOURCE_GITHUB = "github"
 SOURCE_BITBUCKET = "bitbucket"
 SOURCE_HEROKU = "heroku"
@@ -31,7 +38,12 @@ RemoteOption = namedtuple('RemoteOption', 'url remote priority')
 
 def get_remote_options(repo_path, prio_remote="origin"):
 
-    repo = Repo(repo_path)
+    try:
+        repo = Repo(repo_path)
+    except NotGitRepository:
+        # puts("No git repository found!")
+        return None
+
     conf = repo.get_config()
     options = []
 
@@ -68,13 +80,13 @@ def get_priority(url, remote, prio_remote="origin"):
 
 def get_preferred_source_type(url):
     for pattern in PREFERRED_PATTERNS:
-        result = get_source_type(url, pattern)
+        result = get_source_type_pattern(url, pattern)
 
         if result is not None:
             return result
 
 
-def get_source_type(url, pattern):
+def get_source_type_pattern(url, pattern):
     if re.search(pattern, url):
         if pattern in GITHUB_PATTERNS:
             return SOURCE_GITHUB
@@ -82,6 +94,15 @@ def get_source_type(url, pattern):
             return SOURCE_BITBUCKET
         if pattern in HEROKU_PATTERNS:
             return SOURCE_HEROKU
+
+
+def get_source_type(url):
+
+    for pattern in KNOWN_PATTERNS:
+        known = get_source_type_pattern(url, pattern)
+
+        if known:
+            return known
 
 
 def get_username(url):
@@ -103,17 +124,23 @@ def get_username(url):
                 return match.groupdict()['name']
 
 
+def filter_heroku_sources(options):
+
+    heroku_options = []
+
+    for option in options:
+        for pattern in HEROKU_PATTERNS:
+            if get_source_type_pattern(option.url, pattern) == SOURCE_HEROKU:
+                heroku_options.append(option)
+
+    return heroku_options
+
+
 def find_heroku_sources(repo_path):
 
     options = get_remote_options(repo_path)
 
-    heroku_options = []
-    for option in options:
-        for pattern in HEROKU_PATTERNS:
-            if get_source_type(option.url, pattern) == SOURCE_HEROKU:
-                heroku_options.append(option)
-
-    return heroku_options
+    return filter_heroku_sources(options)
 
 
 def convert_to_url(url):

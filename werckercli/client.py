@@ -1,7 +1,7 @@
 import json
 import requests
 
-from werckercli.cli import puts
+from werckercli.cli import puts, get_term
 from werckercli.config import get_value, VALUE_WERCKER_URL
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
@@ -15,6 +15,7 @@ PATH_DEPLOY = 'deploy'
 PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
 PATH_GET_BUILDS = 'project/{projectId}/builds'
 PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
+PATH_GET_PROFILE = 'profile'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -114,7 +115,22 @@ class Client(LegacyClient):
             url,
             params=data)
 
-        return result.status_code, json.loads(result.text)
+        print url, result
+        # print result.headers
+        # print result.encoding
+        # print dir(result)
+        status = result.status_code
+        result_json = {}
+        try:
+            result_json = result.json()
+        except ValueError:
+            term = get_term()
+            puts(
+                term.yellow("Warning: ") +
+                "Invalid response for api call: {url}".format(url=url)
+            )
+
+        return status, result_json
 
     def get_applications(self, token):
         return self.do_get(PATH_GET_APPLICATIONS, {'token': token})
@@ -136,6 +152,13 @@ class Client(LegacyClient):
 
         return self.do_get(
             PATH_GET_DEPLOYS.format(deployTargetId=deploy_target_id),
+            {'token': token}
+        )
+
+    def get_profile(self, token):
+
+        return self.do_get(
+            PATH_GET_PROFILE,
             {'token': token}
         )
 
