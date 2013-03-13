@@ -76,24 +76,47 @@ def create(path='.', valid_token=None):
             puts("No bitbucket account linked with your profile. Wercker uses\
  this connection to linkup some events for your repository on bitbucket to our\
   service.")
+            provider_url = get_value(
+                VALUE_WERCKER_URL
+            ) + '/provider/add/cli/bitbucket'
+
             puts("Launching {url} to start linking.".format(
-                get_value(
-                    VALUE_WERCKER_URL
-                ) + '/provider/add/cli/bitbucket'
+                url=provider_url
             ))
+            from time import sleep
+
+            sleep(5)
+            import webbrowser
+
+            webbrowser.open(provider_url)
+
             raw_input("Press enter to continue...")
     elif source_type == SOURCE_GITHUB:
+        print "wha?", profile['hasGithubToken']
         if profile['hasGithubToken'] is not True:
             puts("No github account linked with your profile. Wercker uses\
  this conneciton to linkup some events for your repository on github to our\
  service.")
+            provider_url = get_value(
+                VALUE_WERCKER_URL
+            ) + '/provider/add/cli/github'
+
             puts("Launching {url} to start linking.".format(
-                get_value(
-                    VALUE_WERCKER_URL
-                ) + '/provider/add/cli/github'
+                url=provider_url
             ))
+
+            from time import sleep
+
+            sleep(5)
+
+            import webbrowser
+
+            webbrowser.open(provider_url)
+
             raw_input("Press enter to continue...")
 
+    # print code, profile, source_type
+    # return
     status, response = client.create_project(
         url,
         source,
