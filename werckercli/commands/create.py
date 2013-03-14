@@ -50,6 +50,8 @@ def create(path='.', valid_token=None):
 
     options = [o for o in options if o not in heroku_options]
 
+    options = [o for o in options if o.priority > 1]
+
     count = len(options)
 
     puts(
