@@ -67,44 +67,44 @@ def handle_commands(args):
         as command_list_jobs
 
     try:
-        if args['apps'] and args['create']:
+        if args.get('apps') and args.get('create'):
             command_create()
-        elif args['create']:
+        elif args.get('create'):
             command_create()
-        elif args['status']:
+        elif args.get('status'):
             command_builds_list(limit=1)
-        elif args['deploy']:
+        elif args.get('deploy'):
             command_builds_deploy()
-        elif args['apps']:
+        elif args.get('apps'):
             # if args['list']:
             command_project_list()
-        elif args['link']:
+        elif args.get('link'):
             command_project_link()
             # elif args['checkrepo']:
             #     command_project_check_repo()
             # elif "build" in args and args["build"]:
             #     command_project_build()
-        elif args["builds"]:
+        elif args.get("builds"):
             # if args['list']:
             command_builds_list()
             # if args['deploy']:
                 # command_builds_deploy()
-        elif args['targets']:
-            if args['add']:
+        elif args.get('targets'):
+            if args.get('add'):
                 command_add()
-            elif args['list']:
+            elif args.get('list'):
                 command_list_by_project()
-            elif args['details'] or args['open']:
+            elif args.get('details') or args.get('open'):
                 command_target_details()
-        elif args['login']:
+        elif args.get('login'):
             command_login()
-        elif args['logout']:
+        elif args.get('logout'):
             command_clear_settings()
         # elif \
         #         'list' in args and args['list'] and\
         #         'app' in args and args['app'] and\
         #         'jobs' in args and args['jobs']:
-        elif args['queue']:
+        elif args.get('queue'):
             command_list_jobs()
     except KeyboardInterrupt:
         puts("\nAborted...")
