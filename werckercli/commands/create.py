@@ -9,6 +9,8 @@ from werckercli.git import (
     get_preferred_source_type,
     filter_heroku_sources,
     get_source_type,
+    get_username,
+    get_project,
     SOURCE_BITBUCKET,
     SOURCE_GITHUB,
 )
@@ -69,12 +71,11 @@ def create(path='.', valid_token=None):
     client = Client()
 
     code, profile = client.get_profile(valid_token)
-    # print profile
-    # return
+
     source_type = get_source_type(url)
 
     if source_type == SOURCE_BITBUCKET:
-        if profile['hasBitbucketToken'] is not True:
+        if profile.get('hasBitbucketToken', False) is False:
             puts("No bitbucket account linked with your profile. Wercker uses\
  this connection to linkup some events for your repository on bitbucket to our\
   service.")
@@ -94,10 +95,9 @@ def create(path='.', valid_token=None):
 
             raw_input("Press enter to continue...")
     elif source_type == SOURCE_GITHUB:
-        print "wha?", profile['hasGithubToken']
-        if profile['hasGithubToken'] is not True:
+        if profile.get('hasGithubToken', False) is False:
             puts("No github account linked with your profile. Wercker uses\
- this conneciton to linkup some events for your repository on github to our\
+ this connection to linkup some events for your repository on github to our\
  service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -117,8 +117,7 @@ def create(path='.', valid_token=None):
 
             raw_input("Press enter to continue...")
 
-    # print code, profile, source_type
-    # return
+    puts("Creating a new application")
     status, response = client.create_project(
         url,
         source,
@@ -127,14 +126,34 @@ def create(path='.', valid_token=None):
 
     if response['success']:
 
-        puts("A new application has been created.")
+        puts("a new application has been created.")
 
         set_value(VALUE_PROJECT_ID, response['projectId'])
 
-        puts("A .wercker file has been created which enables the \
-link between the source code and wercker.")
+        puts("In the root of this repository a .wercker file has been created\
+ which enables the link between the source code and wercker.")
 
-        project_check_repo(valid_token=valid_token, failure_confirmation=True)
+        site_url = None
+
+        if source_type == SOURCE_GITHUB:
+
+            site_url = "https://github.com/" + \
+                get_username(url) + \
+                "/" + \
+                get_project(url)
+
+        elif source_type == SOURCE_BITBUCKET:
+
+            site_url = "https://bitbucket.org/" + \
+                get_username(url) + \
+                "/" + \
+                get_project(url)
+
+        project_check_repo(
+            valid_token=valid_token,
+            failure_confirmation=True,
+            site_url=site_url
+        )
 
         puts("trying to find deploy target information (for \
 platforms such as Heroku).")
@@ -149,7 +168,12 @@ platforms such as Heroku).")
 
         puts("Triggering initial build...")
         project_build(valid_token=valid_token)
+        # if project_build(valid_token=valid_token):
+            # puts("To trigger a build")
+            # puts("")
 
+        puts("You are all set up to for using wercker. You can trigger a new\
+ build by committing and pushing your latest changes. Happy coding!")
     else:
         puts(
             term.red("Error: ") +

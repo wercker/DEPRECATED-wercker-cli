@@ -1,7 +1,11 @@
 import os
 
 from werckercli.decorators import login_required
-from werckercli.git import get_remote_options, convert_to_url
+from werckercli.git import (
+    get_remote_options,
+    convert_to_url,
+    get_source_type
+)
 from werckercli.cli import get_term, puts
 from werckercli.client import Client
 from werckercli.printer import (
@@ -77,13 +81,18 @@ def project_link(valid_token=None):
 
 
 @login_required
-def project_check_repo(valid_token=None, failure_confirmation=False):
+def project_check_repo(
+    valid_token=None,
+    failure_confirmation=False,
+    site_url=None
+):
+
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     term = get_term()
 
-    puts("Checking permissions...")
+    puts("Checking werckerbot permissions on the repository...")
 
     while(True):
 
@@ -95,9 +104,10 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
 
         if response['success'] is True:
             if response['data']['hasAccess'] is True:
-                puts("Werckerbot has access")
+                puts(term.green("success:") + "Werckerbot has access")
                 break
             else:
+                puts("")  # empty line...
                 if "details" in response['data']:
                     # puts
                     puts(
@@ -107,16 +117,24 @@ def project_check_repo(valid_token=None, failure_confirmation=False):
                 else:
                     puts(
                         term.yellow("Warning: ") +
-                        "Werckerbot has no access to this repository."
+                        "wercker's werckerbot has no access to this\
+ repository."
 
                     )
 
                 if failure_confirmation is True:
                     from werckercli import prompt
 
+                    puts("werckerbot needs pull/read access to the repository \
+to get the code.")
+                    puts("Without access to the repository, builds and tests\
+ will fail.\n")
+
+                    if(site_url):
+                        puts("Go to {url} and add wercker as a collaborator\
+".format(url=site_url))
                     exit = not prompt.yn(
-                        "Please make sure the permissions on the\
- project are correct, do you want wercker to check the permissions again?",
+                        "Do you want wercker to check the permissions again?",
                         default="y"
                     )
                 else:
@@ -143,8 +161,11 @@ def project_build(valid_token=None):
             puts(term.red("Error: ") + response['errorMessage'])
         else:
             puts("Unable to trigger a build on the default/master branch")
+
+        return False
     else:
         puts("A new build has been created")
+        return True
     # print code, response
 
 

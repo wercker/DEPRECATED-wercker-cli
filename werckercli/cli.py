@@ -77,12 +77,15 @@ def handle_commands(args):
             command_builds_deploy()
         elif args.get('apps'):
             # if args['list']:
-            command_project_list()
+            if args.get('build'):
+                command_project_build()
+            else:
+                command_project_list()
         elif args.get('link'):
             command_project_link()
             # elif args['checkrepo']:
             #     command_project_check_repo()
-            # elif "build" in args and args["build"]:
+            # elif args.get("build"):
             #     command_project_build()
         elif args.get("builds"):
             # if args['list']:

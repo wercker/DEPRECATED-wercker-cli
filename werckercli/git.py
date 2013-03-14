@@ -124,6 +124,25 @@ def get_username(url):
                 return match.groupdict()['name']
 
 
+def get_project(url):
+    source = get_preferred_source_type(url)
+
+    if source == SOURCE_GITHUB:
+
+        for pattern in GITHUB_PATTERNS:
+            match = re.match(pattern, url)
+
+            if match:
+                return match.groupdict()['project']
+    else:
+
+        for pattern in BITBUCKET_PATTERNS:
+            match = re.match(pattern, url)
+
+            if match:
+                return match.groupdict()['project']
+
+
 def filter_heroku_sources(options):
 
     heroku_options = []
