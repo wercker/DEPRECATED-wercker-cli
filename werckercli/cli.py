@@ -83,8 +83,8 @@ def handle_commands(args):
                 command_project_list()
         elif args.get('link'):
             command_project_link()
-            # elif args['checkrepo']:
-            #     command_project_check_repo()
+        elif args.get('checkrepo'):
+            command_project_check_repo()
             # elif args.get("build"):
             #     command_project_build()
         elif args.get("builds"):

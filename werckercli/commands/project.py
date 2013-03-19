@@ -142,6 +142,25 @@ to get the code.")
 
                 if exit:
                     break
+        else:
+            puts(term.red("Error: ") + "Could not validate access...")
+            if failure_confirmation is True:
+                from werckercli import prompt
+
+                puts("werckerbot needs pull/read access to the repository \
+to get the code.")
+                puts("Without access to the repository, builds and tests\
+will fail.\n")
+
+                if(site_url):
+                    puts("Go to {url} and add wercker as a collaborator\
+".format(url=site_url))
+                exit = not prompt.yn(
+                    "Do you want wercker to check the permissions again?",
+                    default="y"
+                )
+            else:
+                break
 
 
 @login_required

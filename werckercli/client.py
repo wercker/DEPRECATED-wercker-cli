@@ -111,11 +111,19 @@ class Client(LegacyClient):
 
         # data_string = json.dumps(data)
 
+        puts("communicating with %s ..." % self.wercker_url)
+
         result = requests.get(
             url,
             params=data)
 
+        puts("done...")
+
+        # print result.headers
+        # print result.encoding
+        # print dir(result)
         status = result.status_code
+        # print status
         result_json = {}
         try:
             result_json = result.json()
