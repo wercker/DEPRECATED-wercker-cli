@@ -119,11 +119,7 @@ class Client(LegacyClient):
 
         puts("done...")
 
-        # print result.headers
-        # print result.encoding
-        # print dir(result)
         status = result.status_code
-        # print status
         result_json = {}
         try:
             result_json = result.json()

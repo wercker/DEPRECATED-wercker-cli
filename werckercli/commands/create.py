@@ -177,5 +177,12 @@ platforms such as Heroku).")
     else:
         puts(
             term.red("Error: ") +
-            "Unable to create project. Status: %d. Response: " % status
+            "Unable to create project. \n\nResponse: %s\n" %
+            (response.get('errorMessage'))
         )
+        puts(
+            "Note: only repository where the wercker's user has permissions on\
+can be added.\nThis is because some event hooks for wercker need to be \
+registered on \nthe repository. If you want to test a public repository\
+and don't have \npermissions on it: fork it. You can add the forked repository\
+ to wercker")
