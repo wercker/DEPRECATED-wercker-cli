@@ -131,7 +131,7 @@ def create(path='.', valid_token=None):
         set_value(VALUE_PROJECT_ID, response['projectId'])
 
         puts("In the root of this repository a .wercker file has been created\
- which enables the link between the source code and wercker.")
+ which enables the link between the source code and wercker.\n")
 
         site_url = None
 
@@ -155,25 +155,25 @@ def create(path='.', valid_token=None):
             site_url=site_url
         )
 
-        puts("trying to find deploy target information (for \
+        puts("\nSearching for deploy target information (for \
 platforms such as Heroku).")
 
         target_options = heroku_options
 
         nr_targets = len(target_options)
-        puts("%s automatic supported targets found." % str(nr_targets))
+        puts("%s automatic supported target(s) found.\n" % str(nr_targets))
 
         if nr_targets:
             target_add(valid_token=valid_token)
 
-        puts("Triggering initial build...")
+        puts("Creating content for wercker by attempting to trigger build...")
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
             # puts("")
 
-        puts("You are all set up to for using wercker. You can trigger a new\
- build by committing and pushing your latest changes. Happy coding!")
+        puts("You are all set up to for using wercker. You can trigger new\
+ builds by\ncommitting and pushing your latest changes. \n\nHappy coding!")
     else:
         puts(
             term.red("Error: ") +
