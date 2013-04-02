@@ -16,6 +16,7 @@ Usage:
     wercker targets list
     wercker targets details
     wercker --version
+    wercker --help
 
 Details:
     create          - Adds an application to wercker
