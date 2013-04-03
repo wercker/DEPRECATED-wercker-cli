@@ -85,6 +85,8 @@ successfully added to the wercker applicaiton\n" % preferred_app['name'])
 
     elif result['errorMessage']:
         puts(term.red("Error: ") + result['errorMessage'])
+        puts("Please check if the wercker addon was added to the heroku\
+application or run heroku addons:add wercker")
 
 
 def get_targets(valid_token, project_id):
