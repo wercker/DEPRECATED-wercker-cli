@@ -16,7 +16,7 @@ def do_login(retry_count=2):
     status, content = cl.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
-        puts(term.green("Login successful.")
+        puts(term.green("Login successful."))
         return content['result']['token']
 
     elif retry_count > 0:
