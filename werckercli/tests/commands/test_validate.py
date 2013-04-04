@@ -1,6 +1,5 @@
 import mock
 
-from werckercli.cli import get_term
 from werckercli.tests import TestCase
 from werckercli.commands.validate import validate
 
@@ -13,9 +12,7 @@ class ValidationTests(TestCase):
         with mock.patch("werckercli.cli.puts", mock.Mock()) as puts:
             validate()
 
-            term = get_term()
-            m = term.yellow("Warning: ") + "Could not find a wercker.json file"
-            puts.assert_called_with(m)
+            puts.assert_called_one()
 
     @mock.patch("os.path.isfile", mock.Mock(return_value=True))
     def test_puts_error_when_wercker_json_could_not_be_opened(self):
