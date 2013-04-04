@@ -40,7 +40,7 @@ def create(path='.', valid_token=None):
         puts(
             term.red("Error:") +
             " could not find a repository." +
-            "wercker create requires a git repository. Create/clone a\
+            " wercker create requires a git repository. Create/clone a\
  repository first."
         )
         return
