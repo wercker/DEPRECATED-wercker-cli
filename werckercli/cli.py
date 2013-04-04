@@ -65,6 +65,8 @@ def handle_commands(args):
         as command_login
     from werckercli.commands.project import project_list_queue\
         as command_list_jobs
+    from werckercli.commands.validate import validate\
+        as command_validate
 
     try:
         if args.get('apps') and args.get('create'):
@@ -99,6 +101,8 @@ def handle_commands(args):
                 command_list_by_project()
             elif args.get('details') or args.get('open'):
                 command_target_details()
+        elif args.get('validate'):
+            command_validate()
         elif args.get('login'):
             command_login()
         elif args.get('logout'):
