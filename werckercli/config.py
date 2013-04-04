@@ -30,7 +30,7 @@ def _get_or_create_netrc_location():
         mode = oct(stat.S_IMODE(result.st_mode))
         if mode != '0600':
             puts(
-                term.yellow('warning:') +
+                term.yellow('Warning:') +
                 'Found permission %s, on %s. It should be 0600' %
                 (mode, file)
             )
@@ -82,7 +82,7 @@ def get_value(name, default_value=None, path=os.curdir):
         if not path:
             puts(
                 term.red("Error:") +
-                " could not find a git repository."
+                " Could not find a git repository."
             )
             return
 
@@ -94,7 +94,7 @@ def get_value(name, default_value=None, path=os.curdir):
         if not os.path.isfile(file):
             puts(
                 term.yellow("Warning:") +
-                " could not find a %s file in the application root" %
+                " Could not find a %s file in the application root" %
                 DEFAULT_DOT_WERCKER_NAME
             )
 
@@ -152,7 +152,7 @@ def set_value(name, value):
         if not path:
             puts(
                 term.red("Error:") +
-                " could not find the root repository."
+                " Could not find the root repository."
             )
             return
 
