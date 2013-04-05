@@ -9,6 +9,7 @@ from werckercli.cli import puts, get_term
 import netrc
 from werckercli.paths import find_git_root
 
+VALUE_USER_NAME = "user_name"
 VALUE_USER_TOKEN = "user_token"
 VALUE_PROJECT_ID = "project_id"
 VALUE_HEROKU_TOKEN = "heroku_netrc_password"
