@@ -168,7 +168,7 @@ def set_value(name, value):
         url = urlparse(wercker_url)
 
         if url.hostname in rc.hosts:
-            current_settings = rc.hosts(url.hostname)
+            current_settings = rc.hosts[url.hostname]
         else:
             current_settings = (None, None, None)
 
