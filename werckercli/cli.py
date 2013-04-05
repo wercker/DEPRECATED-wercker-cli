@@ -12,15 +12,19 @@ from werckercli import prompt
 
 terminal_file_handle = sys.stdout
 
+INFO = "INFO"
+DEBUG = "DEBUG"
+
 
 def get_term():
     return Terminal(stream=terminal_file_handle)
 
 
-def puts(content):
-    terminal_file_handle.write(
-        content.encode("utf-8") + '\n'
-    )
+def puts(content, level=INFO):
+    if level == INFO:
+        terminal_file_handle.write(
+            content.encode("utf-8") + '\n'
+        )
 
 
 def get_intro():

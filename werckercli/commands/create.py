@@ -3,7 +3,7 @@ from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
-from werckercli.cli import get_term, puts
+from werckercli.cli import get_term, puts, DEBUG
 from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
@@ -34,6 +34,7 @@ def create(path='.', valid_token=None):
         raise ValueError("A valid token is required!")
 
     term = get_term()
+
     path = find_git_root(path)
 
     if not path:
@@ -45,7 +46,7 @@ def create(path='.', valid_token=None):
         )
         return
 
-    puts("Searching for git remote information... ")
+    puts("Searching for git remote information... ", level=DEBUG)
     options = get_remote_options(path)
 
     heroku_options = filter_heroku_sources(options)
@@ -166,13 +167,13 @@ platforms such as Heroku).")
         if nr_targets:
             target_add(valid_token=valid_token)
 
-        puts("Creating content for wercker by attempting to trigger build...")
+        puts("\nCreating content for wercker by attempting to trigger build...")
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
             # puts("")
 
-        puts("You are all set up to for using wercker. You can trigger new\
+        puts("\n\nYou are all set up to for using wercker. You can trigger new\
  builds by\ncommitting and pushing your latest changes. \n\nHappy coding!")
     else:
         puts(
