@@ -3,7 +3,12 @@ from getpass import getpass
 from werckercli.cli import get_term, puts
 
 from werckercli import client
-from werckercli.config import get_value, set_value, VALUE_USER_TOKEN, VALUE_USER_NAME
+from werckercli.config import (
+    get_value,
+    set_value,
+    VALUE_USER_TOKEN,
+    VALUE_USER_NAME
+)
 
 
 def do_login(retry_count=2):
