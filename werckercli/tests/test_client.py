@@ -3,6 +3,8 @@ import json
 
 import mock
 
+from werckercli.config import ENV_KEY_WERCKER_URL
+
 # from httpretty import HTTPretty
 from werckercli.tests import (
     BasicClientCase,
@@ -28,7 +30,7 @@ class BasicClientTests(BasicClientCase):
     def setUp(self):
         super(BasicClientTests, self).setUp()
 
-        os.environ['wercker_url'] = self.wercker_url
+        os.environ[ENV_KEY_WERCKER_URL] = self.wercker_url
 
     @mock.patch("werckercli.client.puts", mock.Mock())
     def test_core_and_environ_settings(self):
@@ -38,7 +40,7 @@ class BasicClientTests(BasicClientCase):
         self.assertEqual(c.wercker_url, self.wercker_url)
         self.assertTrue(c.api_version, '1.0')
 
-        del os.environ['wercker_url']
+        del os.environ[ENV_KEY_WERCKER_URL]
 
         c = Client()
 

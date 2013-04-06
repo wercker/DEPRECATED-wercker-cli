@@ -3,6 +3,7 @@ import random
 import mock
 
 from werckercli import config
+from werckercli.config import ENV_KEY_WERCKER_URL
 
 from werckercli.tests import BasicClientCase
 
@@ -18,11 +19,12 @@ class GetValueTests(BasicClientCase):
 
 class GetValueUrlTests(GetValueTests):
     def test_get_value_wercker_url(self):
+        os.environ[ENV_KEY_WERCKER_URL] = self.wercker_url
+
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, self.wercker_url)
 
-        del os.environ['wercker_url']
-        del os.environ['WERCKER_URL']
+        del os.environ[ENV_KEY_WERCKER_URL]
 
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, config.DEFAULT_WERCKER_URL)
