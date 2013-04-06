@@ -21,7 +21,7 @@ def fake_do_post(*args, **kargs):
 
 
 class BasicClientTests(BasicClientCase):
-    wercker_url = "http://localhost:3000"
+    wercker_url = "http://localhost:42"
 
     TOKEN_VALUE = '50ffd4a6b4e145006c0000031359019219496'
 

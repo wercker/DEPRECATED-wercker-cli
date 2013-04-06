@@ -21,7 +21,8 @@ class GetValueUrlTests(GetValueTests):
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, self.wercker_url)
 
-        os.environ.pop('wercker_url')
+        del os.environ['wercker_url']
+        del os.environ['WERCKER_URL']
 
         result = config.get_value(config.VALUE_WERCKER_URL)
         self.assertEqual(result, config.DEFAULT_WERCKER_URL)
