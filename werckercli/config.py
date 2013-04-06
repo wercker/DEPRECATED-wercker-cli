@@ -48,7 +48,9 @@ def get_value(name, default_value=None, path=os.curdir):
     term = get_term()
 
     if name == VALUE_WERCKER_URL:
-        value = os.environ.get("wercker_url", DEFAULT_WERCKER_URL)
+        value = os.getenv("wercker_url", None)
+        if value is None:
+            value = os.getenv("WERCKER_URL", DEFAULT_WERCKER_URL)
 
         return value
 
