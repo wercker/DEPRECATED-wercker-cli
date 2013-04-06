@@ -10,6 +10,16 @@ import json
 
 
 def validate():
+    """
+    Validates the wercker.json file by doing the following:
+    * Check whether there is a git repository in the current directory or up.
+    * Check whether there is a wercker.json file in that root.
+    * Check whether the size of that file is greater that zero.
+    * Check whether the wercker.json file contains valid json.
+
+    Currently this command doesn't validate the wercker.json file against
+    a schema. But you can expect this in the future.
+    """
     term = get_term()
     git_root_path = find_git_root(os.curdir)
 
