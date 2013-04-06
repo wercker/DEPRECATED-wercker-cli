@@ -14,7 +14,7 @@ def validate():
     git_root_path = find_git_root(os.curdir)
 
     if not git_root_path:
-        puts(term.red("Error: ") + "Could not find a git")
+        puts(term.red("Error: ") + "Could not find a git repository")
         return
 
     wercker_json_path = os.path.join(git_root_path, "wercker.json")
@@ -27,7 +27,7 @@ def validate():
         return
 
     try:
-        with open(wercker_json_path) as f:
+        with os.open(wercker_json_path) as f:
             try:
                 json.load(f)
 
