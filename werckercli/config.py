@@ -10,6 +10,7 @@ import netrc
 from werckercli.paths import find_git_root
 
 VALUE_USER_TOKEN = "user_token"
+VALUE_USER_NAME = "user_name"
 VALUE_PROJECT_ID = "project_id"
 VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
@@ -30,7 +31,7 @@ def _get_or_create_netrc_location():
         mode = oct(stat.S_IMODE(result.st_mode))
         if mode != '0600':
             puts(
-                term.yellow('warning:') +
+                term.yellow('Warning:') +
                 'Found permission %s, on %s. It should be 0600' %
                 (mode, file)
             )
@@ -65,6 +66,17 @@ def get_value(name, default_value=None, path=os.curdir):
         if url.hostname in rc.hosts:
             value = rc.hosts[url.hostname][2]
 
+    elif name == VALUE_USER_NAME:
+
+        wercker_url = get_value(VALUE_USER_NAME)
+        url = urlparse(wercker_url)
+
+        file = _get_or_create_netrc_location()
+        rc = netrc.netrc(file)
+
+        if url.hostname in rc.hosts:
+            value = rc.hosts[url.hostname][0]
+
     elif name == VALUE_HEROKU_TOKEN:
 
         file = _get_or_create_netrc_location()
@@ -82,7 +94,7 @@ def get_value(name, default_value=None, path=os.curdir):
         if not path:
             puts(
                 term.red("Error:") +
-                " could not find a git repository."
+                " Could not find a git repository."
             )
             return
 
@@ -94,7 +106,7 @@ def get_value(name, default_value=None, path=os.curdir):
         if not os.path.isfile(file):
             puts(
                 term.yellow("Warning:") +
-                " could not find a %s file in the application root" %
+                " Could not find a %s file in the application root" %
                 DEFAULT_DOT_WERCKER_NAME
             )
 
@@ -145,6 +157,33 @@ def set_value(name, value):
         with open(file, 'w') as fp:
             fp.write(str(rc))
             fp.close()
+
+    elif name == VALUE_USER_NAME:
+
+        file = _get_or_create_netrc_location()
+
+        rc = netrc.netrc(file=file)
+
+        wercker_url = get_value(VALUE_WERCKER_URL)
+        url = urlparse(wercker_url)
+
+        if url.hostname in rc.hosts:
+            current_settings = rc.hosts[url.hostname]
+        else:
+            current_settings = (None, None, None)
+
+        if value is not None:
+            rc.hosts[url.hostname] = (
+                value,
+                current_settings[1],
+                current_settings[2])
+        else:
+            rc.hosts.pop(url.hostname)
+
+        with open(file, 'w') as fp:
+            fp.write(str(rc))
+            fp.close()
+
     elif name == VALUE_PROJECT_ID:
 
         path = find_git_root(os.curdir)
@@ -152,7 +191,7 @@ def set_value(name, value):
         if not path:
             puts(
                 term.red("Error:") +
-                " could not find the root repository."
+                " Could not find the root repository."
             )
             return
 

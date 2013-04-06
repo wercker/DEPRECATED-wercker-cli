@@ -185,7 +185,7 @@ def pick_target(valid_token, projectId):
             target_index = valid_values.index(result)
             break
         else:
-            puts(term.red("warning: ") + " invalid target selected.")
+            puts(term.yellow("Warning: ") + " invalid target selected.")
 
     return targets['data'][target_index]['id']
 
