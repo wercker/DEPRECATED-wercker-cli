@@ -28,34 +28,67 @@ from werckercli.commands.target import add as target_add
 from werckercli.commands.project import project_check_repo, project_build
 
 
+'''
+Please choose one of the following options:
+ (1) git@github.com:wercker/wercker-cli
+Make your choice (1=default):
+
+Creating a new application
+a new application has been created.
+In the root of this repository a .wercker file has been created which enables\
+ the link between the source code and wercker.
+
+
+Checking werckerbot permissions on the repository...
+Werckerbot has access
+'''
+
+
 @login_required
 def create(path='.', valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     term = get_term()
+
     path = find_git_root(path)
+
+    if path:
+        options = get_remote_options(path)
+
+        heroku_options = filter_heroku_sources(options)
+    else:
+        options = []
+        heroku_options = []
+
+    puts('''About to create an application on wercker.
+
+This consists of the following steps:
+1. Validate permissions and create an application
+2. Add a deploy target ({heroku_options} heroku targets detected)
+3. Trigger initial build'''.format(
+        wercker_url=get_value(VALUE_WERCKER_URL),
+        heroku_options=len(heroku_options))
+    )
 
     if not path:
         puts(
             term.red("Error:") +
-            " could not find a repository." +
+            " Could not find a repository." +
             " wercker create requires a git repository. Create/clone a\
  repository first."
         )
         return
-
-    puts("Searching for git remote information... ")
-    options = get_remote_options(path)
-
-    heroku_options = filter_heroku_sources(options)
 
     options = [o for o in options if o not in heroku_options]
 
     options = [o for o in options if o.priority > 1]
 
     count = len(options)
-
+    puts('''
+Step ''' + term.white('1') + '''.
+-------------
+''')
     puts(
         "Found %s repository location(s)...\n"
         % term.white(str(count))
@@ -76,8 +109,8 @@ def create(path='.', valid_token=None):
 
     if source_type == SOURCE_BITBUCKET:
         if profile.get('hasBitbucketToken', False) is False:
-            puts("No bitbucket account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on bitbucket to our\
+            puts("No Bitbucket account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on Bitbucket to our\
   service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -96,8 +129,8 @@ def create(path='.', valid_token=None):
             raw_input("Press enter to continue...")
     elif source_type == SOURCE_GITHUB:
         if profile.get('hasGithubToken', False) is False:
-            puts("No github account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on github to our\
+            puts("No GitHub account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on GitHub to our\
  service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -155,34 +188,48 @@ def create(path='.', valid_token=None):
             site_url=site_url
         )
 
-        puts("\nSearching for deploy target information (for \
-platforms such as Heroku).")
+#         puts("\nSearching for deploy target information (for \
+# platforms such as Heroku).")
+
+        puts('''
+Step ''' + term.white('2') + '''.
+-------------
+''')
 
         target_options = heroku_options
 
         nr_targets = len(target_options)
-        puts("%s automatic supported target(s) found.\n" % str(nr_targets))
+        puts("%s automatic supported target(s) found." % str(nr_targets))
 
         if nr_targets:
             target_add(valid_token=valid_token)
 
-        puts("Creating content for wercker by attempting to trigger build...")
+        puts('''
+Step ''' + term.white('3') + '''.
+-------------
+''')
+
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
             # puts("")
 
-        puts("You are all set up to for using wercker. You can trigger new\
- builds by\ncommitting and pushing your latest changes. \n\nHappy coding!")
+        puts('''
+Done.
+-------------
+
+You are all set up to for using wercker. You can trigger new builds by
+committing and pushing your latest changes.
+
+Happy coding!''')
     else:
         puts(
             term.red("Error: ") +
             "Unable to create project. \n\nResponse: %s\n" %
             (response.get('errorMessage'))
         )
-        puts(
-            "Note: only repository where the wercker's user has permissions on\
-can be added.\nThis is because some event hooks for wercker need to be \
-registered on \nthe repository. If you want to test a public repository\
-and don't have \npermissions on it: fork it. You can add the forked repository\
- to wercker")
+        puts('''
+Note: only repository where the wercker's user has permissions on can be added.
+This is because some event hooks for wercker need to be registered on the
+repository. If you want to test a public repository and don't have permissions
+ on it: fork it. You can add the forked repository to wercker''')

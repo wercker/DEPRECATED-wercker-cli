@@ -12,7 +12,7 @@ from werckercli.config import get_value, VALUE_PROJECT_ID, VALUE_WERCKER_URL
 from werckercli.decorators import login_required
 from werckercli.client import Client
 from werckercli.prompt import get_value_with_default
-from werckercli.cli import get_term, puts
+from werckercli.cli import get_term, puts, DEBUG
 
 
 @login_required
@@ -37,7 +37,7 @@ def _add_heroku_by_git(token, project_id, git_url):
     term = get_term()
     puts("Heroku remote %s selected." % git_url)
 
-    puts("Looking for Heroku API key...")
+    puts("Looking for Heroku API key...", level=DEBUG)
     heroku_token = heroku.get_token()
 
     if not heroku_token:
@@ -47,8 +47,8 @@ def _add_heroku_by_git(token, project_id, git_url):
         puts("  and you are loged in.")
         return
 
-    puts("API key found...")
-    puts("Retreiving applications from Heroku...")
+    puts("API key found...", level=DEBUG)
+    puts("Retreiving applications from Heroku...", level=DEBUG)
 
     # fp = open("werckercli/tests/data/apps.response.json")
     # import json

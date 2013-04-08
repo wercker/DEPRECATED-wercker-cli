@@ -21,11 +21,12 @@ for the current user on this machine"""
         if sure:
             # shutil.rmtree(get_global_wercker_path())
             config.set_value(config.VALUE_USER_TOKEN, None)
-            puts(term.green("wercker settings removed succesfully."))
+            puts(term.green("Success: ") +
+                 "wercker settings removed succesfully.")
             return True
         else:
-            puts(term.yellow("cancelled."))
+            puts(term.yellow("Warning: ") + "Cancelled.")
     else:
-        puts(term.yellow("no settings found."))
+        puts(term.yellow("Warning: ") + "No settings found.")
 
     # return False

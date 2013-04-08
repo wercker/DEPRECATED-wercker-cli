@@ -100,7 +100,7 @@ def build_deploy(valid_token=None):
     )
 
     if "success" in result and result['success'] is True:
-        puts(term.green("Build scheduled for deploy"))
+        puts(term.green("Success: ") + "Build scheduled for deploy")
     else:
         puts(term.red("Error: ") + "Unable to schedule deploy")
 

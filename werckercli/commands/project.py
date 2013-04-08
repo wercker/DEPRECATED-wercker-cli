@@ -104,7 +104,7 @@ def project_check_repo(
 
         if response['success'] is True:
             if response['data']['hasAccess'] is True:
-                puts(term.green("success: ") + "Werckerbot has access")
+                puts("Werckerbot has access")
                 break
             else:
                 puts("")  # empty line...

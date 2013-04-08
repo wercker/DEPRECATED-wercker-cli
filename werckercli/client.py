@@ -1,7 +1,7 @@
 import json
 import requests
 
-from werckercli.cli import puts, get_term
+from werckercli.cli import puts, get_term, DEBUG
 from werckercli.config import get_value, VALUE_WERCKER_URL
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
@@ -33,13 +33,13 @@ class LegacyClient():
 
         data_string = json.dumps(data)
 
-        puts("communicating with %s ..." % self.wercker_url)
+        puts("communicating with %s ..." % self.wercker_url, level=DEBUG)
 
         result = requests.post(
             url,
             data=data_string,
             headers={'Content-Type': 'application/json'})
-        puts("done...")
+        puts("done...", level=DEBUG)
 
         return result.status_code, json.loads(result.text)
 
@@ -111,13 +111,13 @@ class Client(LegacyClient):
 
         # data_string = json.dumps(data)
 
-        puts("communicating with %s ..." % self.wercker_url)
+        puts("communicating with %s ..." % self.wercker_url, level=DEBUG)
 
         result = requests.get(
             url,
             params=data)
 
-        puts("done...")
+        puts("done...", level=DEBUG)
 
         status = result.status_code
         result_json = {}
