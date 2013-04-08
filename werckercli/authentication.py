@@ -3,8 +3,12 @@ from getpass import getpass
 from werckercli.cli import get_term, puts
 
 from werckercli import client
-from werckercli.config import get_value, set_value
-from werckercli.config import VALUE_USER_TOKEN, VALUE_USER_NAME
+from werckercli.config import (
+    get_value,
+    set_value,
+    VALUE_USER_TOKEN,
+    VALUE_USER_NAME
+)
 
 
 def do_login(retry_count=2):
@@ -19,6 +23,7 @@ def do_login(retry_count=2):
     if status == 200 and content.get('success', False):
         puts(term.green("Login successful.") + " Welcome %s!" % username)
         set_value(VALUE_USER_NAME, username)
+
         return content['result']['token']
 
     elif retry_count > 0:
@@ -30,8 +35,6 @@ def do_login(retry_count=2):
 
 
 def get_access_token():
-
-    term = get_term()
 
     token = get_value(VALUE_USER_TOKEN)
 

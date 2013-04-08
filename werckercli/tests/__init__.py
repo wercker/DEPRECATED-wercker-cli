@@ -6,6 +6,7 @@ import sys
 import os
 import shutil
 import tempfile
+from werckercli.config import ENV_KEY_WERCKER_URL
 
 from httpretty import HTTPretty
 
@@ -119,7 +120,7 @@ class BasicClientCase(DataSetTestCase):
     def setUp(self):
         super(BasicClientCase, self).setUp()
 
-        os.environ['wercker_url'] = self.wercker_url
+        os.environ[ENV_KEY_WERCKER_URL] = self.wercker_url
         HTTPretty.reset()
         HTTPretty.enable()
 
