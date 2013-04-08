@@ -65,8 +65,8 @@ def create(path='.', valid_token=None):
 
 This consists of the following steps:
 1. Validate permissions and create an application
-2. add a deploy target ({heroku_options} heroku targets detected)
-3. trigger initial build'''.format(
+2. Add a deploy target ({heroku_options} heroku targets detected)
+3. Trigger initial build'''.format(
         wercker_url=get_value(VALUE_WERCKER_URL),
         heroku_options=len(heroku_options))
     )
@@ -190,9 +190,12 @@ Step ''' + term.white('1') + '''.
 
 #         puts("\nSearching for deploy target information (for \
 # platforms such as Heroku).")
+
         puts('''
-Step 2.
--------------''')
+        Step ''' + term.white('2') + '''.
+        -------------
+        ''')
+
         target_options = heroku_options
 
         nr_targets = len(target_options)
@@ -201,9 +204,12 @@ Step 2.
         if nr_targets:
             target_add(valid_token=valid_token)
 
+
         puts('''
-Step 3.
--------------''')
+        Step ''' + term.white('3') + '''.
+        -------------
+        ''')
+
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
