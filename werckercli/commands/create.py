@@ -191,7 +191,7 @@ Step ''' + term.white('1') + '''.
 #         puts("\nSearching for deploy target information (for \
 # platforms such as Heroku).")
 
-    puts('''
+        puts('''
         Step ''' + term.white('2') + '''.
         -------------
         ''')
@@ -205,12 +205,12 @@ Step ''' + term.white('1') + '''.
             target_add(valid_token=valid_token)
 
 
-    puts('''
+        puts('''
         Step ''' + term.white('3') + '''.
         -------------
         ''')
 
-       project_build(valid_token=valid_token)
+        project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
             # puts("")
