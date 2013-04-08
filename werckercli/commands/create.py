@@ -35,6 +35,8 @@ def create(path='.', valid_token=None):
 
     term = get_term()
 
+    puts("Searching for git remote information... ", level=DEBUG)
+
     path = find_git_root(path)
 
     if not path:
@@ -46,7 +48,6 @@ def create(path='.', valid_token=None):
         )
         return
 
-    puts("Searching for git remote information... ", level=DEBUG)
     options = get_remote_options(path)
 
     heroku_options = filter_heroku_sources(options)

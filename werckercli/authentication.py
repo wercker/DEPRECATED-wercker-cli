@@ -17,7 +17,7 @@ def do_login(retry_count=2):
     status, content = cl.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
-        puts(term.green("Login successful. Welcome %s!" % username))
+        puts(term.green("Login successful.") + " Welcome %s!" % username)
         set_value(VALUE_USER_NAME, username)
         return content['result']['token']
 
