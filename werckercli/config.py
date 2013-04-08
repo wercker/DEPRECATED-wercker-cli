@@ -15,6 +15,8 @@ VALUE_PROJECT_ID = "project_id"
 VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
 
+ENV_KEY_WERCKER_URL = "WERCKER_URL"
+
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
 DEFAULT_DOT_WERCKER_NAME = ".wercker"
 
@@ -48,10 +50,9 @@ def get_value(name, default_value=None, path=os.curdir):
     term = get_term()
 
     if name == VALUE_WERCKER_URL:
-        if 'wercker_url' in os.environ.keys():
-            value = os.environ.get("wercker_url")
-        else:
-            value = DEFAULT_WERCKER_URL
+        value = os.getenv("wercker_url", None)
+        if value is None:
+            value = os.getenv(ENV_KEY_WERCKER_URL, DEFAULT_WERCKER_URL)
 
         return value
 
