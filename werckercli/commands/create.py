@@ -168,8 +168,7 @@ platforms such as Heroku).")
         if nr_targets:
             target_add(valid_token=valid_token)
 
-        puts("\nCreating content for wercker by attempting to trigger \
-build...")
+        puts("\n Attempting to trigger build...")
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
