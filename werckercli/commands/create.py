@@ -3,7 +3,7 @@ from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
-from werckercli.cli import get_term, puts, DEBUG
+from werckercli.cli import get_term, puts
 from werckercli.cli import pick_url
 from werckercli.git import (
     get_preferred_source_type,
@@ -192,9 +192,9 @@ Step ''' + term.white('1') + '''.
 # platforms such as Heroku).")
 
         puts('''
-        Step ''' + term.white('2') + '''.
-        -------------
-        ''')
+Step ''' + term.white('2') + '''.
+-------------
+''')
 
         target_options = heroku_options
 
@@ -204,11 +204,10 @@ Step ''' + term.white('1') + '''.
         if nr_targets:
             target_add(valid_token=valid_token)
 
-
         puts('''
-        Step ''' + term.white('3') + '''.
-        -------------
-        ''')
+Step ''' + term.white('3') + '''.
+-------------
+''')
 
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
