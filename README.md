@@ -1,4 +1,4 @@
-[![Wercker status](https://app.wercker.com/status/12f739b292a605bd0d57febbbfe32e91/m)](https://app.wercker.com/project/bykey/12f739b292a605bd0d57febbbfe32e91)
+[![Wercker status](https://app.wercker.com/status/e03bf0c77a793a7857a2b8abc9fac779/m)](https://app.wercker.com/project/bykey/e03bf0c77a793a7857a2b8abc9fac779)
 # wercker-cli #
 
 A cli tool for <http://wercker.com/> - Continuous deployment made easy.
