@@ -109,8 +109,8 @@ Step ''' + term.white('1') + '''.
 
     if source_type == SOURCE_BITBUCKET:
         if profile.get('hasBitbucketToken', False) is False:
-            puts("No bitbucket account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on bitbucket to our\
+            puts("No Bitbucket account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on Bitbucket to our\
   service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -129,8 +129,8 @@ Step ''' + term.white('1') + '''.
             raw_input("Press enter to continue...")
     elif source_type == SOURCE_GITHUB:
         if profile.get('hasGithubToken', False) is False:
-            puts("No github account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on github to our\
+            puts("No GitHub account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on GitHub to our\
  service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -204,8 +204,6 @@ Step 2.
         puts('''
 Step 3.
 -------------''')
-        puts("\nCreating content for wercker by attempting to trigger \
-build...")
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
             # puts("To trigger a build")
