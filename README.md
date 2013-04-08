@@ -24,6 +24,7 @@ Usage:
         wercker targets add
         wercker targets list
         wercker targets details
+        wercker validate
         wercker --version
 
 ## Commands
@@ -71,3 +72,6 @@ Lists all deploy targets
 
 ### targets details
 This is an alias for `wercker open targets`
+
+### validate
+Checks if your [wercker.json](http://devcenter.wercker.com/articles/werckerjson) is valid.
