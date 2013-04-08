@@ -192,9 +192,9 @@ Step ''' + term.white('1') + '''.
 # platforms such as Heroku).")
 
         puts('''
-        Step ''' + term.white('2') + '''.
-        -------------
-        ''')
+Step ''' + term.white('2') + '''.
+-------------
+''')
 
         target_options = heroku_options
 
@@ -205,9 +205,9 @@ Step ''' + term.white('1') + '''.
             target_add(valid_token=valid_token)
 
         puts('''
-        Step ''' + term.white('3') + '''.
-        -------------
-        ''')
+Step ''' + term.white('3') + '''.
+-------------
+''')
 
         project_build(valid_token=valid_token)
         # if project_build(valid_token=valid_token):
