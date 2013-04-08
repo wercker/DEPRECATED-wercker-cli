@@ -35,7 +35,7 @@ def create(path='.', valid_token=None):
 
     term = get_term()
 
-    puts("Searching for git remote information... ", level=DEBUG)
+    puts("Checking for git remote information... ", level=DEBUG)
 
     path = find_git_root(path)
 
@@ -78,8 +78,8 @@ def create(path='.', valid_token=None):
 
     if source_type == SOURCE_BITBUCKET:
         if profile.get('hasBitbucketToken', False) is False:
-            puts("No bitbucket account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on bitbucket to our\
+            puts("No Bitbucket account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on Bitbucket to our\
   service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
@@ -98,8 +98,8 @@ def create(path='.', valid_token=None):
             raw_input("Press enter to continue...")
     elif source_type == SOURCE_GITHUB:
         if profile.get('hasGithubToken', False) is False:
-            puts("No github account linked with your profile. Wercker uses\
- this connection to linkup some events for your repository on github to our\
+            puts("No GitHub account linked with your profile. Wercker uses\
+ this connection to linkup some events for your repository on GitHub to our\
  service.")
             provider_url = get_value(
                 VALUE_WERCKER_URL
