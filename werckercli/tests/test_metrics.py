@@ -17,3 +17,9 @@ class MetricsTests(TestCase):
                 track_application_startup()
             except requests.ConnectionError:
                 self.fail("track_application_startup didn't fail silently")
+
+    def test_track_application_startup_calls_track_command_usage(self):
+        the_method = mock.Mock()
+
+        with mock.patch(track_command_usage_path, the_method) as puts:
+            the_method.assert_called_once()
