@@ -45,15 +45,18 @@ import docopt
 from werckercli.cli import (
     # get_parser,
     handle_commands,
-    get_intro
+    get_intro,
 )
-
-# from clint.textui import puts
-
+from werckercli.metrics import (
+    track_application_startup,
+)
 
 import werckercli
 
+track_application_startup()
+
 print(get_intro())
+
 args = docopt.docopt(
     __doc__,
     version="version " + werckercli.__version__,

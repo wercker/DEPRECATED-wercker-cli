@@ -70,7 +70,7 @@ def get_value(name, default_value=None, path=os.curdir):
 
     elif name == VALUE_USER_NAME:
 
-        wercker_url = get_value(VALUE_USER_NAME)
+        wercker_url = get_value(VALUE_WERCKER_URL)
         url = urlparse(wercker_url)
 
         file = _get_or_create_netrc_location()
