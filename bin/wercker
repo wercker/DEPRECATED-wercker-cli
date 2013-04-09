@@ -35,7 +35,6 @@ Details:
     targets list    - lists all deploy targets
     targets details - alias for open targets
     validate        - validates the wercker.json file
-    env             - print environment information
 """
 
 # todo:
@@ -74,10 +73,5 @@ args = docopt.docopt(
     version="version " + werckercli.__version__,
     help=True
 )
-
-print args
-arguments = None
-#if len(args) > 1:
-#    arguments = args[1:]
 
 handle_commands(args)
