@@ -31,8 +31,6 @@ def track_command_usage(command_name, arguments=None):
 
 
 def track_application_startup():
-    print sys.argv
-
     try:
         command = default_command_name
         arguments = None
