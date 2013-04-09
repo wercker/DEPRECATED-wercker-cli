@@ -16,7 +16,6 @@ Usage:
     wercker targets list
     wercker targets details
     wercker validate
-    wercker env
     wercker --version
     wercker --help
 
@@ -42,7 +41,6 @@ Details:
 #    wercker jobs -> jobs page on beta.wercker.com
 
 import docopt
-import sys
 
 from werckercli.cli import (
     # get_parser,
@@ -50,21 +48,12 @@ from werckercli.cli import (
     get_intro,
 )
 from werckercli.metrics import (
-    track_command_usage,
+    track_application_startup,
 )
 
 import werckercli
 
-command = "help"
-arguments = None
-
-if len(sys.argv) > 2:
-    command = sys.argv[1]
-
-if len(sys.argv) > 3:
-    arguments = sys.argv[2:]
-
-track_command_usage(command, arguments)
+track_application_startup()
 
 print(get_intro())
 
