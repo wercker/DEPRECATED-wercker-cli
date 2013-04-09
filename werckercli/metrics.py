@@ -43,4 +43,4 @@ def track_application_startup():
 
         track_command_usage(command, arguments)
     except:
-        x=1
+        x = 1
