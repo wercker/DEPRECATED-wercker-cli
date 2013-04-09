@@ -46,7 +46,7 @@ setup(name='wercker',
       extras_require={'test': tests_require},
       distclass=Distribution,
       classifiers=[
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 4 - Beta",
           'Environment :: Console',
           'Environment :: Web Environment',
           'License :: OSI Approved :: MIT License',
