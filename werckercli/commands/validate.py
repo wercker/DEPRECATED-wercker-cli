@@ -37,7 +37,7 @@ def validate():
         return
 
     try:
-        with os.open(wercker_json_path) as f:
+        with open(wercker_json_path) as f:
             try:
                 json.load(f)
 

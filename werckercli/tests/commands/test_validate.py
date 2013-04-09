@@ -7,7 +7,7 @@ puts_path = "werckercli.commands.validate.puts"
 exists_path = "os.path.exists"
 find_git_root_path = "werckercli.commands.validate.find_git_root"
 getsize_path = "os.path.getsize"
-open_path = "os.open"
+open_path = "__builtin__.open"
 
 
 class ValidationTests(TestCase):
