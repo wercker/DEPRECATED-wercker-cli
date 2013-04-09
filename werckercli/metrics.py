@@ -20,7 +20,9 @@ def track_command_usage(command_name, arguments=None):
             }}
 
     encoded_data = base64.b64encode(json.dumps(data))
-    requests.get(mixpanel_api_url_template % encoded_data)
+    url = mixpanel_api_url_template % encoded_data
+
+    requests.get(url)
 
 
 def track_application_startup():
