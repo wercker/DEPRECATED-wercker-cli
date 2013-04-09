@@ -6,3 +6,4 @@ dulwich==0.8.7
 docopt
 httpretty
 mock
+semantic_version

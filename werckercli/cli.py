@@ -69,6 +69,9 @@ def handle_commands(args):
         as command_login
     from werckercli.commands.project import project_list_queue\
         as command_list_jobs
+
+    from werckercli.commands.update import update\
+        as command_update
     from werckercli.commands.validate import validate\
         as command_validate
 
@@ -117,6 +120,8 @@ def handle_commands(args):
         #         'jobs' in args and args['jobs']:
         elif args.get('queue'):
             command_list_jobs()
+        elif args.get('update'):
+            command_update()
     except KeyboardInterrupt:
         puts("\nAborted...")
 
