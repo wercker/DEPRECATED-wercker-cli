@@ -75,3 +75,6 @@ This is an alias for `wercker open targets`
 
 ### validate
 Checks if your [wercker.json](http://devcenter.wercker.com/articles/werckerjson) is valid.
+
+### update
+Checks pypi if there's a newer version available.
