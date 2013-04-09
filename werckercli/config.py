@@ -15,11 +15,14 @@ VALUE_USER_NAME = "user_name"
 VALUE_PROJECT_ID = "project_id"
 VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
+VALUE_MIXPANEL_TOKEN = "mixpanel_token"
 
 ENV_KEY_WERCKER_URL = "WERCKER_URL"
+ENV_KEY_MIXPANEL_TOKEN = "WERCKER_MIXPANEL_TOKEN"
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
 DEFAULT_DOT_WERCKER_NAME = ".wercker"
+DEFAULT_MIXPANEL_TOKEN = "380db8420ac773c58e7c923f5b0dd9b4"
 
 
 def _get_or_create_netrc_location():
@@ -56,6 +59,9 @@ def get_value(name, default_value=None, path=os.curdir):
             value = os.getenv(ENV_KEY_WERCKER_URL, DEFAULT_WERCKER_URL)
 
         return value
+
+    elif name == VALUE_MIXPANEL_TOKEN:
+        value = os.getenv(ENV_KEY_MIXPANEL_TOKEN, DEFAULT_MIXPANEL_TOKEN)
 
     elif name == VALUE_USER_TOKEN:
 
