@@ -43,4 +43,4 @@ def track_application_startup():
 
         track_command_usage(command, arguments)
     except:
-        # Eat up all errors
+        x=1
