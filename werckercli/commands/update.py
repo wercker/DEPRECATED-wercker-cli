@@ -47,4 +47,5 @@ Please upgrade:
 term.bold_white('pip install wercker'))
 
     else:
-        print "no newer version found"
+        print "Current version is up-to-date ({version})".format(
+            version=current_version)
