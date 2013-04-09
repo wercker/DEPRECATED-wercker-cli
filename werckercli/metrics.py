@@ -2,6 +2,7 @@ import requests
 import json
 import base64
 import sys
+import config
 
 mixpanel_api_url_template = "http://api.mixpanel.com/track/?data=%s&ip=1"
 token = "509041bd3dd934157b1d3d00bb450ebc"
@@ -11,12 +12,15 @@ default_command_name = "help" # used when application is started without any
 def track_command_usage(command_name, arguments=None):
     """ List a command as used """
 
+    username = config.get_value(config.VALUE_USER_NAME)
+
     data = { "event": command_name,
              "properties": {
                 "command_name": command_name,
                 "event_source": "cli",
                 "token": token,
-                "arguments": arguments
+                "arguments": arguments,
+                "distinct_id": username,
             }}
 
     encoded_data = base64.b64encode(json.dumps(data))
