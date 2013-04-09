@@ -54,18 +54,30 @@ from werckercli.metrics import (
     track_command_usage,
 )
 
-# from clint.textui import puts
-
-
 import werckercli
 
-track_command_usage(sys.argv)
+command = "help"
+arguments = None
+
+if len(sys.argv) > 2:
+    command = sys.argv[1]
+
+if len(sys.argv) > 3:
+    arguments = sys.argv[2:]
+
+track_command_usage(command, arguments)
 
 print(get_intro())
+
 args = docopt.docopt(
     __doc__,
     version="version " + werckercli.__version__,
     help=True
 )
+
+print args
+arguments = None
+#if len(args) > 1:
+#    arguments = args[1:]
 
 handle_commands(args)
