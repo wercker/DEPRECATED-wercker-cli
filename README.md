@@ -1,4 +1,4 @@
-[![Wercker status](https://app.wercker.com/status/841531b16e709d25f4ae566af33193cf/m)](https://app.wercker.com/project/bykey/841531b16e709d25f4ae566af33193cf)
+[![Wercker status](https://app.wercker.com/status/e03bf0c77a793a7857a2b8abc9fac779/m)](https://app.wercker.com/project/bykey/e03bf0c77a793a7857a2b8abc9fac779)
 # wercker-cli #
 
 A cli tool for <http://wercker.com/> - Continuous deployment made easy.
@@ -24,6 +24,7 @@ Usage:
         wercker targets add
         wercker targets list
         wercker targets details
+        wercker validate
         wercker --version
 
 ## Commands
@@ -71,3 +72,6 @@ Lists all deploy targets
 
 ### targets details
 This is an alias for `wercker open targets`
+
+### validate
+Checks if your [wercker.json](http://devcenter.wercker.com/articles/werckerjson) is valid.

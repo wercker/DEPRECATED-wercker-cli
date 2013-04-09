@@ -21,9 +21,9 @@ def do_login(retry_count=2):
     status, content = cl.request_oauth_token(username, password)
 
     if status == 200 and content.get('success', False):
+        puts(term.green("Login successful.") + " Welcome %s!" % username)
         set_value(VALUE_USER_NAME, username)
 
-        puts(term.green("Login successful."))
         return content['result']['token']
 
     elif retry_count > 0:
@@ -36,23 +36,13 @@ def do_login(retry_count=2):
 
 def get_access_token():
 
-    term = get_term()
-
-    puts("Looking for login token...")
-
     token = get_value(VALUE_USER_TOKEN)
 
     if not token:
-        puts(term.yellow("Token not found\n"))
-        puts("Attempting to log in...")
         token = do_login()
 
         if not token:
             return
 
-        # print token
-
         set_value(VALUE_USER_TOKEN, token)
-        puts("Token saved. \n")
-
     return token
