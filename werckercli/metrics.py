@@ -31,13 +31,16 @@ def track_command_usage(command_name, arguments=None):
 
 
 def track_application_startup():
-    command = "help"
-    arguments = None
+    try:
+        command = "help"
+        arguments = None
 
-    if len(sys.argv) > 2:
-        command = sys.argv[1]
+        if len(sys.argv) > 2:
+            command = sys.argv[1]
 
-    if len(sys.argv) > 3:
-        arguments = sys.argv[2:]
+        if len(sys.argv) > 3:
+            arguments = sys.argv[2:]
 
-    track_command_usage(command, arguments)
+        track_command_usage(command, arguments)
+    except:
+        # Eat up all errors
