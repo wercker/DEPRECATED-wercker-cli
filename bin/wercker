@@ -16,6 +16,7 @@ Usage:
     wercker targets list
     wercker targets details
     wercker validate
+    wercker env
     wercker --version
     wercker --help
 
@@ -34,6 +35,7 @@ Details:
     targets list    - lists all deploy targets
     targets details - alias for open targets
     validate        - validates the wercker.json file
+    env             - print environment information
 """
 
 # todo:
@@ -41,17 +43,23 @@ Details:
 #    wercker jobs -> jobs page on beta.wercker.com
 
 import docopt
+import sys
 
 from werckercli.cli import (
     # get_parser,
     handle_commands,
-    get_intro
+    get_intro,
+)
+from werckercli.metrics import (
+    track_command_usage,
 )
 
 # from clint.textui import puts
 
 
 import werckercli
+
+track_command_usage(sys.argv)
 
 print(get_intro())
 args = docopt.docopt(
