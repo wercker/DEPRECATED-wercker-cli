@@ -45,7 +45,10 @@ def update(current_version=None):
 Please upgrade:
 """.format(newer_version=newer_version) +
 term.bold_white('pip install wercker'))
+        return True
 
     else:
-        print "Current version is up-to-date ({version})".format(
-            version=current_version)
+        puts("Current version is up-to-date ({version})".format(
+            version=current_version))
+
+        return False
