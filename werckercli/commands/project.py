@@ -111,12 +111,12 @@ def project_check_repo(
                 if "details" in response['data']:
                     # puts
                     puts(
-                        term.yellow("Warning: ") +
+                        term.yellow("Error: ") +
                         response['data']['details']
                     )
                 else:
                     puts(
-                        term.yellow("Warning: ") +
+                        term.red("Error: ") +
                         "wercker's werckerbot has no access to this\
  repository."
 
