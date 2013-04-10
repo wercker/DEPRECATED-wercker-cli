@@ -40,3 +40,10 @@ class MetricsTests(TestCase):
             track_application_startup()
 
             the_method.assert_called_with('validate', None)
+
+    @mock.patch("sys.argv", [None, 'validate'])
+    def test_track_application_startup_handles_missing_script_arg(self):
+        the_method = mock.Mock()
+        with mock.patch(track_command_usage_path, the_method) as puts:
+            track_application_startup()
+
