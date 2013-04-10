@@ -32,3 +32,11 @@ class MetricsTests(TestCase):
             track_application_startup()
 
             the_method.assert_called_with(default_command_name, None)
+
+    @mock.patch("sys.argv", ['main.py', 'validate'])
+    def test_track_application_startup_passes_command_from_sys_args(self):
+        the_method = mock.Mock()
+        with mock.patch(track_command_usage_path, the_method) as puts:
+            track_application_startup()
+
+            the_method.assert_called_with('validate', None)
