@@ -100,7 +100,13 @@ def build_deploy(valid_token=None):
     )
 
     if "success" in result and result['success'] is True:
-        puts(term.green("Success: ") + "Build scheduled for deploy")
+        puts(term.green("Success: ") + """Build scheduled for deploy.
+
+You can monitor the scheduled deploy in your browser using:
+wercker targets deploy
+Or query the queue for this application using:
+wercker queue
+""")
     else:
         puts(term.red("Error: ") + "Unable to schedule deploy")
 
@@ -189,4 +195,7 @@ def print_builds(builds, print_index=False, limit=5):
 
         for row in result:
             print_line(max_lengths, row, props)
+            print_hr(max_lengths)
+
+        if len(result) == 0:
             print_hr(max_lengths)

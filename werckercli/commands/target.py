@@ -92,7 +92,7 @@ application or run heroku addons:add wercker")
 def get_targets(valid_token, project_id):
     c = Client()
 
-    puts("Retreiving list of deploy targets...")
+    puts("\nRetreiving list of deploy targets...")
     code, result = c.get_deploy_targets_by_project(
         valid_token,
         project_id

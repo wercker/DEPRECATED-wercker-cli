@@ -226,13 +226,15 @@ def project_list_queue(valid_token=None):
                 deploys['data']
             )
 
-            puts(("Found {amount} scheduled deploys for {target}").format(
+            puts(("\nFound {amount} scheduled deploys for {target}").format(
                 amount=len(unknowns),
                 target=term.bold(target['name'])
             ))
 
             print_deploys(unknowns)
 
+    else:
+        puts("\nNo deploy targets found.")
     # print "List of scheduled deploys:"
 
 
