@@ -12,5 +12,8 @@
             "coverage report -m --omit=*/tests/*,setup*"
         ]
     },
-    "package": false
+    "package": false,
+    "deploy": {
+        "./deploy.sh"
+    }
 }
