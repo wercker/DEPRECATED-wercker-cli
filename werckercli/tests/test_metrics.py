@@ -1,4 +1,5 @@
 import mock
+from mock import ANY
 import requests
 from werckercli.metrics import track_application_startup, default_command_name
 
@@ -31,7 +32,7 @@ class MetricsTests(TestCase):
         with mock.patch(track_command_usage_path, the_method) as puts:
             track_application_startup()
 
-            the_method.assert_called_with(default_command_name, None)
+            the_method.assert_called_with(default_command_name, ANY)
 
     @mock.patch("sys.argv", ['main.py', 'validate'])
     def test_track_application_startup_passes_command_from_sys_args(self):
@@ -39,7 +40,7 @@ class MetricsTests(TestCase):
         with mock.patch(track_command_usage_path, the_method) as puts:
             track_application_startup()
 
-            the_method.assert_called_with('validate', None)
+            the_method.assert_called_with('validate', ANY)
 
     @mock.patch("sys.argv", [None, 'validate'])
     def test_track_application_startup_handles_missing_script_arg(self):
@@ -60,4 +61,4 @@ class MetricsTests(TestCase):
             track_application_startup()
 
             expected_args = ['foo', 'bar']
-            the_method.assert_called_with('validate', expected_args)
+            the_method.assert_called_with(ANY, expected_args)
