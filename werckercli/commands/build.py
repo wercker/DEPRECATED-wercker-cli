@@ -100,13 +100,15 @@ def build_deploy(valid_token=None):
     )
 
     if "success" in result and result['success'] is True:
-        puts(term.green("Success: ") + """Build scheduled for deploy.
+        puts(term.green("Success: ") + """
+            Build scheduled for deploy.
 
 You can monitor the scheduled deploy in your browser using:
-wercker targets deploy
+{command_targets_deploy}
 Or query the queue for this application using:
-wercker queue
-""")
+{command_queue}""".format(
+            command_targets_deploy=term.white("wercker targets deploy"),
+            command_queue=term.white("wercker queue")))
     else:
         puts(term.red("Error: ") + "Unable to schedule deploy")
 
