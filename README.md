@@ -1,7 +1,7 @@
 [![Wercker status](https://app.wercker.com/status/e03bf0c77a793a7857a2b8abc9fac779/m)](https://app.wercker.com/project/bykey/e03bf0c77a793a7857a2b8abc9fac779)
 # wercker-cli #
 
-A cli tool for <http://wercker.com/> - Continuous deployment made easy.
+A cli tool for <http://wercker.com/> - a continuous delivery platform.
 
 Usage:
 
