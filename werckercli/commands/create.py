@@ -72,14 +72,22 @@ def create(path='.', valid_token=None):
         if run_create is False:
             puts("Aborting.")
             return
+        else:
+            puts("")
 
-    if project_link(valid_token, puts_result=False, auto_link=False):
+    if project_link(
+        valid_token=valid_token,
+        puts_result=False,
+        auto_link=False
+    ):
         puts("A matching application was found on wercker.")
         use_link = prompt.yn("Do you want to run 'wercker link' instead of\
  `wercker create`?")
 
+        puts("")
+
         if use_link is True:
-            project_link(valid_token)
+            project_link(valid_token=valid_token)
             return
 
     path = find_git_root(path)
