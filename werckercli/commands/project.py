@@ -88,6 +88,8 @@ def project_link(valid_token=None):
                 )
                 return
 
+    puts("An application could not be linked to this repository")
+
 
 @login_required
 def project_check_repo(
