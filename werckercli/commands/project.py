@@ -61,8 +61,11 @@ def project_list(valid_token=None):
 
 @login_required
 def project_link(valid_token=None):
+
     if not valid_token:
         raise ValueError("A valid token is required!")
+
+    term = get_term()
 
     puts("Searching for git remote information... ")
     options = get_remote_options(os.curdir)
@@ -74,9 +77,15 @@ def project_link(valid_token=None):
 
     for option in options:
         for app in result:
-            # print option.url, app['url']
+
             if convert_to_url(app['url']) == convert_to_url(option.url):
+
                 set_value(VALUE_PROJECT_ID, app['id'])
+
+                puts(
+                    term.green("success:") +
+                    " application is now linked to this repository"
+                )
                 return
 
 
