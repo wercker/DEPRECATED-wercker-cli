@@ -4,8 +4,8 @@ from werckercli.decorators import login_required
 from werckercli.git import (
     get_remote_options,
     convert_to_url,
-    get_source_type
 )
+from werckercli import prompt
 from werckercli.cli import get_term, puts
 from werckercli.client import Client
 from werckercli.printer import (
@@ -60,17 +60,20 @@ def project_list(valid_token=None):
 
 
 @login_required
-def project_link(valid_token=None):
+def project_link(valid_token=None, puts_result=True, auto_link=True):
 
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     term = get_term()
 
-    puts("Searching for git remote information... ")
+    if puts_result:
+        puts("Searching for git remote information... ")
     options = get_remote_options(os.curdir)
 
-    puts("Retreiving list of applications...")
+    if puts_result:
+        puts("Retreiving list of applications...")
+
     c = Client()
 
     response, result = c.get_applications(valid_token)
@@ -80,15 +83,21 @@ def project_link(valid_token=None):
 
             if convert_to_url(app['url']) == convert_to_url(option.url):
 
-                set_value(VALUE_PROJECT_ID, app['id'])
+                if auto_link:
+                    set_value(VALUE_PROJECT_ID, app['id'])
 
-                puts(
-                    term.green("success:") +
-                    " application is now linked to this repository"
-                )
-                return
+                if puts_result:
+                    puts(
+                        term.green("success:") +
+                        " application is now linked to this repository"
+                    )
+                return True
 
-    puts("An application could not be linked to this repository")
+    if puts_result:
+        puts(
+            "An application could " + term.bold("not") +
+            " be linked to this repository")
+    return False
 
 
 @login_required
@@ -134,7 +143,6 @@ def project_check_repo(
                     )
 
                 if failure_confirmation is True:
-                    from werckercli import prompt
 
                     puts("werckerbot needs pull/read access to the repository \
 to get the code.")
@@ -156,7 +164,6 @@ to get the code.")
         else:
             puts(term.red("Error: ") + "Could not validate access...")
             if failure_confirmation is True:
-                from werckercli import prompt
 
                 puts("werckerbot needs pull/read access to the repository \
 to get the code.")
@@ -259,31 +266,19 @@ def print_deploys(deploys, print_index=False):
         if "progress" in data:
             data['progress'] = "{progress:.1f}%".format(
                 progress=data['progress'])
-        # if 'commitHash' in data:
-        #     data['commitHash'] = data['commitHash'][:8]
 
     header = [
-        # 'target',
         'result',
         'progress',
         'deploy by',
         'created',
-        # 'branch',
-        # 'commit',
-        # 'status',
-        # 'message'
     ]
 
     props = [
-        # 'name',
         'result',
         'progress',
         'byUsername',
         'creationDate',
-        # 'branch',
-        # 'commitHash',
-        # 'deployStatus',
-        # 'commitMessage',
     ]
 
     if print_index:
@@ -297,8 +292,6 @@ def print_deploys(deploys, print_index=False):
 
     store_highest_length(max_lengths, header)
 
-    # if 'data' in result:
-    # puts("Found %d result(s)...\n" % len(result['data']))
     index = 0
 
     for row in deploys:
