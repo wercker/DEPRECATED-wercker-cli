@@ -252,7 +252,7 @@ def project_list_queue(valid_token=None):
             print_deploys(unknowns)
 
     else:
-        puts("\nNo deploy targets found.")
+        puts("\nNo scheduled deploys found.")
     # print "List of scheduled deploys:"
 
 
