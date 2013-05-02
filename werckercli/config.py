@@ -49,7 +49,7 @@ def _get_or_create_netrc_location():
     return file
 
 
-def get_value(name, default_value=None, path=os.curdir):
+def get_value(name, default_value=None, path=os.curdir, print_warnings=True):
     value = None
     term = get_term()
 
@@ -112,11 +112,12 @@ def get_value(name, default_value=None, path=os.curdir):
         )
 
         if not os.path.isfile(file):
-            puts(
-                term.yellow("Warning:") +
-                " Could not find a %s file in the application root" %
-                DEFAULT_DOT_WERCKER_NAME
-            )
+            if print_warnings:
+                puts(
+                    term.yellow("Warning:") +
+                    " Could not find a %s file in the application root" %
+                    DEFAULT_DOT_WERCKER_NAME
+                )
 
             return
 

@@ -63,7 +63,7 @@ def create(path='.', valid_token=None):
 
     term = get_term()
 
-    if get_value(VALUE_PROJECT_ID):
+    if get_value(VALUE_PROJECT_ID, print_warnings=False):
         puts("A .wercker file was found.")
         run_create = prompt.yn(
             "Are you sure you want to run `wercker create`?",
