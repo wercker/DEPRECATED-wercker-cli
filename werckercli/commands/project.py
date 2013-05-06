@@ -95,7 +95,7 @@ def project_link(valid_token=None, puts_result=True, auto_link=True):
 
     if puts_result:
         puts(
-            "An application could " + term.bold("not") +
+            "An application could " + term.white("not") +
             " be linked to this repository")
     return False
 
@@ -246,7 +246,7 @@ def project_list_queue(valid_token=None):
 
             puts(("\nFound {amount} scheduled deploys for {target}").format(
                 amount=len(unknowns),
-                target=term.bold(target['name'])
+                target=term.white(target['name'])
             ))
 
             print_deploys(unknowns)
