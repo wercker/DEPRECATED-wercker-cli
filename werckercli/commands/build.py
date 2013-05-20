@@ -32,12 +32,12 @@ def build_list(valid_token=None, limit=5):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    projectId = get_value(VALUE_PROJECT_ID)
+    projectId = get_value(VALUE_PROJECT_ID, print_warnings=False)
 
     if not projectId:
         puts(
             term.red("Error: ") +
-            "No project found. Please create or link a project first"
+            "No application found. Please create or link an application first"
         )
 
         return
@@ -54,13 +54,14 @@ def build_deploy(valid_token=None):
 
     term = get_term()
 
-    projectId = get_value(VALUE_PROJECT_ID)
+    projectId = get_value(VALUE_PROJECT_ID, print_warnings=False)
 
     if not projectId:
         puts(
             term.red("Error: ") +
-            "No project found. Please create or link a project first"
+            "No application found. Please create or link an application first"
         )
+        return
 
     builds = get_builds(valid_token, projectId)
 

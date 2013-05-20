@@ -100,10 +100,11 @@ def get_value(name, default_value=None, path=os.curdir, print_warnings=True):
         path = find_git_root(path)
 
         if not path:
-            puts(
-                term.red("Error:") +
-                " Could not find a git repository."
-            )
+            if print_warnings:
+                puts(
+                    term.red("Warning:") +
+                    " Could not find a git repository."
+                )
             return
 
         file = os.path.join(

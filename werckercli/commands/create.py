@@ -100,6 +100,9 @@ def create(path='.', valid_token=None):
         options = []
         heroku_options = []
 
+    if not path:
+        return False
+
     puts('''About to create an application on wercker.
 
 This consists of the following steps:

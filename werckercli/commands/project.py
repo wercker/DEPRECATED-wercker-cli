@@ -71,6 +71,11 @@ def project_link(valid_token=None, puts_result=True, auto_link=True):
         puts("Searching for git remote information... ")
     options = get_remote_options(os.curdir)
 
+    if options is None:
+        if puts_result:
+            puts(term.red("error:") + " No git repository found")
+        return False
+
     if puts_result:
         puts("Retreiving list of applications...")
 
@@ -208,13 +213,20 @@ def project_build(valid_token=None):
 
 @login_required
 def project_list_queue(valid_token=None):
+
+    term = get_term()
+
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    project_id = get_value(VALUE_PROJECT_ID)
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
 
     if not project_id:
-        raise ValueError("No project id found")
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
 
     term = get_term()
 
