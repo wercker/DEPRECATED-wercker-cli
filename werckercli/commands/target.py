@@ -81,7 +81,7 @@ apps for current heroku user"
 
     if 'success' in result and result['success'] is True:
         puts("Heroku deploy target %s \
-successfully added to the wercker applicaiton\n" % preferred_app['name'])
+successfully added to the wercker application\n" % preferred_app['name'])
 
     elif result['errorMessage']:
         puts(term.red("Error: ") + result['errorMessage'])
