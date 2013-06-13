@@ -4,8 +4,8 @@ from werckercli.decorators import login_required
 from werckercli.git import (
     get_remote_options,
     convert_to_url,
-    get_source_type
 )
+from werckercli import prompt
 from werckercli.cli import get_term, puts
 from werckercli.client import Client
 from werckercli.printer import (
@@ -60,24 +60,49 @@ def project_list(valid_token=None):
 
 
 @login_required
-def project_link(valid_token=None):
+def project_link(valid_token=None, puts_result=True, auto_link=True):
+
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    puts("Searching for git remote information... ")
+    term = get_term()
+
+    if puts_result:
+        puts("Searching for git remote information... ")
     options = get_remote_options(os.curdir)
 
-    puts("Retreiving list of applications...")
+    if options is None:
+        if puts_result:
+            puts(term.red("error:") + " No git repository found")
+        return False
+
+    if puts_result:
+        puts("Retreiving list of applications...")
+
     c = Client()
 
     response, result = c.get_applications(valid_token)
 
     for option in options:
         for app in result:
-            # print option.url, app['url']
+
             if convert_to_url(app['url']) == convert_to_url(option.url):
-                set_value(VALUE_PROJECT_ID, app['id'])
-                return
+
+                if auto_link:
+                    set_value(VALUE_PROJECT_ID, app['id'])
+
+                if puts_result:
+                    puts(
+                        term.green("success:") +
+                        " application is now linked to this repository"
+                    )
+                return True
+
+    if puts_result:
+        puts(
+            "An application could " + term.white("not") +
+            " be linked to this repository")
+    return False
 
 
 @login_required
@@ -123,7 +148,6 @@ def project_check_repo(
                     )
 
                 if failure_confirmation is True:
-                    from werckercli import prompt
 
                     puts("werckerbot needs pull/read access to the repository \
 to get the code.")
@@ -145,7 +169,6 @@ to get the code.")
         else:
             puts(term.red("Error: ") + "Could not validate access...")
             if failure_confirmation is True:
-                from werckercli import prompt
 
                 puts("werckerbot needs pull/read access to the repository \
 to get the code.")
@@ -190,13 +213,20 @@ def project_build(valid_token=None):
 
 @login_required
 def project_list_queue(valid_token=None):
+
+    term = get_term()
+
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    project_id = get_value(VALUE_PROJECT_ID)
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
 
     if not project_id:
-        raise ValueError("No project id found")
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
 
     term = get_term()
 
@@ -228,13 +258,13 @@ def project_list_queue(valid_token=None):
 
             puts(("\nFound {amount} scheduled deploys for {target}").format(
                 amount=len(unknowns),
-                target=term.bold(target['name'])
+                target=term.white(target['name'])
             ))
 
             print_deploys(unknowns)
 
     else:
-        puts("\nNo deploy targets found.")
+        puts("\nNo scheduled deploys found.")
     # print "List of scheduled deploys:"
 
 
@@ -248,31 +278,19 @@ def print_deploys(deploys, print_index=False):
         if "progress" in data:
             data['progress'] = "{progress:.1f}%".format(
                 progress=data['progress'])
-        # if 'commitHash' in data:
-        #     data['commitHash'] = data['commitHash'][:8]
 
     header = [
-        # 'target',
         'result',
         'progress',
         'deploy by',
         'created',
-        # 'branch',
-        # 'commit',
-        # 'status',
-        # 'message'
     ]
 
     props = [
-        # 'name',
         'result',
         'progress',
         'byUsername',
         'creationDate',
-        # 'branch',
-        # 'commitHash',
-        # 'deployStatus',
-        # 'commitMessage',
     ]
 
     if print_index:
@@ -286,8 +304,6 @@ def print_deploys(deploys, print_index=False):
 
     store_highest_length(max_lengths, header)
 
-    # if 'data' in result:
-    # puts("Found %d result(s)...\n" % len(result['data']))
     index = 0
 
     for row in deploys:

@@ -21,9 +21,13 @@ def add(valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    project_id = get_value(VALUE_PROJECT_ID)
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
     if not project_id:
-        raise ValueError("No project id found")
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
 
     options = git.find_heroku_sources(os.curdir)
 
@@ -192,15 +196,18 @@ def pick_target(valid_token, projectId):
 
 @login_required
 def list_by_project(valid_token=None):
+    term = get_term()
 
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    project_id = get_value(VALUE_PROJECT_ID)
-
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
     if not project_id:
-        raise ValueError("No project id found")
-
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
     targets = get_targets(valid_token, project_id)
 
     print_targets(targets)
@@ -208,14 +215,19 @@ def list_by_project(valid_token=None):
 
 @login_required
 def link_to_deploy_target(valid_token=None):
+    term = get_term()
 
     if not valid_token:
         raise ValueError("A valid token is required!")
 
-    project_id = get_value(VALUE_PROJECT_ID)
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
 
     if not project_id:
-        raise ValueError("No project id found")
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
 
     target = pick_target(valid_token, project_id)
 

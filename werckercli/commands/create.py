@@ -1,10 +1,18 @@
 from werckercli.decorators import login_required
+
 from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
-from werckercli.cli import get_term, puts
-from werckercli.cli import pick_url
+
+from werckercli import prompt
+
+from werckercli.cli import (
+    get_term,
+    puts,
+    pick_url
+)
+
 from werckercli.git import (
     get_preferred_source_type,
     filter_heroku_sources,
@@ -25,7 +33,11 @@ from werckercli.client import Client
 from werckercli.paths import find_git_root
 
 from werckercli.commands.target import add as target_add
-from werckercli.commands.project import project_check_repo, project_build
+from werckercli.commands.project import (
+    project_check_repo,
+    project_build,
+    project_link
+)
 
 
 '''
@@ -51,6 +63,33 @@ def create(path='.', valid_token=None):
 
     term = get_term()
 
+    if get_value(VALUE_PROJECT_ID, print_warnings=False):
+        puts("A .wercker file was found.")
+        run_create = prompt.yn(
+            "Are you sure you want to run `wercker create`?",
+            default="n")
+
+        if run_create is False:
+            puts("Aborting.")
+            return
+        else:
+            puts("")
+
+    if project_link(
+        valid_token=valid_token,
+        puts_result=False,
+        auto_link=False
+    ):
+        puts("A matching application was found on wercker.")
+        use_link = prompt.yn("Do you want to run 'wercker link' instead of\
+ `wercker create`?")
+
+        puts("")
+
+        if use_link is True:
+            project_link(valid_token=valid_token)
+            return
+
     path = find_git_root(path)
 
     if path:
@@ -60,6 +99,9 @@ def create(path='.', valid_token=None):
     else:
         options = []
         heroku_options = []
+
+    if not path:
+        return False
 
     puts('''About to create an application on wercker.
 
