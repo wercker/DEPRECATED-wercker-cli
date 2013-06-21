@@ -69,6 +69,8 @@ def handle_commands(args):
         as command_login
     from werckercli.commands.project import project_list_queue\
         as command_list_jobs
+    from werckercli.commands.project import project_open\
+        as command_project_open
 
     from werckercli.commands.update import update\
         as command_update
@@ -108,6 +110,8 @@ def handle_commands(args):
                 command_list_by_project()
             elif args.get('details') or args.get('open'):
                 command_target_details()
+        elif args.get('open'):
+            command_project_open()
         elif args.get('validate'):
             command_validate()
         elif args.get('login'):

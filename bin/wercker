@@ -6,6 +6,7 @@ Usage:
     wercker status
     wercker deploy
     wercker builds
+    wercker open
     wercker open targets
     wercker queue
     wercker apps
@@ -27,6 +28,7 @@ Details:
     login           - Logs the user in and stores the token on the
                       machine
     logout          - Removes the login token from the machine
+    open            - opens a webpage showing the current app
     open targets    - opens a webpage showing a deploy target's details
     apps            - List apps the user has access to
     link            - link repository back up to an apps on wercker

@@ -16,6 +16,7 @@ Usage:
         wercker deploy
         wercker builds
         wercker open targets
+        wercker open
         wercker queue
         wercker apps
         wercker link
@@ -48,6 +49,9 @@ Retrieves a login token for wercker and stores it in the .netrc in the users' ho
 
 ### logout
 Removes the login token from the .netrc file
+
+### open targets
+Opens a webpage showing the current app
 
 ### open targets
 Opens a webpage showing a deploy target's details

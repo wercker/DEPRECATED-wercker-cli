@@ -14,9 +14,39 @@ from werckercli.printer import (
     store_highest_length,
     format_date
 )
-from werckercli.config import get_value, set_value, VALUE_PROJECT_ID
+from werckercli.config import (
+    get_value,
+    set_value,
+    VALUE_PROJECT_ID,
+    VALUE_WERCKER_URL
+)
+
 from werckercli.commands.build import get_builds, print_builds
 from werckercli.commands.target import get_targets
+
+
+def project_open():
+    project_id = get_value(VALUE_PROJECT_ID, print_warnings=False)
+
+    term = get_term()
+
+    if not project_id:
+        puts(
+            term.red("Error: ") +
+            "No application found. Please create or link an application first"
+        )
+        return
+
+    wercker_url = get_value(VALUE_WERCKER_URL)
+
+    link = "{wercker_url}/#project/{project_id}".format(
+        wercker_url=wercker_url,
+        project_id=project_id
+    )
+    puts("Opening link: {link}".format(link=link))
+    import webbrowser
+
+    webbrowser.open(link)
 
 
 @login_required
