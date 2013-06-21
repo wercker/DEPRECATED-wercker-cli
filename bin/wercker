@@ -16,7 +16,6 @@ Usage:
     wercker targets add
     wercker targets list
     wercker targets details
-    wercker validate
     wercker update
     wercker --version
     wercker --help
@@ -36,7 +35,6 @@ Details:
     targets add     - add a heroku targets as a deploy target
     targets list    - lists all deploy targets
     targets details - alias for open targets
-    validate        - validates the wercker.json file
 """
 
 # todo:
