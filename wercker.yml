@@ -8,12 +8,13 @@ build:
           sudo pip install httpretty
           sudo pip install mock
           sudo pip install pep8
+    - pip-install
     - script:
         name: pep8
         code: |
           pep8 .
     - script:
-        name: pep8
+        name: coverage
         code: |
           coverage run  --timid --source=. -m unittest discover -v
           coverage report -m --omit=*/tests/*,setup*
