@@ -18,6 +18,7 @@ build:
           coverage run  --timid --source=. -m unittest discover -v
           coverage report -m --omit=*/tests/*,setup*
 deploy:
+  steps:
     - script:
         name: pypi deploy
         code: ./deploy.sh
