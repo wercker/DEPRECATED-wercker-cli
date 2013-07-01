@@ -5,7 +5,7 @@ build:
         name: install test libs
         code: |
           sudo pip install coverage
-          sudo pip install httpretty,
+          sudo pip install httpretty
           sudo pip install mock
           sudo pip install pep8
     - script:
