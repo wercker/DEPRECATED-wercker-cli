@@ -1,0 +1,23 @@
+box: wercker/python
+  build:
+    steps:
+      - script:
+          name: install test libs
+          code: |
+            pip install coverage
+            pip install httpretty,
+            pip install mock
+            pip install pep8
+      - script:
+          name: pep8
+          code: |
+            pep8 .
+      - script:
+          name: pep8
+          code: |
+            coverage run  --timid --source=. -m unittest discover -v
+            coverage report -m --omit=*/tests/*,setup*
+  build:
+      - script:
+          name: pypi deploy
+          code: ./deploy.sh
