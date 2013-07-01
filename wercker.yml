@@ -17,7 +17,7 @@ box: wercker/python
           code: |
             coverage run  --timid --source=. -m unittest discover -v
             coverage report -m --omit=*/tests/*,setup*
-  build:
+  deploy:
       - script:
           name: pypi deploy
           code: ./deploy.sh
