@@ -17,24 +17,33 @@ Usage:
     wercker targets list
     wercker targets details
     wercker update
+    wercker services add <name>
+    wercker services remove <name>
+    wercker services search <search>
+    wercker services
     wercker --version
     wercker --help
 
 Details:
-    create          - Adds an application to wercker
-    status          - shows the status of the most recent build
-    deploy          - deploy a build to a deploy target
-    login           - Logs the user in and stores the token on the
-                      machine
-    logout          - Removes the login token from the machine
-    open            - opens a webpage showing the current app
-    open targets    - opens a webpage showing a deploy target's details
-    apps            - List apps the user has access to
-    link            - link repository back up to an apps on wercker
-    builds          - shows a list of the most recent builds
-    targets add     - add a heroku targets as a deploy target
-    targets list    - lists all deploy targets
-    targets details - alias for open targets
+    create                      - Adds an application to wercker
+    status                      - shows the status of the most recent build
+    deploy                      - deploy a build to a deploy target
+    login                       - Logs the user in and stores the token on the
+                                  machinex
+    logout                      - Removes the login token from the machine
+    open                        - opens a webpage showing the current app
+    open targets                - opens a webpage showing a deploy target's
+                                  details
+    apps                        - List apps the user has access to
+    link                        - link repository back up to an apps on wercker
+    builds                      - shows a list of the most recent builds
+    targets add                 - add a heroku targets as a deploy target
+    targets list                - lists all deploy targets
+    targets details             - alias for open targets
+    services add <name>         - add a service to your wercker.yml
+    services remove <name>      - remove a service from your wercker.yml
+    services search <search>    - find a service
+    services                    - list services in use (wercker.yml)
 """
 
 # todo:
