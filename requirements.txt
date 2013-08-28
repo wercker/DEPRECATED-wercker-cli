@@ -7,3 +7,4 @@ docopt>=0.6.0
 httpretty>=0.5.5
 mock>=1.0.1
 semantic_version>=2.2.0
+PyYAML>=3.10
