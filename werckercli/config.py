@@ -16,13 +16,17 @@ VALUE_PROJECT_ID = "project_id"
 VALUE_HEROKU_TOKEN = "heroku_netrc_password"
 VALUE_WERCKER_URL = "wercker_url"
 VALUE_MIXPANEL_TOKEN = "mixpanel_token"
+VALUE_DISPLAY_DEBUG = "display_debug"
+# VALUE_DISPLAY_DEBUG = ""
 
 ENV_KEY_WERCKER_URL = "WERCKER_URL"
 ENV_KEY_MIXPANEL_TOKEN = "WERCKER_MIXPANEL_TOKEN"
+ENV_KEY_DISPLAY_DEBUG = "WERCKER_CLI_DEBUG"
 
 DEFAULT_WERCKER_URL = "https://app.wercker.com"
 DEFAULT_DOT_WERCKER_NAME = ".wercker"
 DEFAULT_MIXPANEL_TOKEN = "380db8420ac773c58e7c923f5b0dd9b4"
+DEFAULT_DISPLAY_DEBUG = False
 
 
 def _get_or_create_netrc_location():
@@ -133,6 +137,14 @@ def get_value(name, default_value=None, path=os.curdir, print_warnings=True):
             ConfigParser.NoSectionError
         ):
             value = None
+
+    elif name == VALUE_DISPLAY_DEBUG:
+        env_value = os.environ.get(ENV_KEY_DISPLAY_DEBUG)
+
+        if env_value.lower() == "true":
+            value = True
+        else:
+            value = DEFAULT_DISPLAY_DEBUG
 
     return value
 

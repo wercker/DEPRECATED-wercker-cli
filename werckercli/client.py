@@ -13,6 +13,8 @@ PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
 PATH_GET_APPLICATIONS = 'applications'
 PATH_DEPLOY = 'deploy'
 PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
+PATH_SEARCH_BOXES = 'v2/boxes'
+PATH_BOX_INFO_AT_VERSION = 'v2/boxes/{owner}/{name}/{version}'
 PATH_GET_BUILDS = 'project/{projectId}/builds'
 PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
 PATH_GET_PROFILE = 'profile'
@@ -33,7 +35,7 @@ class LegacyClient():
 
         data_string = json.dumps(data)
 
-        puts("communicating with %s ..." % self.wercker_url, level=DEBUG)
+        puts("communicating with %s ..." % url, level=DEBUG)
 
         result = requests.post(
             url,
@@ -106,12 +108,12 @@ class LegacyClient():
 class Client(LegacyClient):
     wercker_url = get_value(VALUE_WERCKER_URL)
 
-    def do_get(self, path, data):
+    def do_get(self, path, data, display_warnings=True):
         url = self.wercker_url + "/api/" + path
 
         # data_string = json.dumps(data)
 
-        puts("communicating with %s ..." % self.wercker_url, level=DEBUG)
+        puts("communicating with %s ..." % url, level=DEBUG)
 
         result = requests.get(
             url,
@@ -124,11 +126,12 @@ class Client(LegacyClient):
         try:
             result_json = result.json()
         except ValueError:
-            term = get_term()
-            puts(
-                term.yellow("Warning: ") +
-                "Invalid response for api call: {url}".format(url=url)
-            )
+            if display_warnings:
+                term = get_term()
+                puts(
+                    term.yellow("Warning: ") +
+                    "Invalid response for api call: {url}".format(url=url)
+                )
 
         return status, result_json
 
@@ -162,6 +165,22 @@ class Client(LegacyClient):
             {'token': token}
         )
 
+    def get_boxes(self):
+        return self.do_get(
+            PATH_SEARCH_BOXES,
+            {}
+        )
+
+    def get_box(self, owner, name, version=0, display_warnings=False):
+        return self.do_get(
+            PATH_BOX_INFO_AT_VERSION.format(
+                owner=owner,
+                name=name,
+                version=version
+            ),
+            {},
+            display_warnings=display_warnings
+        )
     # def do_deploy(self, token, build, target):
 
     #     return self.

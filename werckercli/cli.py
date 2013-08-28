@@ -25,6 +25,12 @@ def puts(content, level=INFO):
         terminal_file_handle.write(
             content.encode("utf-8") + '\n'
         )
+    elif level == DEBUG:
+        from werckercli import config
+        if config.get_value(config.VALUE_DISPLAY_DEBUG):
+            terminal_file_handle.write(
+                "debug:: " + content.encode("utf-8") + '\n'
+            )
 
 
 def get_intro():
@@ -71,7 +77,10 @@ def handle_commands(args):
         as command_list_jobs
     from werckercli.commands.project import project_open\
         as command_project_open
-
+    from werckercli.commands.services import search_services\
+        as command_search_services
+    from werckercli.commands.services import info_service\
+        as command_info_service
     from werckercli.commands.update import update\
         as command_update
     from werckercli.commands.validate import validate\
@@ -118,6 +127,24 @@ def handle_commands(args):
             command_login()
         elif args.get('logout'):
             command_clear_settings()
+        elif args.get('services'):
+            if args.get('search'):
+                command_search_services(args.get('<name>'))
+            elif args.get('info'):
+                version = args.get('<version>')
+                if version is None:
+                    version = 0
+                command_info_service(
+                    args.get('<owner>'),
+                    args.get('<name>'),
+                    version=version
+                )
+            elif args.get('add'):
+                raise NotImplementedError("Command not implemented yet")
+            elif args.get('remove'):
+                raise NotImplementedError("Command not implemented yet")
+            else:
+                raise NotImplementedError("Command not implemented yet")
         # elif \
         #         'list' in args and args['list'] and\
         #         'app' in args and args['app'] and\
