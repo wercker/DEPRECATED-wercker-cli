@@ -20,10 +20,10 @@ build:
           coverage report -m --omit=*/tests/*,setup*
 
   after-steps:
-      - wercker/hipchat-notify:
+    - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
-        room-id: 152974
-        from-name: wercker
+        room-id: $HIPCHAT_ROOM
+        from-name: werckercli
         on: failed
 
 deploy:
@@ -33,9 +33,8 @@ deploy:
         code: ./deploy.sh
 
   after-steps:
-      - wercker/hipchat-notify:
+    - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
-        room-id: 152974
-        from-name: wercker
+        room-id: $HIPCHAT_ROOM
+        from-name: werckercli
         on: failed
-
