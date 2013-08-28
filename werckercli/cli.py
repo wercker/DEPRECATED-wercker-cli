@@ -81,6 +81,8 @@ def handle_commands(args):
         as command_search_services
     from werckercli.commands.services import info_service\
         as command_info_service
+    from werckercli.commands.services import list_services\
+        as command_list_services
     from werckercli.commands.update import update\
         as command_update
     from werckercli.commands.validate import validate\
@@ -144,7 +146,8 @@ def handle_commands(args):
             elif args.get('remove'):
                 raise NotImplementedError("Command not implemented yet")
             else:
-                raise NotImplementedError("Command not implemented yet")
+                command_list_services()
+                # raise NotImplementedError("Command not implemented yet")
         # elif \
         #         'list' in args and args['list'] and\
         #         'app' in args and args['app'] and\

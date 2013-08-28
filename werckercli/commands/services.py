@@ -1,7 +1,11 @@
 import math
+import os
 
 from werckercli.client import Client
 from werckercli.cli import get_term, puts
+from werckercli.config import DEFAULT_WERCKER_YML
+
+from yaml import load, dump
 
 
 def search_services(name):
@@ -111,12 +115,10 @@ def info_service(owner, name, version=0):
     elif results.get("type") != "service":
         puts(term.yellow("Warning: ") + "found box was not a service.")
     else:
-        # print results.keys()
-        # print results
-
         putInfo("Owner", results.get("owner"))
         putInfo("Name", results.get("name"))
         putInfo("Version", results.get("version"))
+
         license = results.get("license")
         if license is None:
             license = "none specified"
@@ -134,6 +136,7 @@ def info_service(owner, name, version=0):
         )
 
         packages = ""
+
         for package in results.get("packages"):
             if len(packages):
                 packages += ", "
@@ -143,10 +146,38 @@ def info_service(owner, name, version=0):
             )
         else:
             packages = "None specified"
+
         putInfo("\nPackages", packages, multiple_lines=True)
         putInfo("\nRead me", results.get("readMe"), multiple_lines=True)
-        # puts("{t.bold}{t.white}releases:        {t.normal}\n{0}".format(
-        #     ",\n".join(results.get("versions")),
-        #     t=term)
-        # )
-        # puts("{t.bold}{t.white}")
+
+
+def list_services(path='.'):
+    # pass
+    yaml = os.path.join(path, DEFAULT_WERCKER_YML)
+
+    term = get_term()
+
+    if os.path.isfile(yaml):
+        fh = open(yaml)
+        data = fh.read()
+
+        yaml_data = load(data)
+
+        services = yaml_data.get("services")
+
+        if not services:
+            puts("No services specified in the {yaml}".format(
+                yaml=DEFAULT_WERCKER_YML)
+            )
+        else:
+            if type(services) is str:
+                services = [services]
+
+            puts("Services currently specified:")
+            puts(",\n".join(services))
+
+    else:
+        puts("{t.red}Error:{t.normal} {yaml} not found".format(
+            yaml=DEFAULT_WERCKER_YML,
+            t=term)
+        )

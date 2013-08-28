@@ -27,6 +27,7 @@ DEFAULT_WERCKER_URL = "https://app.wercker.com"
 DEFAULT_DOT_WERCKER_NAME = ".wercker"
 DEFAULT_MIXPANEL_TOKEN = "380db8420ac773c58e7c923f5b0dd9b4"
 DEFAULT_DISPLAY_DEBUG = False
+DEFAULT_WERCKER_YML = "wercker.yml"
 
 
 def _get_or_create_netrc_location():

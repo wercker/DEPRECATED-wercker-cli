@@ -23,7 +23,7 @@ build:
     - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
         room-id: $HIPCHAT_ROOM
-        from-name: werckercli
+        from-name: wercker
         on: failed
 
 deploy:
@@ -36,5 +36,5 @@ deploy:
     - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
         room-id: $HIPCHAT_ROOM
-        from-name: werckercli
+        from-name: wercker
         on: failed
