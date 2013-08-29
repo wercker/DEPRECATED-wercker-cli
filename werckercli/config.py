@@ -142,7 +142,7 @@ def get_value(name, default_value=None, path=os.curdir, print_warnings=True):
     elif name == VALUE_DISPLAY_DEBUG:
         env_value = os.environ.get(ENV_KEY_DISPLAY_DEBUG)
 
-        if env_value.lower() == "true":
+        if env_value is not None and env_value.lower() == "true":
             value = True
         else:
             value = DEFAULT_DISPLAY_DEBUG

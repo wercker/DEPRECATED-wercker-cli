@@ -1,11 +1,13 @@
 import math
 import os
+import re
+
+from yaml import load
+import semantic_version
 
 from werckercli.client import Client
 from werckercli.cli import get_term, puts
 from werckercli.config import DEFAULT_WERCKER_YML
-
-from yaml import load, dump
 
 
 def search_services(name):
@@ -45,26 +47,39 @@ def search_services(name):
                 pad_length = 0
 
             for service in services:
-                detailName = service["fullname"]
-                paddedName = detailName.ljust(pad_length)
-                paddedName = paddedName.replace(
-                    name,
-                    term.bold_white + name + term.normal
-                )
+                versions = service.get("versionNumbers")
+                if len(versions):
+                    detailName = service["fullname"]
+                    paddedName = detailName.ljust(pad_length)
 
-                description = service["latestDescription"]
-                if description is None:
-                    description = ""
+                    if name:
+                        paddedName = paddedName.replace(
+                            name,
+                            term.bold_white + name + term.normal
+                        )
 
-                description = description.replace(
-                    name,
-                    term.bold_white + name + term.normal
-                )
+                    description = service["latestDescription"]
+                    if description is None:
+                        description = ""
 
-                puts(
-                    paddedName + " - " +
-                    description
-                )
+                    versions = sorted(
+                        versions,
+                        key=lambda version: semantic_version.Version(version)
+                    )
+
+                    version = versions[len(versions)-1]
+                    version = str(version)
+                    version = version.rjust(8)
+                    if name:
+                        description = description.replace(
+                            name,
+                            term.bold_white + name + term.normal
+                        )
+
+                    puts(
+                        paddedName + " - " + version + " - " +
+                        description
+                    )
 
         else:
             if name:
@@ -151,6 +166,108 @@ def info_service(owner, name, version=0):
         putInfo("\nRead me", results.get("readMe"), multiple_lines=True)
 
 
+def check_services(services):
+
+    term = get_term()
+    c = Client()
+
+    response, result = c.get_boxes()
+
+    for service in services:
+        # print len(service)
+        if len(service.splitlines()) > 1:
+            puts("""{t.yellow}Warning:{t.normal} Incorrect service \
+specification detected.
+Reason: A new line detected in declaration:
+{service}""".format(t=term, service=service))
+
+        else:
+            unversioned_patterned = "(?P<owner>.*)/(?P<name>.*)"
+            versioned_pattern = "(?P<owner>.*)/(?P<name>.*)@(?P<version>.*)"
+
+            results = re.search(versioned_pattern, service)
+
+            if not results:
+                results = re.search(unversioned_patterned, service)
+
+            info_dict = results.groupdict()
+
+            if not result:
+                puts("""{t.red}Error:{t.normal}""".format(t=term))
+            else:
+                fullname = "{owner}/{name}".format(
+                    owner=info_dict.get("owner"),
+                    name=info_dict.get("name")
+                )
+
+                boxes = filter(
+                    lambda box: box.get("fullname") == fullname,
+                    result
+                )
+
+                # print boxes
+                # print "Check"
+                if len(boxes) == 0:
+                    puts("""{t.yellow}Warning:{t.normal} Service \
+{fullname} not found.""".format(
+                        t=term)
+                    )
+
+                else:
+                    box = boxes[0]
+                    versions = box.get("versionNumbers", [])
+
+                    versions = sorted(
+                        versions,
+                        key=lambda version: semantic_version.Version(version)
+                    )
+
+                    latest_version = False
+                    requested_version = info_dict.get("version", None)
+
+                    if not requested_version:
+                        version_found = len(versions) > 0
+                        # latest_version = versions[len(versions)-1]
+                        requested_version = versions[len(versions)-1]
+                    else:
+
+                        version_found = False
+
+                        requested_version = semantic_version.Version(
+                            requested_version
+                        )
+
+                        for version in versions:
+                            sem_ver = semantic_version.Version(version)
+                            # print sem_ver, requested_version
+                            if requested_version < sem_ver:
+                                latest_version = sem_ver
+                            elif requested_version == sem_ver:
+                                version_found = True
+
+                    if version_found is False:
+                        info = "{t.red}not found{t.normal}".format(
+                            t=term
+                        )
+                    elif latest_version is not False:
+                        info = "{t.yellow}upgrade to {sem_ver}{t.normal}".\
+                            format(
+                                t=term,
+                                sem_ver=latest_version
+                            )
+                    else:
+                        info = "{t.green}latest{t.normal}".format(t=term)
+                    puts(
+                        "{fullname} - {version} ({info}) - {description}".
+                        format(
+                            fullname=fullname,
+                            info=info,
+                            version=requested_version,
+                            description=box.get("latestDescription")
+                        )
+                    )
+
+
 def list_services(path='.'):
     # pass
     yaml = os.path.join(path, DEFAULT_WERCKER_YML)
@@ -173,8 +290,13 @@ def list_services(path='.'):
             if type(services) is str:
                 services = [services]
 
-            puts("Services currently specified:")
-            puts(",\n".join(services))
+            puts("Services currently in use:")
+            check_services(services)
+            # puts("Services currently specified:")
+            # puts(",\n".join(services))
+
+                    # print len(boxes)
+                    # print results.groupdict()
 
     else:
         puts("{t.red}Error:{t.normal} {yaml} not found".format(
