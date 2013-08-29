@@ -3,7 +3,7 @@ import re
 import os
 
 import semantic_version
-from enhancedyaml import dump
+from yaml import dump
 try:
     from yaml import CDumper as Dumper
 except ImportError:
