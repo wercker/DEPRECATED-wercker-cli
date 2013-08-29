@@ -1,13 +1,19 @@
 import math
-import os
 import re
+import os
 
-from yaml import load
 import semantic_version
+from enhancedyaml import dump
+try:
+    from yaml import CDumper as Dumper
+except ImportError:
+    from yaml import Dumper
+# from yaml import dump
 
 from werckercli.client import Client
 from werckercli.cli import get_term, puts
 from werckercli.config import DEFAULT_WERCKER_YML
+from werckercli.decorators import yaml_required
 
 
 def search_services(name):
@@ -268,43 +274,86 @@ Reason: A new line detected in declaration:
                     )
 
 
-def list_services(path='.'):
+@yaml_required
+def list_services(path=".", yaml_data=None, str_data=None):
     # pass
-    yaml = os.path.join(path, DEFAULT_WERCKER_YML)
 
     term = get_term()
 
-    if os.path.isfile(yaml):
-        fh = open(yaml)
-        data = fh.read()
+    services = yaml_data.get("services")
 
-        yaml_data = load(data)
-
-        services = yaml_data.get("services")
-
-        if not services:
-            puts(
-                "{t.yellow}Warning:{t.normal} No services specified in the \
+    if not services:
+        puts(
+            "{t.yellow}Warning:{t.normal} No services specified in the \
 {yaml}".
-                format(
-                    yaml=DEFAULT_WERCKER_YML,
-                    t=term
-                )
+            format(
+                yaml=DEFAULT_WERCKER_YML,
+                t=term
             )
-        else:
-            if type(services) is str:
-                services = [services]
-
-            puts("Services currently in use:")
-            check_services(services)
-            # puts("Services currently specified:")
-            # puts(",\n".join(services))
-
-                    # print len(boxes)
-                    # print results.groupdict()
-
-    else:
-        puts("{t.red}Error:{t.normal} {yaml} not found".format(
-            yaml=DEFAULT_WERCKER_YML,
-            t=term)
         )
+    else:
+        if type(services) is str:
+            services = [services]
+
+        puts("Services currently in use:")
+        check_services(services)
+
+
+@yaml_required
+def add_service(
+    owner, name, version=0, path=".", str_data=None, yaml_data=None
+):
+
+    # from pyaml import dump
+    # print dir(yaml_data)
+
+    lines = str_data.splitlines()
+    current_service = yaml_data.get("service")
+
+    if current_service:
+        filtered_lines = []
+        blocking = False
+
+        for line in lines:
+            if re.match('^service[ ,\t]?:[ ,\t]?', line):
+                blocking = True
+            elif re.match('^[A-Za-z][A-Za-z0-9]', line):
+                blocking = False
+            if blocking is False:
+                filtered_lines.append(line)
+    else:
+        filtered_lines = lines
+
+    new_service = "{owner}/{name}".format(
+        owner=owner,
+        name=name
+    )
+
+    if(version != 0):
+        new_service += "@" + version
+
+    if current_service:
+        if type(current_service) is str:
+            current_service = [new_service, current_service]
+        else:
+            current_service.append(new_service)
+    else:
+        current_service = new_service
+
+    service = {"service": current_service}
+    service = dump(service, default_flow_style=False, explicit_start=False)
+
+    lines = []
+    for line in filtered_lines:
+
+        if re.match('^box[ ,\t]?:[ ,\t]?', line):
+            line += "\n" + service
+
+        lines.append(line)
+
+    out = '\n'.join(lines)
+    # print out
+    fh = open(os.path.join(path, DEFAULT_WERCKER_YML), 'w')
+    fh.write(out)
+    fh.close()
+    # print data
