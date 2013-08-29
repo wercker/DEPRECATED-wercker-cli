@@ -1,6 +1,6 @@
 box: wercker/python
 build:
-  - steps:
+  steps:
     - script:
         name: install test libs
         code: |
@@ -18,7 +18,7 @@ build:
         code: |
           coverage run  --timid --source=. -m unittest discover -v
           coverage report -m --omit=*/tests/*,setup*
-  - after-steps:
+  after-steps:
     - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
         room-id: $HIPCHAT_ROOM
@@ -26,11 +26,11 @@ build:
         on: failed
 # deploy section
 deploy:
-  - steps:
+  steps:
     - script:
         name: pypi deploy
         code: ./deploy.sh
-  - after-steps:
+  after-steps:
     - wercker/hipchat-notify:
         token: $HIPCHAT_TOKEN
         room-id: $HIPCHAT_ROOM
