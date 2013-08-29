@@ -283,8 +283,13 @@ def list_services(path='.'):
         services = yaml_data.get("services")
 
         if not services:
-            puts("No services specified in the {yaml}".format(
-                yaml=DEFAULT_WERCKER_YML)
+            puts(
+                "{t.yellow}Warning:{t.normal} No services specified in the \
+{yaml}".
+                format(
+                    yaml=DEFAULT_WERCKER_YML,
+                    t=term
+                )
             )
         else:
             if type(services) is str:
