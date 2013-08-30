@@ -4,16 +4,39 @@ import os
 
 import semantic_version
 from yaml import dump
-try:
-    from yaml import CDumper as Dumper
-except ImportError:
-    from yaml import Dumper
-# from yaml import dump
 
 from werckercli.client import Client
 from werckercli.cli import get_term, puts
 from werckercli.config import DEFAULT_WERCKER_YML
 from werckercli.decorators import yaml_required
+
+
+class TransportError(Exception):
+    pass
+
+
+def validate_box_name(name, validate_web=False, version=0):
+
+    unversioned_pattern = "^[a-zA-Z0-9]+/[A-z0-9][A-z0-9-.]+[A-z0-9]$"
+
+    match = re.match(unversioned_pattern, name)
+
+    if validate_web is False:
+        return match is not None
+    else:
+        if match:
+            c = Client()
+            response, result = c.get_box(name, version)
+
+            if response == 404:
+                return False
+            else:
+                if result:
+                    return True
+                else:
+                    raise TransportError("Unexpected response from server")
+        else:
+            return False
 
 
 def search_services(name):
@@ -121,8 +144,22 @@ def putInfo(label, data, multiple_lines=False):
 
 def info_service(name, version=0):
 
-    client = Client()
     term = get_term()
+    valid = False
+
+    valid = validate_box_name(name)
+
+    if valid is False:
+        puts(
+            "{t.red}Error: {t.normal} {name} is not a valid service name"
+            .format(
+                t=term,
+                name=name
+            )
+        )
+        return
+
+    client = Client()
 
     puts("Retrieving service: {t.bold_white}{name}\n".format(
         # owner=owner,
@@ -181,7 +218,7 @@ def check_services(services):
     response, result = c.get_boxes()
 
     for service in services:
-        # print len(service)
+
         if len(service.splitlines()) > 1:
             puts("""{t.yellow}Warning:{t.normal} Incorrect service \
 specification detected.
@@ -212,8 +249,6 @@ Reason: A new line detected in declaration:
                     result
                 )
 
-                # print boxes
-                # print "Check"
                 if len(boxes) == 0:
                     puts("""{t.yellow}Warning:{t.normal} Service \
 {fullname} not found.""".format(
@@ -246,7 +281,7 @@ Reason: A new line detected in declaration:
 
                         for version in versions:
                             sem_ver = semantic_version.Version(version)
-                            # print sem_ver, requested_version
+
                             if requested_version < sem_ver:
                                 latest_version = sem_ver
                             elif requested_version == sem_ver:
@@ -307,7 +342,7 @@ def update_yaml(path, str_data, yaml_data, new_service):
     blocking = False
 
     for line in lines:
-        if re.match('^service[ ,\t]?:[ ,\t]?', line):
+        if re.match('^services[ ,\t]?:[ ,\t]?', line):
             blocking = True
         elif re.match('^[A-Za-z][A-Za-z0-9]', line):
             blocking = False
@@ -346,7 +381,41 @@ def add_service(
 ):
 
     term = get_term()
+    valid = False
 
+    try:
+        valid = validate_box_name(name, version=version, validate_web=True)
+    except TransportError:
+        puts(
+            "{t.red}Error: {t.normal} An error occured while communicating \
+with the server".format(t=term)
+        )
+        return
+
+    if valid is False:
+        if version != 0:
+            puts(
+                """{t.red}Error: {t.normal} service {service} with version \
+{version} not found.
+Service not added"""
+                .format(
+                    t=term,
+                    service=name,
+                    version=str(version)
+                )
+            )
+        else:
+            puts(
+                """{t.red}Error: {t.normal} service {service} not found.
+Service not added"""
+                .format(
+                    t=term,
+                    service=name,
+                    version=str(version)
+                )
+            )
+
+        return
     current_service = yaml_data.get("service")
 
     specific_service = "{name}".format(
@@ -381,8 +450,8 @@ def remove_service(
     name, path=".", str_data=None, yaml_data=None
 ):
     term = get_term()
-    current_service = yaml_data.get("service")
-
+    current_service = yaml_data.get("services")
+    # print current_service
     if current_service:
 
         specific_service = "{name}".format(
