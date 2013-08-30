@@ -342,6 +342,7 @@ def add_service(
 
     service = {"service": current_service}
     service = dump(service, default_flow_style=False, explicit_start=False)
+    service = re.sub(r'\n$', '', service)
 
     lines = []
     for line in filtered_lines:
@@ -352,8 +353,7 @@ def add_service(
         lines.append(line)
 
     out = '\n'.join(lines)
-    # print out
+
     fh = open(os.path.join(path, DEFAULT_WERCKER_YML), 'w')
     fh.write(out)
     fh.close()
-    # print data
