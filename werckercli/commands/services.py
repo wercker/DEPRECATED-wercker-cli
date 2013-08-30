@@ -335,7 +335,7 @@ def list_services(path=".", yaml_data=None, str_data=None):
         check_services(services)
 
 
-def update_yaml(path, str_data, yaml_data, new_service):
+def update_yaml(path, str_data, yaml_data, new_services):
     lines = str_data.splitlines()
 
     filtered_lines = []
@@ -349,10 +349,10 @@ def update_yaml(path, str_data, yaml_data, new_service):
         if blocking is False:
             filtered_lines.append(line)
 
-    if new_service is None or len(new_service) == 0:
+    if new_services is None or len(new_services) == 0:
         lines = filtered_lines
     else:
-        services = {"services": new_service}
+        services = {"services": new_services}
         services = dump(
             services,
             default_flow_style=False,
@@ -416,33 +416,62 @@ Service not added"""
             )
 
         return
-    current_service = yaml_data.get("service")
+    current_service = yaml_data.get("services")
 
     specific_service = "{name}".format(
         name=name
     )
 
+    updated = False
+
     if(version != 0):
         specific_service += "@" + version
 
+    specific_regex = "^{name}(@[0-9a-zA-Z-.]+)?$".format(name=name)
+
     if current_service:
+
         if type(current_service) is str:
-            current_service = [specific_service, current_service]
+            if re.match(specific_regex, current_service):
+                updated = True
+                new_services = specific_service
+            else:
+                new_services = [specific_service, current_service]
         else:
-            current_service.append(specific_service)
+            new_services = []
+            for service in current_service:
+                if re.match(specific_regex, service):
+                    updated = True
+                    new_services.append(specific_service)
+                else:
+                    new_services.append(service)
+
+            if updated is not True:
+                new_services.append(specific_service)
     else:
-        current_service = specific_service
+        new_services = specific_service
 
-    update_yaml(path, str_data, yaml_data, current_service)
+    update_yaml(path, str_data, yaml_data, new_services)
 
-    puts(
-        """{t.green}Succes:{t.normal} Service {service} added to {file}"""
-        .format(
-            t=term,
-            file=DEFAULT_WERCKER_YML,
-            service=specific_service,
+    if updated:
+        puts(
+            """{t.green}Succes:{t.normal} Service {service} {t.bold_white}updated{t.normal} in {file}"""
+            .format(
+                t=term,
+                file=DEFAULT_WERCKER_YML,
+                service=specific_service,
+            )
         )
-    )
+
+    else:
+        puts(
+            """{t.green}Succes:{t.normal} Service {service} added to {file}"""
+            .format(
+                t=term,
+                file=DEFAULT_WERCKER_YML,
+                service=specific_service,
+            )
+        )
 
 
 @yaml_required
@@ -451,7 +480,7 @@ def remove_service(
 ):
     term = get_term()
     current_service = yaml_data.get("services")
-    # print current_service
+
     if current_service:
 
         specific_service = "{name}".format(
