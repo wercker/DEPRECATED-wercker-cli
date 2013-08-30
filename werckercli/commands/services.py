@@ -119,23 +119,24 @@ def putInfo(label, data, multiple_lines=False):
     )
 
 
-def info_service(owner, name, version=0):
+def info_service(name, version=0):
 
     client = Client()
     term = get_term()
 
-    puts("Retrieving service: {t.bold_white}{owner}/{name}\n".format(
-        owner=owner,
+    puts("Retrieving service: {t.bold_white}{name}\n".format(
+        # owner=owner,
         name=name,
         t=term)
     )
-    response, results = client.get_box(owner, name, version=version)
+    response, results = client.get_box(name, version=version)
 
     if response == 404:
         puts(term.yellow("Warning: ") + "service not found.")
     elif results.get("type") != "service":
         puts(term.yellow("Warning: ") + "found box was not a service.")
     else:
+        putInfo("Fullname", results.get("fullname"))
         putInfo("Owner", results.get("owner"))
         putInfo("Name", results.get("name"))
         putInfo("Version", results.get("version"))
@@ -188,13 +189,13 @@ Reason: A new line detected in declaration:
 {service}""".format(t=term, service=service))
 
         else:
-            unversioned_patterned = "(?P<owner>.*)/(?P<name>.*)"
+            unversioned_pattern = "(?P<owner>.*)/(?P<name>.*)"
             versioned_pattern = "(?P<owner>.*)/(?P<name>.*)@(?P<version>.*)"
 
             results = re.search(versioned_pattern, service)
 
             if not results:
-                results = re.search(unversioned_patterned, service)
+                results = re.search(unversioned_pattern, service)
 
             info_dict = results.groupdict()
 
@@ -337,15 +338,14 @@ def update_yaml(path, str_data, yaml_data, new_service):
 
 @yaml_required
 def add_service(
-    owner, name, version=0, path=".", str_data=None, yaml_data=None
+    name, version=0, path=".", str_data=None, yaml_data=None
 ):
 
     term = get_term()
 
     current_service = yaml_data.get("service")
 
-    specific_service = "{owner}/{name}".format(
-        owner=owner,
+    specific_service = "{name}".format(
         name=name
     )
 
@@ -374,15 +374,14 @@ def add_service(
 
 @yaml_required
 def remove_service(
-    owner, name, path=".", str_data=None, yaml_data=None
+    name, path=".", str_data=None, yaml_data=None
 ):
     term = get_term()
     current_service = yaml_data.get("service")
 
     if current_service:
 
-        specific_service = "{owner}/{name}".format(
-            owner=owner,
+        specific_service = "{name}".format(
             name=name
         )
 

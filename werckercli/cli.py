@@ -138,10 +138,11 @@ def handle_commands(args):
                 command_search_services(args.get('<name>'))
             elif args.get('info'):
                 version = args.get('<version>')
+
                 if version is None:
                     version = 0
+
                 command_info_service(
-                    args.get('<owner>'),
                     args.get('<name>'),
                     version=version
                 )
@@ -151,22 +152,16 @@ def handle_commands(args):
                     version = 0
 
                 command_add_service(
-                    args.get('<owner>'),
                     args.get('<name>'),
                     version=version
                 )
             elif args.get('remove'):
                 command_remove_service(
-                    args.get('<owner>'),
                     args.get('<name>'),
                 )
             else:
                 command_list_services()
-                # raise NotImplementedError("Command not implemented yet")
-        # elif \
-        #         'list' in args and args['list'] and\
-        #         'app' in args and args['app'] and\
-        #         'jobs' in args and args['jobs']:
+
         elif args.get('queue'):
             command_list_jobs()
         elif args.get('update'):
