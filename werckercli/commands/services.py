@@ -299,61 +299,135 @@ def list_services(path=".", yaml_data=None, str_data=None):
         check_services(services)
 
 
-@yaml_required
-def add_service(
-    owner, name, version=0, path=".", str_data=None, yaml_data=None
-):
-
-    # from pyaml import dump
-    # print dir(yaml_data)
-
+def update_yaml(path, str_data, yaml_data, new_service):
     lines = str_data.splitlines()
-    current_service = yaml_data.get("service")
 
-    if current_service:
-        filtered_lines = []
-        blocking = False
+    filtered_lines = []
+    blocking = False
 
-        for line in lines:
-            if re.match('^service[ ,\t]?:[ ,\t]?', line):
-                blocking = True
-            elif re.match('^[A-Za-z][A-Za-z0-9]', line):
-                blocking = False
-            if blocking is False:
-                filtered_lines.append(line)
+    for line in lines:
+        if re.match('^service[ ,\t]?:[ ,\t]?', line):
+            blocking = True
+        elif re.match('^[A-Za-z][A-Za-z0-9]', line):
+            blocking = False
+        if blocking is False:
+            filtered_lines.append(line)
+
+    if new_service is None or len(new_service) == 0:
+        lines = filtered_lines
     else:
-        filtered_lines = lines
+        service = {"service": new_service}
+        service = dump(service, default_flow_style=False, explicit_start=False)
+        service = re.sub(r'\n$', '', service)
 
-    new_service = "{owner}/{name}".format(
-        owner=owner,
-        name=name
-    )
+        lines = []
+        for line in filtered_lines:
 
-    if(version != 0):
-        new_service += "@" + version
+            if re.match('^box[ ,\t]?:[ ,\t]?', line):
+                line += "\n" + service
 
-    if current_service:
-        if type(current_service) is str:
-            current_service = [new_service, current_service]
-        else:
-            current_service.append(new_service)
-    else:
-        current_service = new_service
-
-    service = {"service": current_service}
-    service = dump(service, default_flow_style=False, explicit_start=False)
-    service = re.sub(r'\n$', '', service)
-
-    lines = []
-    for line in filtered_lines:
-
-        if re.match('^box[ ,\t]?:[ ,\t]?', line):
-            line += "\n" + service
-
-        lines.append(line)
+            lines.append(line)
 
     out = '\n'.join(lines)
 
     fh = open(os.path.join(path, DEFAULT_WERCKER_YML), 'w')
     fh.write(out)
     fh.close()
+
+
+@yaml_required
+def add_service(
+    owner, name, version=0, path=".", str_data=None, yaml_data=None
+):
+
+    term = get_term()
+
+    current_service = yaml_data.get("service")
+
+    specific_service = "{owner}/{name}".format(
+        owner=owner,
+        name=name
+    )
+
+    if(version != 0):
+        specific_service += "@" + version
+
+    if current_service:
+        if type(current_service) is str:
+            current_service = [specific_service, current_service]
+        else:
+            current_service.append(specific_service)
+    else:
+        current_service = specific_service
+
+    update_yaml(path, str_data, yaml_data, current_service)
+
+    puts(
+        """{t.green}Succes:{t.normal} Service {service} added to {file}"""
+        .format(
+            t=term,
+            file=DEFAULT_WERCKER_YML,
+            service=specific_service,
+        )
+    )
+
+
+@yaml_required
+def remove_service(
+    owner, name, path=".", str_data=None, yaml_data=None
+):
+    term = get_term()
+    current_service = yaml_data.get("service")
+
+    if current_service:
+
+        specific_service = "{owner}/{name}".format(
+            owner=owner,
+            name=name
+        )
+
+        service_regex = "^({service})(@[0-9a-zA-Z.-]+)?$".format(
+            service=specific_service
+        )
+
+        found = False
+        new_services = current_service
+        if type(current_service) is str:
+            if re.match(service_regex, current_service):
+                found = True
+                new_services = None
+        else:
+            new_services = []
+            for service in current_service:
+                if re.match(service_regex, service):
+                    found = True
+                else:
+                    new_services.append(service)
+        if found:
+            update_yaml(path, str_data, yaml_data, new_services)
+            puts(
+                "{t.green}Succes:{t.normal} Service {service} removed."
+                .format(
+                    service=specific_service,
+                    t=term,
+                )
+            )
+        else:
+            puts(
+                "{t.yellow}Warning: {t.normal}service {service} is not found".
+                format(
+                    service=specific_service,
+                    t=term
+                )
+            )
+        # if
+    else:
+        # filtered_lines = lines
+        puts(
+            """{t.red}Error:{t.normal} Could not remove service. Reason:
+ - no services specified in {file}"""
+            .format(
+                t=term,
+                file=DEFAULT_WERCKER_YML
+            )
+        )

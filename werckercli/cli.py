@@ -89,6 +89,8 @@ def handle_commands(args):
         as command_validate
     from werckercli.commands.services import add_service\
         as command_add_service
+    from werckercli.commands.services import remove_service\
+        as command_remove_service
 
     try:
         if args.get('apps') and args.get('create'):
@@ -144,8 +146,6 @@ def handle_commands(args):
                     version=version
                 )
             elif args.get('add'):
-                # raise NotImplementedError("Command not implemented yet")
-
                 version = args.get('<version>')
                 if version is None:
                     version = 0
@@ -156,7 +156,10 @@ def handle_commands(args):
                     version=version
                 )
             elif args.get('remove'):
-                raise NotImplementedError("Command not implemented yet")
+                command_remove_service(
+                    args.get('<owner>'),
+                    args.get('<name>'),
+                )
             else:
                 command_list_services()
                 # raise NotImplementedError("Command not implemented yet")
