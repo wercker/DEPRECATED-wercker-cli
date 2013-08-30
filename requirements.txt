@@ -1,9 +1,10 @@
-blessings
+blessings>=1.5
 requests==1.1.0
 oauth2==1.5.211
 argparse==1.2.1
 dulwich==0.8.7
-docopt
-httpretty
-mock
-semantic_version
+docopt>=0.6.0
+httpretty>=0.5.5
+mock>=1.0.1
+semantic_version>=2.2.0
+PyYAML>=3.10

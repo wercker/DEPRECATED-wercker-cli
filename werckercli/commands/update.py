@@ -44,7 +44,8 @@ def update(current_version=None):
         puts("""A newer version of the wercker-cli was found ({newer_version}).
 Please upgrade:
 """.format(newer_version=newer_version) +
-term.bold_white('pip install wercker --upgrade'))
+            term.bold_white('pip install wercker --upgrade')
+        )
         return True
 
     else:
