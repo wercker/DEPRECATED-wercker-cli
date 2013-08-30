@@ -455,7 +455,8 @@ Service not added"""
 
     if updated:
         puts(
-            """{t.green}Succes:{t.normal} Service {service} {t.bold_white}updated{t.normal} in {file}"""
+            """{t.green}Succes:{t.normal} Service {service} {t.bold_white}\
+updated{t.normal} in {file}"""
             .format(
                 t=term,
                 file=DEFAULT_WERCKER_YML,
