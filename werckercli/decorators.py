@@ -12,6 +12,7 @@ except ImportError:
 from werckercli.authentication import get_access_token
 from werckercli.cli import puts, get_term
 from werckercli.config import DEFAULT_WERCKER_YML
+from werckercli.paths import find_git_root
 
 
 def login_required(f):
@@ -30,7 +31,8 @@ def login_required(f):
 def yaml_required(f):
     def new_f(*args, **kwargs):
         if not "path" in kwargs:
-            path = "."
+            # path = "."
+            path = find_git_root(os.curdir)
             kwargs['path'] = path
         if not "str_data" in kwargs:
             yaml = os.path.join(path, DEFAULT_WERCKER_YML)
