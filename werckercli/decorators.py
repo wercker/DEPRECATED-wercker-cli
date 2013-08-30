@@ -2,6 +2,8 @@ import os
 
 # import enhancedyaml
 from yaml import load
+from yaml.parser import ParserError
+
 try:
     from yaml import CLoader as Loader
 except ImportError:
@@ -48,7 +50,18 @@ def yaml_required(f):
                 )
         if not "yaml_data" in kwargs and "str_data" in kwargs:
 
-            yaml_data = load(kwargs["str_data"], Loader=Loader)
+            try:
+                yaml_data = load(kwargs["str_data"], Loader=Loader)
+            except ParserError:
+                yaml_data = None
+
+                term = get_term()
+                puts(
+                    "{t.red}Error:{t.normal} {yaml} is not formatted propery."
+                    .format(
+                        t=term,
+                        yaml=DEFAULT_WERCKER_YML)
+                )
 
             if type(yaml_data) is dict:
                 kwargs["yaml_data"] = yaml_data

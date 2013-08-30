@@ -316,6 +316,12 @@ def list_services(path=".", yaml_data=None, str_data=None):
 
     term = get_term()
 
+    if str_data is None:
+        return
+
+    if yaml_data is None:
+        return
+
     services = yaml_data.get("services")
 
     if not services:
@@ -379,6 +385,11 @@ def update_yaml(path, str_data, yaml_data, new_services):
 def add_service(
     name, version=0, path=".", str_data=None, yaml_data=None
 ):
+    if str_data is None:
+        return
+
+    if yaml_data is None:
+        return
 
     term = get_term()
     valid = False
@@ -479,6 +490,12 @@ updated{t.normal} in {file}"""
 def remove_service(
     name, path=".", str_data=None, yaml_data=None
 ):
+    if str_data is None:
+        return
+
+    if yaml_data is None:
+        return
+
     term = get_term()
     current_service = yaml_data.get("services")
 
