@@ -14,7 +14,7 @@ PATH_GET_APPLICATIONS = 'applications'
 PATH_DEPLOY = 'deploy'
 PATH_CHECK_PERMISSIONS = 'application/{projectId}/validateAccess'
 PATH_SEARCH_BOXES = 'v2/boxes'
-PATH_BOX_INFO_AT_VERSION = 'v2/boxes/{owner}/{name}/{version}'
+PATH_BOX_INFO_AT_VERSION = 'v2/boxes/{name}/{version}'
 PATH_GET_BUILDS = 'project/{projectId}/builds'
 PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
 PATH_GET_PROFILE = 'profile'
@@ -171,10 +171,9 @@ class Client(LegacyClient):
             {}
         )
 
-    def get_box(self, owner, name, version=0, display_warnings=False):
+    def get_box(self, name, version=0, display_warnings=False):
         return self.do_get(
             PATH_BOX_INFO_AT_VERSION.format(
-                owner=owner,
                 name=name,
                 version=version
             ),

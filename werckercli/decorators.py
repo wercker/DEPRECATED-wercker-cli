@@ -24,6 +24,7 @@ def login_required(f):
     new_f.__name__ = f.__name__
     return new_f
 
+
 def yaml_required(f):
     def new_f(*args, **kwargs):
         if not "path" in kwargs:

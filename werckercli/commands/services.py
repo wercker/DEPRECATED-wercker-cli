@@ -317,15 +317,19 @@ def update_yaml(path, str_data, yaml_data, new_service):
     if new_service is None or len(new_service) == 0:
         lines = filtered_lines
     else:
-        service = {"service": new_service}
-        service = dump(service, default_flow_style=False, explicit_start=False)
-        service = re.sub(r'\n$', '', service)
+        services = {"services": new_service}
+        services = dump(
+            services,
+            default_flow_style=False,
+            explicit_start=False
+        )
+        services = re.sub(r'\n$', '', services)
 
         lines = []
         for line in filtered_lines:
 
             if re.match('^box[ ,\t]?:[ ,\t]?', line):
-                line += "\n" + service
+                line += "\n" + services
 
             lines.append(line)
 
