@@ -309,7 +309,7 @@ def check_service(service, result=None):
 
                 if requested_version:
                     spec = semantic_version.Spec(
-                        '=' + str(specified_version)
+                        '==' + str(specified_version)
                     )
                 else:
                     try:
@@ -349,7 +349,7 @@ For more information on SemVer see: http://semver.org/"""
                 info = "{t.red}not found{t.normal}".format(
                     t=term
                 )
-            elif latest_version is not None:
+            elif latest_version is not False:
                 info = "{t.yellow}upgrade to {sem_ver}{t.normal}".\
                     format(
                         t=term,
@@ -496,7 +496,7 @@ Service not added"""
     if(version != 0):
         specific_service += "@" + version
 
-    specific_regex = "^{name}(@[0-9a-zA-Z-.]+)?$".format(name=name)
+    specific_regex = "^{name}(@)?".format(name=name)
 
     if current_service:
 
@@ -563,7 +563,7 @@ def remove_service(
             name=name
         )
 
-        service_regex = "^({service})(@[0-9a-zA-Z.-]+)?$".format(
+        service_regex = "^({service})(@)?".format(
             service=specific_service
         )
 
