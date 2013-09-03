@@ -76,7 +76,9 @@ def search_services(name):
                 pad_length = 0
 
             for service in services:
-                versions = service.get("versionNumbers")
+                # versions = service.get("versionNumbers")
+                versions = get_sorted_versions(service)
+
                 if len(versions):
                     detailName = service["fullname"]
                     paddedName = detailName.ljust(pad_length)
@@ -91,10 +93,10 @@ def search_services(name):
                     if description is None:
                         description = ""
 
-                    versions = sorted(
-                        versions,
-                        key=lambda version: semantic_version.Version(version)
-                    )
+                    # versions = sorted(
+                    #     versions,
+                    #     key=lambda version: semantic_version.Version.coerce(version)
+                    # )
 
                     version = versions[len(versions)-1]
                     version = str(version)
@@ -210,104 +212,141 @@ def info_service(name, version=0):
         putInfo("\nRead me", results.get("readMe"), multiple_lines=True)
 
 
-def check_services(services):
+def get_sorted_versions(box):
+    versions = box.get("versionNumbers", [])
 
+    sem_versions = []
+    for version in versions:
+        try:
+            sem_version = semantic_version.Version.coerce(version)
+            sem_versions.append(sem_version)
+        except ValueError:
+            pass
+
+    sem_versions = sorted(
+        sem_versions,
+        # key=lambda version: semantic_version.Version.coerce(version)
+    )
+
+    return sem_versions
+
+
+def check_service(service, result=None):
     term = get_term()
-    c = Client()
 
-    response, result = c.get_boxes()
+    if not result:
+        c = Client()
+        _response, result = c.get_boxes()
 
-    for service in services:
+    unversioned_pattern = "(?P<owner>.*)/(?P<name>.*)"
+    versioned_pattern = "(?P<owner>.*)/(?P<name>.*)@(?P<version>.*)"
 
-        if len(service.splitlines()) > 1:
-            puts("""{t.yellow}Warning:{t.normal} Incorrect service \
-specification detected.
-Reason: A new line detected in declaration:
-{service}""".format(t=term, service=service))
+    results = re.search(versioned_pattern, service)
+
+    if not results:
+        results = re.search(unversioned_pattern, service)
+
+    info_dict = results.groupdict()
+
+    if not result:
+        puts("""{t.red}Error:{t.normal}""".format(t=term))
+    else:
+        fullname = "{owner}/{name}".format(
+            owner=info_dict.get("owner"),
+            name=info_dict.get("name")
+        )
+
+        boxes = filter(
+            lambda box: box.get("fullname") == fullname,
+            result
+        )
+
+        if len(boxes) == 0:
+            puts("""{t.yellow}Warning:{t.normal} Service \
+{fullname} not found.""".format(
+                t=term)
+            )
 
         else:
-            unversioned_pattern = "(?P<owner>.*)/(?P<name>.*)"
-            versioned_pattern = "(?P<owner>.*)/(?P<name>.*)@(?P<version>.*)"
+            box = boxes[0]
 
-            results = re.search(versioned_pattern, service)
+            versions = get_sorted_versions(box)
+            latest_version = False
+            specified_version = info_dict.get("version", None)
 
-            if not results:
-                results = re.search(unversioned_pattern, service)
-
-            info_dict = results.groupdict()
-
-            if not result:
-                puts("""{t.red}Error:{t.normal}""".format(t=term))
+            if not specified_version:
+                version_found = len(versions) > 0
+                # latest_version = versions[len(versions)-1]
+                requested_version = versions[len(versions)-1]
             else:
-                fullname = "{owner}/{name}".format(
-                    owner=info_dict.get("owner"),
-                    name=info_dict.get("name")
-                )
 
-                boxes = filter(
-                    lambda box: box.get("fullname") == fullname,
-                    result
-                )
-
-                if len(boxes) == 0:
-                    puts("""{t.yellow}Warning:{t.normal} Service \
-{fullname} not found.""".format(
-                        t=term)
+                version_found = False
+                try:
+                    requested_version = semantic_version.Version.coerce(
+                        specified_version,
                     )
+                except ValueError:
+                    requested_version = None
 
+                if requested_version:
+                    spec = semantic_version.Spec(
+                        '=' + str(specified_version)
+                    )
                 else:
-                    box = boxes[0]
-                    versions = box.get("versionNumbers", [])
-
-                    versions = sorted(
-                        versions,
-                        key=lambda version: semantic_version.Version(version)
-                    )
-
-                    latest_version = False
-                    requested_version = info_dict.get("version", None)
-
-                    if not requested_version:
-                        version_found = len(versions) > 0
-                        # latest_version = versions[len(versions)-1]
-                        requested_version = versions[len(versions)-1]
-                    else:
-
-                        version_found = False
-
-                        requested_version = semantic_version.Version(
-                            requested_version
+                    try:
+                        spec = semantic_version.Spec(
+                            str(specified_version)
                         )
-
-                        for version in versions:
-                            sem_ver = semantic_version.Version(version)
-
-                            if requested_version < sem_ver:
-                                latest_version = sem_ver
-                            elif requested_version == sem_ver:
-                                version_found = True
-
-                    if version_found is False:
-                        info = "{t.red}not found{t.normal}".format(
-                            t=term
-                        )
-                    elif latest_version is not False:
-                        info = "{t.yellow}upgrade to {sem_ver}{t.normal}".\
-                            format(
+                    except ValueError:
+                        puts(
+                            """{t.red}Error: {t.normal}Invalid version \
+specification detected: {version}.
+Expected a SemVer version or specification (i.e. 0.1.2 or >0.1.1)
+For more information on SemVer see: http://semver.org/"""
+                            .format(
                                 t=term,
-                                sem_ver=latest_version
+                                version=requested_version
                             )
-                    else:
-                        info = "{t.green}latest{t.normal}".format(t=term)
-                    puts(
-                        "{fullname} - {version} ({info}) - {description}".
-                        format(
-                            fullname=fullname,
-                            info=info,
-                            version=requested_version,
-                            description=box.get("latestDescription")
                         )
+                        return
+
+                # print locals()
+                requested_version = spec.select(versions)
+
+                if requested_version:
+                    version_found = True
+
+                    newer_spec = semantic_version.Spec(
+                        ">" + str(requested_version)
                     )
+                    latest_version = newer_spec.select(versions)
+
+                    if not latest_version:
+                        latest_version = False
+                else:
+                    version_found = False
+
+            if version_found is False:
+                info = "{t.red}not found{t.normal}".format(
+                    t=term
+                )
+            elif latest_version is not None:
+                info = "{t.yellow}upgrade to {sem_ver}{t.normal}".\
+                    format(
+                        t=term,
+                        sem_ver=latest_version
+                    )
+            else:
+                info = "{t.green}latest{t.normal}".format(t=term)
+            puts(
+                "{fullname} - {version} ({info}) - {description}".
+                format(
+                    fullname=fullname,
+                    info=info,
+                    version=requested_version,
+                    description=box.get("latestDescription")
+                )
+            )
 
 
 @yaml_required
@@ -406,7 +445,7 @@ with the server".format(t=term)
     if valid is False:
         if version != 0:
             puts(
-                """{t.red}Error: {t.normal} service {service} with version \
+                """{t.red}Error: {t.normal} service {service} matching \
 {version} not found.
 Service not added"""
                 .format(
@@ -539,12 +578,29 @@ def remove_service(
                     t=term
                 )
             )
+
+
+def check_services(services):
+
+    term = get_term()
+    c = Client()
+
+    response, result = c.get_boxes()
+
+    for service in services:
+
+        if len(service.splitlines()) > 1:
+            puts("""{t.yellow}Warning:{t.normal} Incorrect service \
+specification detected.
+Reason: A new line detected in declaration:
+{service}""".format(t=term, service=service))
+
+        else:
+            check_service(service, result)
         # if
-    else:
-        # filtered_lines = lines
+    if services is None or len(services) == 0:
         puts(
-            """{t.red}Error:{t.normal} Could not remove service. Reason:
- - no services specified in {file}"""
+            """{t.yellow}Warning:{t.normal} No services specified in {file}"""
             .format(
                 t=term,
                 file=DEFAULT_WERCKER_YML
