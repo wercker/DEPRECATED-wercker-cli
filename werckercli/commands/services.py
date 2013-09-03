@@ -93,11 +93,6 @@ def search_services(name):
                     if description is None:
                         description = ""
 
-                    # versions = sorted(
-                    #     versions,
-                    #     key=lambda version: semantic_version.Version.coerce(version)
-                    # )
-
                     version = versions[len(versions)-1]
                     version = str(version)
                     version = version.rjust(8)
@@ -216,16 +211,27 @@ def get_sorted_versions(box):
     versions = box.get("versionNumbers", [])
 
     sem_versions = []
+    rejected = []
     for version in versions:
         try:
             sem_version = semantic_version.Version.coerce(version)
             sem_versions.append(sem_version)
         except ValueError:
-            pass
+            rejected.append(version)
 
     sem_versions = sorted(
         sem_versions,
         # key=lambda version: semantic_version.Version.coerce(version)
+    )
+
+    if len(rejected):
+        puts("{t.yellow}Warning: {t.normal} Unable to parse version values \
+{versions} for {fullname}"
+        .format(
+            t=get_term(),
+            versions=', '.join(rejected),
+            fullname=box.get('fullname', '')
+        )
     )
 
     return sem_versions
@@ -376,7 +382,7 @@ def list_services(path=".", yaml_data=None, str_data=None):
         if type(services) is str:
             services = [services]
 
-        puts("Services currently in use:")
+        puts("Services currently in use:\n")
         check_services(services)
 
 
