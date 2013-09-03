@@ -226,7 +226,7 @@ def get_sorted_versions(box):
 
     if len(rejected):
         puts(
-            "{t.yellow}Warning: {t.normal} Unable to parse version values \
+            "{t.yellow}Warning: {t.normal}Unable to parse version values \
 {versions} for {fullname}"
             .format(
                 t=get_term(),
