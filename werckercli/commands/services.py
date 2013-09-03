@@ -181,7 +181,7 @@ def info_service(name, version=0):
                 '\n'.join(release_info.get("versionNumbers")),
                 multiple_lines=True
             )
-            putInfo("Latest version", results.get("version"))
+            putInfo("showing version", results.get("version"))
             puts("")
 
             license = results.get("license")
