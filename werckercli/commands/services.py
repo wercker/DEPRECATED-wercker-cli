@@ -169,42 +169,54 @@ def info_service(name, version=0):
         puts(term.yellow("Warning: ") + "service not found.")
     elif results.get("type") != "service":
         puts(term.yellow("Warning: ") + "found box was not a service.")
-    else:
-        putInfo("Fullname", results.get("fullname"))
-        putInfo("Owner", results.get("owner"))
-        putInfo("Name", results.get("name"))
-        putInfo("Version", results.get("version"))
-
-        license = results.get("license")
-        if license is None:
-            license = "none specified"
-        putInfo("License", license)
-
-        keywords = ", ".join(results.get("keywords"))
-        if keywords is None:
-            keywords = ""
-
-        putInfo("Keywords", keywords)
-        putInfo(
-            "\nDescription",
-            results.get("description"),
-            multiple_lines=True
-        )
-
-        packages = ""
-
-        for package in results.get("packages"):
-            if len(packages):
-                packages += ", "
-
-            packages += "{name}: {version}".format(
-                name=package.get("name"), version=package.get("version")
+    elif results:
+        response, release_info = client.get_box_releases(name)
+        if results:
+            putInfo("Fullname", results.get("fullname"))
+            putInfo("Owner", results.get("owner"))
+            putInfo("Name", results.get("name"))
+            puts("")
+            putInfo(
+                "All versions",
+                '\n'.join(release_info.get("versionNumbers")),
+                multiple_lines=True
             )
-        else:
-            packages = "None specified"
+            putInfo("Latest version", results.get("version"))
+            puts("")
 
-        putInfo("\nPackages", packages, multiple_lines=True)
-        putInfo("\nRead me", results.get("readMe"), multiple_lines=True)
+            license = results.get("license")
+            if license is None:
+                license = "none specified"
+            putInfo("License", license)
+
+            keywords = ", ".join(results.get("keywords"))
+            if keywords is None:
+                keywords = ""
+
+            putInfo("Keywords", keywords)
+            putInfo(
+                "\nDescription",
+                results.get("description"),
+                multiple_lines=True
+            )
+
+            packages = ""
+
+            for package in results.get("packages"):
+                if len(packages):
+                    packages += ", "
+
+                packages += "{name}: {version}".format(
+                    name=package.get("name"), version=package.get("version")
+                )
+            else:
+                packages = "None specified"
+
+            putInfo("\nPackages", packages, multiple_lines=True)
+            putInfo("\nRead me", results.get("readMe"), multiple_lines=True)
+    else:
+        puts("{t.red}Error: {t.normal}An error occurred while retrieving \
+service information")
 
 
 def get_sorted_versions(box):
