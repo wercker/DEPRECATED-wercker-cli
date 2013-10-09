@@ -34,6 +34,8 @@ You can install official releases of the wercker-cli by eather running `pip inst
 or clone this repository or install it manually by cloning this
 repository and run `python setup.py install`
 
+_note: you may need to run the commands with `sudo` permissions_
+
 ## Commands
 ### create
 Starts a wizard like setup, to get your application fully working on wercker. In detail it:
