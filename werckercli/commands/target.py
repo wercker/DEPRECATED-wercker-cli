@@ -231,6 +231,9 @@ def link_to_deploy_target(valid_token=None):
 
     target = pick_target(valid_token, project_id)
 
+    if not target:
+        return
+
     wercker_url = get_value(VALUE_WERCKER_URL)
 
     link = "{wercker_url}/deploytarget/{target}".format(

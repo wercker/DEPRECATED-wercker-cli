@@ -87,3 +87,8 @@ This is an alias for `wercker open targets`
 
 ### update
 Checks pypi if there's a newer version available.
+
+# Changelog
+
+## 0.8.2.
+* fix: opening the deploy target without deploy targets resulted in url with `None`
