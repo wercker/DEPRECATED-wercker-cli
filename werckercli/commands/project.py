@@ -309,6 +309,10 @@ def print_deploys(deploys, print_index=False):
             data['progress'] = "{progress:.1f}%".format(
                 progress=data['progress'])
 
+        if "user" in data:
+            data["user_name"] = data["user"]["name"]
+            data["user_type"] = data["user"]["type"]
+
     header = [
         'result',
         'progress',
@@ -319,7 +323,7 @@ def print_deploys(deploys, print_index=False):
     props = [
         'result',
         'progress',
-        'byUsername',
+        'user_name',
         'creationDate',
     ]
 
