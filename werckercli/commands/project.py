@@ -107,7 +107,7 @@ def project_link(valid_token=None, puts_result=True, auto_link=True):
         return False
 
     if puts_result:
-        puts("Retreiving list of applications...")
+        puts("Retrieving list of applications...")
 
     c = Client()
 
@@ -260,7 +260,7 @@ def project_list_queue(valid_token=None):
 
     term = get_term()
 
-    puts("Retreiving list of unfinished builds.")
+    puts("Retrieving list of unfinished builds.")
 
     result = get_builds(valid_token, project_id)
 

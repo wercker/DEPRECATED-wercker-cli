@@ -52,7 +52,7 @@ def _add_heroku_by_git(token, project_id, git_url):
         return
 
     puts("API key found...", level=DEBUG)
-    puts("Retreiving applications from Heroku...", level=DEBUG)
+    puts("Retrieving applications from Heroku...", level=DEBUG)
 
     # fp = open("werckercli/tests/data/apps.response.json")
     # import json
@@ -96,7 +96,7 @@ application or run heroku addons:add wercker")
 def get_targets(valid_token, project_id):
     c = Client()
 
-    puts("\nRetreiving list of deploy targets...")
+    puts("\nRetrieving list of deploy targets...")
     code, result = c.get_deploy_targets_by_project(
         valid_token,
         project_id
