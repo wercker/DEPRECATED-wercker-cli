@@ -5,9 +5,11 @@ from werckercli.git import (
     get_remote_options,
     convert_to_url,
 )
+
 from werckercli import prompt
 from werckercli.cli import get_term, puts
 from werckercli.client import Client
+from werckercli.paths import find_git_root
 from werckercli.printer import (
     print_hr,
     print_line,
@@ -99,7 +101,15 @@ def project_link(valid_token=None, puts_result=True, auto_link=True):
 
     if puts_result:
         puts("Searching for git remote information... ")
-    options = get_remote_options(os.curdir)
+
+    path = find_git_root(os.curdir)
+
+    if not path:
+        if puts_result:
+            puts(term.red("error:") + " No git repository found")
+        return False
+
+    options = get_remote_options(path)
 
     if options is None:
         if puts_result:
