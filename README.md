@@ -90,5 +90,13 @@ Checks pypi if there's a newer version available.
 
 # Changelog
 
+
+## 0.8.4
+
+* wercker link can now be run from subfolders
+
+## 0.8.3
+
+* update to support wercker API changes
 ## 0.8.2.
 * fix: opening the deploy target without deploy targets resulted in url with `None`
