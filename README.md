@@ -28,7 +28,7 @@ Usage:
         wercker --version
 
 
-## Intallation
+## Installation
 
 You can install official releases of the wercker-cli by eather running `pip install wercker`
 or clone this repository or install it manually by cloning this
