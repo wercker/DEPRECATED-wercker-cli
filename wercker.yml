@@ -7,7 +7,7 @@ build:
           sudo pip install coverage
           sudo pip install httpretty
           sudo pip install mock
-          sudo pip install pep8
+          sudo pip install "pep8<1.5"
     - pip-install
     - script:
         name: pep8
