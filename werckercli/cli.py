@@ -55,8 +55,6 @@ def handle_commands(args):
         as command_project_list
     from werckercli.commands.project import project_link\
         as command_project_link
-    from werckercli.commands.project import project_check_repo\
-        as command_project_check_repo
     from werckercli.commands.project import project_build\
         as command_project_build
     from werckercli.commands.build import build_list\
@@ -109,8 +107,6 @@ def handle_commands(args):
                 command_project_list()
         elif args.get('link'):
             command_project_link()
-        elif args.get('checkrepo'):
-            command_project_check_repo()
             # elif args.get("build"):
             #     command_project_build()
         elif args.get("builds"):

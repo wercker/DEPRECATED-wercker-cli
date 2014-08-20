@@ -6,7 +6,7 @@ from werckercli.config import get_value, VALUE_WERCKER_URL
 
 PATH_BASIC_ACCESS_TOKEN = 'oauth/basicauthaccesstoken'
 PATH_GET_TEMPLATES = 'project/gettemplates'
-PATH_CREATE_PROJECT = 'project/create'
+PATH_CREATE_PROJECT = 'v2/applications?token={token}'
 PATH_BUILD_PROJECT = 'projects/triggerbuild'
 PATH_CREATE_DEPLOYTARGET = 'deploytargets/create'
 PATH_DEPLOY_TARGETS_BY_PROJECT = 'deploytargets/byproject'
@@ -19,6 +19,9 @@ PATH_BOX_INFO_RELEASES = 'v2/boxes/{name}'
 PATH_GET_BUILDS = 'project/{projectId}/builds'
 PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
 PATH_GET_PROFILE = 'profile'
+PATH_GET_DETAILED_PROFILE = 'profile/{username}'
+PATH_CREATE_CHECKOUTKEY = 'v2/checkoutKeys'
+PATH_LINK_CHECKOUT_KEY = 'v2/checkoutKeys/{checkoutKeyId}/link'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -29,10 +32,8 @@ class LegacyClient():
     def __init__(self):
         self.wercker_url = get_value(VALUE_WERCKER_URL)
 
-    def do_post(self, path, data):
+    def do_post(self, url, data):
         """Make the request to the server."""
-
-        url = self.wercker_url + '/api/' + self.api_version + '/' + path
 
         data_string = json.dumps(data)
 
@@ -46,31 +47,27 @@ class LegacyClient():
 
         return result.status_code, json.loads(result.text)
 
+    def build_versioned_url(self, path, api_version=None):
+
+        if api_version is None:
+            api_version = self.api_version
+
+        return self.wercker_url + '/api/' + api_version + '/' + path
+
     def request_oauth_token(self, username, password, scope='cli'):
         """Request oauth token"""
 
         return self.do_post(
-            PATH_BASIC_ACCESS_TOKEN,
+            self.build_versioned_url(PATH_BASIC_ACCESS_TOKEN),
             {
                 'username': username,
                 'password': password,
-                'oauthscope': scope
-            })
-
-    def create_project(self, git_url, source_control, token):
-        return self.do_post(
-            PATH_CREATE_PROJECT,
-            {
-                'gitUrl': git_url,
-                # 'userName': user,
-                # 'projectName': project,
-                'sourceControl': source_control,
-                'token': token,
+                'oauthScope': scope
             })
 
     def create_deploy_target(self, token, project, deploy_name, heroku_token):
         return self.do_post(
-            PATH_CREATE_DEPLOYTARGET,
+            self.build_versioned_url(PATH_CREATE_DEPLOYTARGET),
             {
                 'token': token,
                 'projectId': project,
@@ -81,7 +78,7 @@ class LegacyClient():
 
     def get_deploy_targets_by_project(self, token, project):
         return self.do_post(
-            PATH_DEPLOY_TARGETS_BY_PROJECT,
+            self.build_versioned_url(PATH_DEPLOY_TARGETS_BY_PROJECT),
             {
                 'token': token,
                 'projectId': project
@@ -90,7 +87,7 @@ class LegacyClient():
 
     def trigger_build(self, token, project):
         return self.do_post(
-            PATH_BUILD_PROJECT,
+            self.build_versioned_url(PATH_BUILD_PROJECT),
             {
                 'token': token,
                 'projectId': project
@@ -98,7 +95,7 @@ class LegacyClient():
 
     def do_deploy(self, token, build, deploy_target):
         return self.do_post(
-            PATH_DEPLOY,
+            self.build_versioned_url(PATH_DEPLOY),
             {
                 'token': token,
                 'targetId': deploy_target,
@@ -111,8 +108,6 @@ class Client(LegacyClient):
 
     def do_get(self, path, data, display_warnings=True):
         url = self.wercker_url + "/api/" + path
-
-        # data_string = json.dumps(data)
 
         puts("communicating with %s ..." % url, level=DEBUG)
 
@@ -166,9 +161,22 @@ class Client(LegacyClient):
             {'token': token}
         )
 
+    def get_profile_detailed(self, token, username):
+
+        return self.do_get(
+            PATH_GET_DETAILED_PROFILE.format(username=username),
+            {'token': token}
+        )
+
     def get_boxes(self):
         return self.do_get(
             PATH_SEARCH_BOXES,
+            {}
+        )
+
+    def get_checkout_key(self):
+        return self.do_post(
+            PATH_CREATE_CHECKOUTKEY,
             {}
         )
 
@@ -188,6 +196,37 @@ class Client(LegacyClient):
             {},
             display_warnings=display_warnings
         )
+
+    def create_project(self, token, owner, name, source_control,
+                       checkout_key_id):
+        return self.do_post(
+            self.wercker_url + '/api/' +
+            PATH_CREATE_PROJECT.format(token=token),
+            {
+                'scmOwner': owner,
+                'scmName': name,
+                'scmProvider': source_control,
+                'privacy': 'private',
+                'checkoutKeyId': checkout_key_id,
+                'token': token,
+            })
+
+    def create_checkout_key(self):
+        return self.do_post(
+            self.wercker_url + '/api/' + PATH_CREATE_CHECKOUTKEY,
+            {})
+
+    def link_checkout_key(self, token, checkout_key_id, username, project,
+                          scm_provider):
+        return self.do_post(
+            self.LINK_wercker_url + '/api/' + PATH_CHECKOUT_KEY_LINK.format(
+                checkoutKeyId=checkout_key_id
+            ), {
+                'scmProvider': scm_provider,
+                'scmOwner': username,
+                'scmName': project,
+                'checkoutKeyId': checkout_key_id
+            })
     # def do_deploy(self, token, build, target):
 
     #     return self.
