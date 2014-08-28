@@ -21,7 +21,7 @@ PATH_GET_DEPLOYS = 'deploytarget/{deployTargetId}/deploys'
 PATH_GET_PROFILE = 'profile'
 PATH_GET_DETAILED_PROFILE = 'profile/{username}'
 PATH_CREATE_CHECKOUTKEY = 'v2/checkoutKeys'
-PATH_LINK_CHECKOUT_KEY = 'v2/checkoutKeys/{checkoutKeyId}/link'
+PATH_LINK_CHECKOUT_KEY = 'v2/checkoutKeys/{checkoutKeyId}/link?token={token}'
 # PATH_PROJECT_LIST = 'project/gettemplates'
 
 
@@ -219,13 +219,13 @@ class Client(LegacyClient):
     def link_checkout_key(self, token, checkout_key_id, username, project,
                           scm_provider):
         return self.do_post(
-            self.LINK_wercker_url + '/api/' + PATH_CHECKOUT_KEY_LINK.format(
-                checkoutKeyId=checkout_key_id
+            self.wercker_url + '/api/' + PATH_LINK_CHECKOUT_KEY.format(
+                checkoutKeyId=checkout_key_id,
+                token=token
             ), {
                 'scmProvider': scm_provider,
                 'scmOwner': username,
                 'scmName': project,
-                'checkoutKeyId': checkout_key_id
             })
     # def do_deploy(self, token, build, target):
 

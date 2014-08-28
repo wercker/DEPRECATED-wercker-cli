@@ -188,23 +188,25 @@ Step ''' + term.white('1') + '''. Configure application
     puts('''
 Step {t.white}2{t.normal}.
 -------------
-In order to clone the repository on wercker, an ssh key is needed. A new one is
-generated for each repository. There two ways of adding them to your
-repository.
+In order to clone the repository on wercker, an ssh key is needed. A new/unique
+key can be generated for each repository. There 3 ways of using ssh keys on
+wercker:
 
 {t.green}1. Automatically add a deploy key [recommended]{t.normal}
-2. Manually add a deploy key (needed when using git submodules)
+2. Use the checkout key, wercker uses for public projects.
+3. Let wercker generate a key, but allow add it manually to github/bitbucket.
+(needed when using git submodules)
 
 For more information on this see: http://etc...
 '''.format(t=term))
     key_method = None
     while(True):
         result = prompt.get_value_with_default(
-            "Select which build to deploy",
+            "Options:",
             '1'
         )
 
-        valid_values = [str(i + 1) for i in range(2)]
+        valid_values = [str(i + 1) for i in range(3)]
 
         if result in valid_values:
             key_method = valid_values.index(result)
@@ -212,49 +214,55 @@ For more information on this see: http://etc...
         else:
             puts(term.red("warning: ") + " invalid build selected.")
 
-    puts('''Retrieving a new ssh-key.''')
-    status, response = client.create_checkout_key()
-    puts("done.")
     checkout_key_id = None
     checkout_key_publicKey = None
 
-    if status == 200:
-        checkout_key_id = response['id']
-        checkout_key_publicKey = response['publicKey']
+    if(key_method != 1):
+        puts('''Retrieving a new ssh-key.''')
+        status, response = client.create_checkout_key()
+        puts("done.")
 
-        if key_method == 0:
-            puts('Adding deploy key to repository:')
-            client.link_checkout_key(valid_token, checkout_key_id, username,
-                                     project, source_type)
-        elif key_method == 1:
-            profile_username = profile.get('username')
-            status, response = client.get_profile_detailed(valid_token,
-                                                           profile_username)
+        if status == 200:
+            checkout_key_id = response['id']
+            checkout_key_publicKey = response['publicKey']
 
-            username = response[source_type + 'Username']
-            url = None
-            if source_type == SOURCE_GITHUB:
-                url = "https://github.com/settings/ssh"
-            elif source_type == SOURCE_BITBUCKET:
-                url = "http://bitbucket.org/account/user/{username}/ssh-keys/"
+            if key_method == 0:
+                puts('Adding deploy key to repository:')
+                status, response = client.link_checkout_key(valid_token, checkout_key_id, username,
+                                         project, source_type)
+                if status != 200:
+                    puts(term.red("Error:") +
+                        " uanble to add key to repository.")
+                    sys.exit(1)
+            elif key_method == 2:
+                profile_username = profile.get('username')
+                status, response = client.get_profile_detailed(valid_token,
+                                                               profile_username)
 
-            if status == 200:
-                formatted_key = "\n".join(
-                    textwrap.wrap(checkout_key_publicKey))
+                username = response[source_type + 'Username']
+                url = None
+                if source_type == SOURCE_GITHUB:
+                    url = "https://github.com/settings/ssh"
+                elif source_type == SOURCE_BITBUCKET:
+                    url = "http://bitbucket.org/account/user/{username}/ssh-keys/"
 
-                puts('''Please add the following public key:
-{publicKey}
+                if status == 200:
+                    formatted_key = "\n".join(
+                        textwrap.wrap(checkout_key_publicKey))
 
-You can add the key here: {url}\n'''.format(publicKey=formatted_key,
-                                            url=url.format(username=username)))
-                raw_input("Press enter to continue...")
-            else:
-                puts(term.red("Error:") +
-                     " unable to load wercker profile information.")
-                sys.exit(1)
-    else:
-        puts(term.red("Error:") + 'unable to retrieve an ssh key.')
-        sys.exit(1)
+                    puts('''Please add the following public key:
+    {publicKey}
+
+    You can add the key here: {url}\n'''.format(publicKey=formatted_key,
+                                                url=url.format(username=username)))
+                    raw_input("Press enter to continue...")
+                else:
+                    puts(term.red("Error:") +
+                         " unable to load wercker profile information.")
+                    sys.exit(1)
+        else:
+            puts(term.red("Error:") + 'unable to retrieve an ssh key.')
+            sys.exit(1)
 
     puts("Creating a new application")
     status, response = client.create_project(
