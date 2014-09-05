@@ -90,6 +90,9 @@ Checks pypi if there's a newer version available.
 
 # Changelog
 
+## 0.9.0
+* support for deploy keys
+
 ## 0.8.5
 * fix: failure to install wercker-cli on some systems. Issue: https://github.com/wercker/wercker-cli/issues/17
 

@@ -146,94 +146,13 @@ def project_link(valid_token=None, puts_result=True, auto_link=True):
 
 
 @login_required
-def project_check_repo(
-    valid_token=None,
-    failure_confirmation=False,
-    site_url=None
-):
-
-    if not valid_token:
-        raise ValueError("A valid token is required!")
-
-    term = get_term()
-
-    puts("Checking werckerbot permissions on the repository...")
-
-    while(True):
-
-        c = Client()
-        code, response = c.check_permissions(
-            valid_token,
-            get_value(VALUE_PROJECT_ID)
-        )
-
-        if response['success'] is True:
-            if response['data']['hasAccess'] is True:
-                puts("Werckerbot has access")
-                break
-            else:
-                puts("")  # empty line...
-                if "details" in response['data']:
-                    # puts
-                    puts(
-                        term.yellow("Error: ") +
-                        response['data']['details']
-                    )
-                else:
-                    puts(
-                        term.red("Error: ") +
-                        "wercker's werckerbot has no access to this\
- repository."
-
-                    )
-
-                if failure_confirmation is True:
-
-                    puts("werckerbot needs pull/read access to the repository \
-to get the code.")
-                    puts("Without access to the repository, builds and tests\
- will fail.\n")
-
-                    if(site_url):
-                        puts("Go to {url} and add wercker as a collaborator\
-".format(url=site_url))
-                    exit = not prompt.yn(
-                        "Do you want wercker to check the permissions again?",
-                        default="y"
-                    )
-                else:
-                    exit = True
-
-                if exit:
-                    break
-        else:
-            puts(term.red("Error: ") + "Could not validate access...")
-            if failure_confirmation is True:
-
-                puts("werckerbot needs pull/read access to the repository \
-to get the code.")
-                puts("Without access to the repository, builds and tests\
-will fail.\n")
-
-                if(site_url):
-                    puts("Go to {url} and add wercker as a collaborator\
-".format(url=site_url))
-                exit = not prompt.yn(
-                    "Do you want wercker to check the permissions again?",
-                    default="y"
-                )
-            else:
-                break
-
-
-@login_required
 def project_build(valid_token=None):
     if not valid_token:
         raise ValueError("A valid token is required!")
 
     term = get_term()
 
-    puts("Triggering build")
+    puts("Triggering a new build.")
 
     c = Client()
     code, response = c.trigger_build(valid_token, get_value(VALUE_PROJECT_ID))
@@ -246,7 +165,7 @@ def project_build(valid_token=None):
 
         return False
     else:
-        puts("A new build has been created")
+        puts("done.")
         return True
     # print code, response
 

@@ -62,7 +62,7 @@ class BasicClientTests(BasicClientCase):
 
         c = Client()
 
-        code, result = c.do_post('test', {})
+        code, result = c.do_post(c.wercker_url + '/api/1.0/test', {})
 
         self.assertEqual(code, 200)
         self.assertEqual(result, asserted_return)
@@ -100,14 +100,18 @@ class BasicClientTests(BasicClientCase):
 
             c = Client()
 
+            token = 'token'
             code, result = c.create_project(
-                "git_url",
-                # "user",
-                # "project",
+                token,
+                "user",
+                "project",
                 "source_control",
-                "token"
+                "checkout_key_id"
             )
             # print do_post
             call = do_post.call_args
             self.assertEqual(len(call.call_list()), 1)
-            self.assertEqual(call[0].count(PATH_CREATE_PROJECT), 1)
+            path = c.wercker_url + '/api/' + PATH_CREATE_PROJECT.format(
+                token=token
+            )
+            self.assertEqual(call[0].count(path), 1)

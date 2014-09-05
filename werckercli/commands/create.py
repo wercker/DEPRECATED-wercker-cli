@@ -1,3 +1,5 @@
+import sys
+import textwrap
 from werckercli.decorators import login_required
 
 from werckercli.git import (
@@ -34,25 +36,13 @@ from werckercli.paths import find_git_root
 
 from werckercli.commands.target import add as target_add
 from werckercli.commands.project import (
-    project_check_repo,
     project_build,
     project_link
 )
 
 
 '''
-Please choose one of the following options:
- (1) git@github.com:wercker/wercker-cli
-Make your choice (1=default):
-
-Creating a new application
-a new application has been created.
-In the root of this repository a .wercker file has been created which enables\
- the link between the source code and wercker.
-
-
-Checking werckerbot permissions on the repository...
-Werckerbot has access
+create an application on wercker
 '''
 
 
@@ -106,9 +96,10 @@ def create(path='.', valid_token=None):
     puts('''About to create an application on wercker.
 
 This consists of the following steps:
-1. Validate permissions and create an application
-2. Add a deploy target ({heroku_options} heroku targets detected)
-3. Trigger initial build'''.format(
+1. Configure application
+2. Setup keys
+3. Add a deploy target ({heroku_options} heroku targets detected)
+4. Trigger initial build'''.format(
         wercker_url=get_value(VALUE_WERCKER_URL),
         heroku_options=len(heroku_options))
     )
@@ -128,12 +119,12 @@ This consists of the following steps:
 
     count = len(options)
     puts('''
-Step ''' + term.white('1') + '''.
+Step ''' + term.white('1') + '''. Configure application
 -------------
 ''')
     puts(
-        "Found %s repository location(s)...\n"
-        % term.white(str(count))
+        "%s repository location(s) found...\n"
+        % term.bold(str(count))
     )
 
     url = pick_url(options)
@@ -191,19 +182,107 @@ Step ''' + term.white('1') + '''.
             webbrowser.open(provider_url)
 
             raw_input("Press enter to continue...")
+    username = get_username(url)
+    project = get_project(url)
+
+    puts('''
+Step {t.white}2{t.normal}.
+-------------
+In order to clone the repository on wercker, an ssh key is needed. A new/unique
+key can be generated for each repository. There 3 ways of using ssh keys on
+wercker:
+
+{t.green}1. Automatically add a deploy key [recommended]{t.normal}
+2. Use the checkout key, wercker uses for public projects.
+3. Let wercker generate a key, but allow add it manually to github/bitbucket.
+(needed when using git submodules)
+
+For more information on this see: http://etc...
+'''.format(t=term))
+    key_method = None
+    while(True):
+        result = prompt.get_value_with_default(
+            "Options:",
+            '1'
+        )
+
+        valid_values = [str(i + 1) for i in range(3)]
+
+        if result in valid_values:
+            key_method = valid_values.index(result)
+            break
+        else:
+            puts(term.red("warning: ") + " invalid build selected.")
+
+    checkout_key_id = None
+    checkout_key_publicKey = None
+
+    if(key_method != 1):
+        puts('''Retrieving a new ssh-key.''')
+        status, response = client.create_checkout_key()
+        puts("done.")
+
+        if status == 200:
+            checkout_key_id = response['id']
+            checkout_key_publicKey = response['publicKey']
+
+            if key_method == 0:
+                puts('Adding deploy key to repository:')
+                status, response = client.link_checkout_key(valid_token,
+                                                            checkout_key_id,
+                                                            username,
+                                                            project,
+                                                            source_type)
+                if status != 200:
+                    puts(term.red("Error:") +
+                         " uanble to add key to repository.")
+                    sys.exit(1)
+            elif key_method == 2:
+                profile_username = profile.get('username')
+                status, response = client.get_profile_detailed(
+                    valid_token,
+                    profile_username)
+
+                username = response[source_type + 'Username']
+                url = None
+                if source_type == SOURCE_GITHUB:
+                    url = "https://github.com/settings/ssh"
+                elif source_type == SOURCE_BITBUCKET:
+                    url = "http://bitbucket.org/account/user/{username}/\
+ssh-keys/"
+
+                if status == 200:
+                    formatted_key = "\n".join(
+                        textwrap.wrap(checkout_key_publicKey))
+
+                    puts('''Please add the following public key:
+    {publicKey}
+
+    You can add the key here: {url}\n'''.format(publicKey=formatted_key,
+                                                url=url.format(
+                                                    username=username)))
+                    raw_input("Press enter to continue...")
+                else:
+                    puts(term.red("Error:") +
+                         " unable to load wercker profile information.")
+                    sys.exit(1)
+        else:
+            puts(term.red("Error:") + 'unable to retrieve an ssh key.')
+            sys.exit(1)
 
     puts("Creating a new application")
     status, response = client.create_project(
-        url,
+        valid_token,
+        username,
+        project,
         source,
-        valid_token
+        checkout_key_id,
     )
 
     if response['success']:
 
-        puts("a new application has been created.")
-
-        set_value(VALUE_PROJECT_ID, response['projectId'])
+        puts("done.\n")
+        set_value(VALUE_PROJECT_ID, response['data']['id'])
 
         puts("In the root of this repository a .wercker file has been created\
  which enables the link between the source code and wercker.\n")
@@ -213,28 +292,19 @@ Step ''' + term.white('1') + '''.
         if source_type == SOURCE_GITHUB:
 
             site_url = "https://github.com/" + \
-                get_username(url) + \
+                username + \
                 "/" + \
-                get_project(url)
+                project
 
         elif source_type == SOURCE_BITBUCKET:
 
             site_url = "https://bitbucket.org/" + \
-                get_username(url) + \
+                username + \
                 "/" + \
-                get_project(url)
-
-        project_check_repo(
-            valid_token=valid_token,
-            failure_confirmation=True,
-            site_url=site_url
-        )
-
-#         puts("\nSearching for deploy target information (for \
-# platforms such as Heroku).")
+                project
 
         puts('''
-Step ''' + term.white('2') + '''.
+Step ''' + term.white('3') + '''.
 -------------
 ''')
 
@@ -247,14 +317,11 @@ Step ''' + term.white('2') + '''.
             target_add(valid_token=valid_token)
 
         puts('''
-Step ''' + term.white('3') + '''.
+Step ''' + term.white('4') + '''.
 -------------
 ''')
 
         project_build(valid_token=valid_token)
-        # if project_build(valid_token=valid_token):
-            # puts("To trigger a build")
-            # puts("")
 
         puts('''
 Done.
