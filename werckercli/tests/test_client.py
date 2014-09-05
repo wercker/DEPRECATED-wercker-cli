@@ -111,5 +111,7 @@ class BasicClientTests(BasicClientCase):
             # print do_post
             call = do_post.call_args
             self.assertEqual(len(call.call_list()), 1)
-            self.assertEqual(call[0].count(c.wercker_url + '/api/' +
-                                           PATH_CREATE_PROJECT.format(token=token)), 1)
+            path = c.wercker_url + '/api/' + PATH_CREATE_PROJECT.format(
+                token=token
+            )
+            self.assertEqual(call[0].count(path), 1)

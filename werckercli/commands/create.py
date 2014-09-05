@@ -228,23 +228,28 @@ For more information on this see: http://etc...
 
             if key_method == 0:
                 puts('Adding deploy key to repository:')
-                status, response = client.link_checkout_key(valid_token, checkout_key_id, username,
-                                         project, source_type)
+                status, response = client.link_checkout_key(valid_token,
+                                                            checkout_key_id,
+                                                            username,
+                                                            project,
+                                                            source_type)
                 if status != 200:
                     puts(term.red("Error:") +
-                        " uanble to add key to repository.")
+                         " uanble to add key to repository.")
                     sys.exit(1)
             elif key_method == 2:
                 profile_username = profile.get('username')
-                status, response = client.get_profile_detailed(valid_token,
-                                                               profile_username)
+                status, response = client.get_profile_detailed(
+                    valid_token,
+                    profile_username)
 
                 username = response[source_type + 'Username']
                 url = None
                 if source_type == SOURCE_GITHUB:
                     url = "https://github.com/settings/ssh"
                 elif source_type == SOURCE_BITBUCKET:
-                    url = "http://bitbucket.org/account/user/{username}/ssh-keys/"
+                    url = "http://bitbucket.org/account/user/{username}/\
+ssh-keys/"
 
                 if status == 200:
                     formatted_key = "\n".join(
@@ -254,7 +259,8 @@ For more information on this see: http://etc...
     {publicKey}
 
     You can add the key here: {url}\n'''.format(publicKey=formatted_key,
-                                                url=url.format(username=username)))
+                                                url=url.format(
+                                                    username=username)))
                     raw_input("Press enter to continue...")
                 else:
                     puts(term.red("Error:") +
