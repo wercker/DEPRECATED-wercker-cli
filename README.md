@@ -1,3 +1,9 @@
+# DEPRECATED #
+
+Wercker has a powerful new and different cli tool as a companion.
+
+See for more information [wercker.com](http://wercker.com) and [devcenter.wercker.com](http://devcenter.wercker.com)
+
 [![Wercker status](https://app.wercker.com/status/e03bf0c77a793a7857a2b8abc9fac779/m)](https://app.wercker.com/project/bykey/e03bf0c77a793a7857a2b8abc9fac779)
 # wercker-cli #
 
